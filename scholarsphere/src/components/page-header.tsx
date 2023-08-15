@@ -10,8 +10,7 @@ function PageHeader({
   return (
     <section
       className={cn(
-        // px-4 
-        "flex max-w-[980px] flex-col items-start gap-2 pt-8",
+        "flex max-w-[980px] flex-col items-start gap-2",
         className
       )}
       {...props}

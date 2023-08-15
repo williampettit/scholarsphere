@@ -17,6 +17,10 @@ export const siteConfig = {
       label: "Courses",
       href: "/courses",
     },
+    {
+      label: "Mock Transcript",
+      href: "/mock-transcript",
+    },
   ],
 };
 

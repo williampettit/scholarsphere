@@ -1,7 +1,7 @@
 import dayjs, { type Dayjs } from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { Assignment, MOCK_DATA } from "@/mock-data";
+import { Assignment } from "@/mock-data";
 import { cn } from "@/lib/utils";
 
 dayjs.extend(relativeTime);
@@ -41,7 +41,7 @@ export function AssignmentList({
         {assignments
           .sort(
             (a, b) =>
-              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+              new Date(a.due_date).getTime() - new Date(b.due_date).getTime()
           )
           .map((assignment) => (
             <div className="flex items-center">
@@ -56,10 +56,10 @@ export function AssignmentList({
               <div className={
                 cn(
                   "ml-auto font-medium",
-                  getDateColor(dayjs(assignment.dueDate))
+                  getDateColor(dayjs(assignment.due_date))
                 )
               }>
-                {dayjs(assignment.dueDate).fromNow()}
+                {dayjs(assignment.due_date).fromNow()}
               </div>
             </div>
           ))}

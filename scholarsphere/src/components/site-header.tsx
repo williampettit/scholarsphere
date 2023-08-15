@@ -30,7 +30,8 @@ export function SiteHeader() {
 
         <MobileNav />
 
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+        {/* justify-between  */}
+        <div className="flex flex-1 items-center space-x-2 justify-end"> 
           <nav className="flex items-center space-x-2">
             {/* <Link
               href={siteConfig.miscLinks.github}

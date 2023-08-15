@@ -43,7 +43,7 @@ export function CourseList({ courses }: { courses: Course[] }) {
                               {courseEntry.title}
                             </h4>
                             <h4 className="text-sm text-muted-foreground">
-                              {courseEntry.shortId}
+                              {courseEntry.short_id}
                             </h4>
                           </div>
                           <Badge className="text-xs bg-green-500 text-white capitalize">
@@ -57,7 +57,7 @@ export function CourseList({ courses }: { courses: Course[] }) {
                           <div className="flex items-center pt-2">
                             <Icons.credits className="mr-2 h-4 w-4 opacity-70" />{" "}
                             <span className="text-xs text-muted-foreground">
-                              {courseEntry.credits} credits
+                              {courseEntry.credit_hours} credits
                             </span>
                           </div>
 
@@ -73,7 +73,7 @@ export function CourseList({ courses }: { courses: Course[] }) {
                   </HoverCardContent>
                 </HoverCard>
                 <p className="text-sm text-muted-foreground">
-                  {courseEntry.credits} credits
+                  {courseEntry.credit_hours} credits
                 </p>
               </div>
               <div
