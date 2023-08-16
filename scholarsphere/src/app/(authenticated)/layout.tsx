@@ -9,7 +9,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <SiteHeader />
         <div className="flex-1">
           <div className="container relative">
-            <div className="space-y-6 p-10 pb-16">{children}</div>
+            <div className="space-y-6 p-6 pb-16">{children}</div>
           </div>
         </div>
         <SiteFooter />

@@ -12,8 +12,8 @@ import {
 import { mockGetUserData } from "@/mock-data";
 import Link from "next/link";
 
-export function UserNav() {
-  const user = mockGetUserData();
+export async function UserNav() {
+  const user = await mockGetUserData();
 
   return (
     <DropdownMenu>

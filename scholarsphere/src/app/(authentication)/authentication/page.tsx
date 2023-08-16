@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 import { UserAuthForm } from "@/app/(authentication)/authentication/components/user-auth-form";
 import { siteConfig } from "@/config/site";
 import { Icons } from "@/components/icons";

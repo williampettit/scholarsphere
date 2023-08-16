@@ -19,7 +19,7 @@ export const siteConfig = {
     },
     {
       label: "Mock Transcript",
-      href: "/mock-transcript",
+      href: "#",
     },
   ],
 };

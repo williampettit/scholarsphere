@@ -20,7 +20,7 @@ export function AssignmentList({
     if (dueDate.isBefore(dayjs())) {
       return "text-red-500";
     }
-    
+
     // If the assignment is due in less than 24 hours, make the date orange
     if (dueDate.isBefore(dayjs().add(24, "hour"))) {
       return "text-orange-500";
@@ -44,7 +44,7 @@ export function AssignmentList({
               new Date(a.due_date).getTime() - new Date(b.due_date).getTime()
           )
           .map((assignment) => (
-            <div className="flex items-center">
+            <div key={assignment.id} className="flex items-center">
               <div className="space-y-1">
                 <p className="text-sm font-medium leading-none">
                   {assignment.title}
@@ -53,12 +53,12 @@ export function AssignmentList({
                   {assignment.courseTitle}
                 </p>
               </div>
-              <div className={
-                cn(
+              <div
+                className={cn(
                   "ml-auto font-medium",
                   getDateColor(dayjs(assignment.due_date))
-                )
-              }>
+                )}
+              >
                 {dayjs(assignment.due_date).fromNow()}
               </div>
             </div>

@@ -11,28 +11,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AssignmentList,
   AssignmentListItem,
-} from "@/app/(dashboard)/dashboard/components/assignment-list";
+} from "@/app/(authenticated)/dashboard/components/assignment-list";
 import { Icons } from "@/components/icons";
-import { CourseList } from "@/app/(dashboard)/dashboard/components/course-list";
-import { ModeToggle } from "@/components/mode-toggle";
-import { Assignment, Course, Semester, mockGetDashboardData, mockGetUserData } from "@/mock-data";
-import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  PageHeader,
-  PageHeaderDescription,
-  PageHeaderHeading,
-} from "@/components/page-header";
+import { CourseList } from "@/app/(authenticated)/dashboard/components/course-list";
+import { Course, Semester, mockGetDashboardData } from "@/mock-data";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import dayjs from "dayjs";
 
 export const metadata: Metadata = {
   title: "Dashboard",
 };
 
 export interface DashboardData {
+  vanityName: string;
   upcomingAssignments: AssignmentListItem[];
   activeCourses: Course[];
   numCompletedCourses: number;
@@ -42,9 +35,25 @@ export interface DashboardData {
   plannedSemesterIds: Semester["id"][];
 }
 
-export default function DashboardPage() {
-  const userData = mockGetUserData();
-  const dashboardData = mockGetDashboardData();
+function ChangelogLink() {
+  return (
+    <>
+      <Link
+        href="/changelog"
+        className="inline-flex items-center rounded-lg bg-muted px-3 py-1 mb-2 text-sm font-medium text-accent-foreground/80"
+      >
+        👋 <Separator className="mx-2 h-4" orientation="vertical" />{" "}
+        <span className="inline">
+          Check out the changelog for the latest updates
+        </span>
+        <ArrowRightIcon className="ml-1 h-4 w-4" />
+      </Link>
+    </>
+  );
+}
+
+export default async function DashboardPage() {
+  const dashboardData = await mockGetDashboardData();
 
   const greeting = (() => {
     const hour = new Date().getHours();
@@ -61,40 +70,31 @@ export default function DashboardPage() {
 
   return (
     <>
-      <PageHeader className="page-header">
-        <Link
-          href="/changelog"
-          className="inline-flex items-center rounded-lg bg-muted px-3 py-1 mb-2 text-sm font-medium"
-        >
-          👋 <Separator className="mx-2 h-4" orientation="vertical" />{" "}
-          <span className="inline">
-            Check out the changelog for the latest updates
-          </span>
-          <ArrowRightIcon className="ml-1 h-4 w-4" />
-        </Link>
-        <PageHeaderHeading>
-          {greeting},{" "}
-          <span className="text-blue-500">
-            @{userData.vanity_name}
-          </span>
-        </PageHeaderHeading>
-        <PageHeaderDescription>
-          Welcome to your dashboard. Here you can view your upcoming assignments
-          for your active courses.
-        </PageHeaderDescription>
-      </PageHeader>
+      <div className="space-y-2">
+        <ChangelogLink />
+
+        <div className="space-y-0.5">
+          <h2 className="text-2xl font-bold tracking-tight">
+            {greeting}, @{dashboardData.vanityName}
+          </h2>
+          <p className="text-muted-foreground">
+            Welcome to your dashboard. Here you can view your upcoming
+            assignments for your active courses.
+          </p>
+        </div>
+      </div>
 
       <Separator className="my-6" />
 
       <div className="flex-col flex">
-        <div className="flex-1 space-y-4">
-          <Tabs defaultValue="overview" className="space-y-4">
+        <div className="flex-1 space-y-6">
+          <Tabs defaultValue="overview" className="space-y-6">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="next-semester">Next Semester</TabsTrigger>
             </TabsList>
-            <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 grid-cols-3">
+            <TabsContent value="overview" className="space-y-6">
+              <div className="grid gap-6 grid-cols-3">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
@@ -170,7 +170,7 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
               </div>
-              <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 grid-cols-2 lg:grid-cols-3">
                 <Card className="col-span-2 lg:col-span-2">
                   <div className="flex flex-row items-center justify-between px-6">
                     <CardHeader className="px-0">
