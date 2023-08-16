@@ -1,15 +1,17 @@
 import { redirect } from "next/navigation";
 
-async function getSession() {
+async function mockGetSession() {
   return true;
 }
 
-export default async function HeroPage() {
-  const session = await getSession();
+export default async function Page() {
+  const session = await mockGetSession();
   
   if (session) {
-    redirect("/dashboard");
+    redirect("/home");
   }
-
-  return <>TODO: Hero page</>;
+  
+  return <>
+    Hero Page
+  </>;
 }

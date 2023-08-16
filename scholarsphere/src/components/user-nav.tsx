@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { mockGetUserData } from "@/mock-data";
+import { mockGetUserData } from "@/data/mock-data";
 import Link from "next/link";
 
 export async function UserNav() {

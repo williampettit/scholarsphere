@@ -1,7 +1,7 @@
 export const siteConfig = {
-  name: "Scholarsphere",
+  name: "scholarsphere",
   url: "/",
-  logo: "TODO.png",
+  logo: "TODO-logo.png",
   description: "Painlessly track and plan academic progress, all in one place.",
   author: "William Pettit",
   miscLinks: {
@@ -11,7 +11,7 @@ export const siteConfig = {
   mainNavLinks: [
     {
       label: "Dashboard",
-      href: "/dashboard",
+      href: "/home",
     },
     {
       label: "Courses",
@@ -19,7 +19,7 @@ export const siteConfig = {
     },
     {
       label: "Mock Transcript",
-      href: "#",
+      href: "#TODO-mock-transcript",
     },
   ],
 };

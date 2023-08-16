@@ -1,5 +1,5 @@
 import { Globe, Coins, Sigma, ListTodo, CandlestickChart } from "lucide-react";
-import { MoonIcon, SunIcon, ViewVerticalIcon } from "@radix-ui/react-icons"
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -7,9 +7,6 @@ export const Icons = {
   // General
   logo: Globe,
   
-  // Mobile nav
-  viewVertical: ViewVerticalIcon,
-
   // Dashboard page
   credits: Coins,
   gpa: Sigma,
