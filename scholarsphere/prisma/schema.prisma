@@ -1,0 +1,175 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+//
+// ENUMS
+//
+
+enum UserRole {
+  USER
+  PRO
+  ADMIN
+}
+
+enum CourseRequirementKind {
+  PRE_REQUISITE
+  CO_REQUISITE
+}
+
+//
+// MODELS
+//
+
+model User {
+  id String @id @default(uuid())
+
+  // nextauth info
+  name          String?
+  image         String?
+  email         String?   @unique
+  emailVerified DateTime?
+  accounts      Account[]
+  sessions      Session[]
+
+  // basic info
+  role       UserRole @default(USER)
+
+  // semesters that are connected to this user
+  semesters Semester[]
+
+  // courses that are connected to this user
+  courses Course[]
+
+  // assignments that are connected to this user
+  assignments Assignment[]
+}
+
+model Semester {
+  id String @id @default(uuid())
+
+  // basic info
+  name      String   @db.VarChar(128)
+  startDate DateTime
+  endDate   DateTime
+
+  // courses that are connected to this semester
+  courses Course[]
+
+  // relationship to owner
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@index([userId])
+}
+
+model Course {
+  id String @id @default(uuid())
+
+  // basic info
+  name         String  @db.VarChar(128)
+  shortId      String? @unique @db.VarChar(32)
+  description  String? @db.VarChar(1024)
+  creditHours  Int     @default(0)
+  currentGrade Float   @default(100)
+
+  // requirements that are connected to this course
+  requirements CourseRequirement[]
+
+  // assignments that are connected to this course
+  assignments Assignment[]
+
+  // mandatory relationship to owner
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  // optional relationship to a semester
+  semester   Semester? @relation(fields: [semesterId], references: [id])
+  semesterId String?
+
+  @@index([userId])
+  @@index([semesterId])
+}
+
+model Assignment {
+  id String @id @default(uuid())
+
+  // basic info
+  title      String?  @db.VarChar(128)
+  dueDate    DateTime
+  isComplete Boolean
+
+  // mandatory relationship to owner
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  // mandatory relationship to course
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId String
+
+  @@index([courseId])
+  @@index([userId])
+}
+
+model CourseRequirement {
+  id String @id @default(uuid())
+
+  // basic info
+  kind CourseRequirementKind
+
+  // mandatory relationship to course
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId String
+
+  @@index([courseId])
+}
+
+//
+// NEXTAUTH MODELS
+//
+
+model Account {
+  id                       String  @id @default(cuid())
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  refresh_token_expires_in Int?
+
+  // relationship to user
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
