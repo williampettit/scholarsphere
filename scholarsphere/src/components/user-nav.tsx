@@ -1,3 +1,9 @@
+"use client";
+
+import Link from "next/link";
+
+import { signOut } from "next-auth/react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,34 +15,32 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { mockGetUserData } from "@/data/mock-data";
-import Link from "next/link";
+import { siteConfig } from "@/config/site";
 
-export async function UserNav() {
-  const user = await mockGetUserData();
+interface UserNavProps {
+  name: string;
+  email: string;
+  image: string;
+}
 
+export function UserNav({ name, email, image }: UserNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user.avatar_url} />
-            <AvatarFallback>
-              {`${user.vanity_name.charAt(0)}${user.vanity_name.charAt(
-                user.vanity_name.length - 1
-              )}`.toUpperCase()}
-            </AvatarFallback>
+            <AvatarImage src={image} />
+            <AvatarFallback />
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">
-              @{`${user.vanity_name}`}
-            </p>
+            <p className="text-sm font-medium leading-none">{name}</p>
+
             <p className="text-xs leading-none text-muted-foreground">
-              {user.email}
+              {email}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -47,9 +51,16 @@ export async function UserNav() {
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <Link href="/logout">
-          <DropdownMenuItem>Log out</DropdownMenuItem>
-        </Link>
+        <DropdownMenuItem
+          onClick={() =>
+            signOut({
+              redirect: true,
+              callbackUrl: siteConfig.auth.logout,
+            })
+          }
+        >
+          Log out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

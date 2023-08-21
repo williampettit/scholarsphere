@@ -6,20 +6,13 @@ import {
 
 import { Icons } from "@/components/icons";
 import { Badge } from "@/components/ui/badge";
+import { Course } from "@/types/database-types";
 
 export function CourseHoverCard({
   course,
   children,
 }: {
-  course: {
-    id: string;
-    short_id: string;
-    title: string;
-    description: string;
-    credit_hours: number;
-    grade: number;
-    status: string;
-  };
+  course: Omit<Course, "userId" | "semesterId">;
   children: React.ReactNode;
 }) {
   return (
@@ -30,11 +23,11 @@ export function CourseHoverCard({
           <div className="space-y-1">
             <div className="flex flex-col">
               <h4 className="text-sm font-semibold overflow-ellipsis line-clamp-1">
-                {course.short_id}
+                {course.shortId}
               </h4>
 
               <h4 className="text-sm text-muted-foreground overflow-ellipsis line-clamp-1">
-                {course.title}
+                {course.name}
               </h4>
             </div>
 
@@ -44,14 +37,14 @@ export function CourseHoverCard({
               <div className="flex items-center pt-2">
                 <Icons.credits className="mr-2 h-4 w-4 opacity-70" />{" "}
                 <span className="text-xs text-muted-foreground">
-                  {course.credit_hours} credits
+                  {course.creditHours} credits
                 </span>
               </div>
 
               <div className="flex items-center pt-2">
                 <Icons.grade className="mr-2 h-4 w-4 opacity-70" />{" "}
                 <span className="text-xs text-muted-foreground">
-                  {course.grade.toFixed(2)}%
+                  {course.currentGrade.toFixed(2)}%
                 </span>
               </div>
 

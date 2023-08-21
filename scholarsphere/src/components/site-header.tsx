@@ -1,8 +1,12 @@
+import { getServerSessionWrapper } from "@/server/auth";
 import { MainNav } from "@/components/main-nav";
 import { MobileNav } from "@/components/mobile-nav";
 import { UserNav } from "@/components/user-nav";
+import { LoginButton } from "@/components/login-button";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const session = await getServerSessionWrapper();
+  
   return (
     <header
       className="
@@ -22,7 +26,7 @@ export function SiteHeader() {
         <MobileNav />
         <div className="flex flex-1 items-center space-x-2 justify-end">
           <nav className="flex items-center space-x-2">
-            <UserNav />
+            {session ? <UserNav {...session.user} /> : <LoginButton />}
           </nav>
         </div>
       </div>

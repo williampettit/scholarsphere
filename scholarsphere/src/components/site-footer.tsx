@@ -7,7 +7,7 @@ export function SiteFooter() {
         <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
           Built by{" "}
           <a
-            href={siteConfig.miscLinks.author}
+            href={siteConfig.social.author}
             target="_blank"
             rel="noreferrer"
             className="font-medium underline underline-offset-4 text-accent-foreground"
@@ -16,7 +16,7 @@ export function SiteFooter() {
           </a>
           ; fully{" "}
           <a
-            href={siteConfig.miscLinks.github}
+            href={siteConfig.social.github}
             target="_blank"
             rel="noreferrer"
             className="font-medium underline underline-offset-4 text-accent-foreground"

@@ -1,6 +1,6 @@
+import { RootLayoutProps } from "@/types/root-layout";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { RootLayoutProps } from "@/types/root-layout";
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (

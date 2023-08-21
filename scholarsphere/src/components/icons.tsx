@@ -6,7 +6,7 @@ type IconProps = React.HTMLAttributes<SVGElement>;
 export const Icons = {
   // General
   logo: Globe,
-  
+
   // Dashboard page
   credits: Coins,
   gpa: Sigma,
