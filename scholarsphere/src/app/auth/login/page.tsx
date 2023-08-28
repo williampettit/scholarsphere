@@ -2,25 +2,25 @@ import Link from "next/link";
 import { getProviders } from "next-auth/react";
 import { AuthProviderButton } from "@/components/auth-provider-button";
 import { AuthPageHeader } from "@/app/auth/components/auth-page-header";
-import { AuthPageErrorToast } from "../components/auth-page-error-toast";
+import { AuthPageErrorToast } from "@/app/auth/components/auth-page-error-toast";
 import { redirect } from "next/navigation";
-import { getServerSessionWrapper } from "@/server/auth";
+import { S_getSession } from "@/server/auth";
 import { siteConfig } from "@/config/site";
 
-export default async function LoginPage(props: {
-  params: {};
+interface LoginPageProps {
   searchParams: {
     callbackUrl: string;
     error: string;
   };
-}) {
-  const session = await getServerSessionWrapper();
+}
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const session = await S_getSession();
   if (session) {
-    redirect(siteConfig.links.dashboard.href);
+    redirect(siteConfig.links.dashboard);
   }
-  
+
   const providers = await getProviders();
-  const { searchParams } = props;
   const { error, callbackUrl } = searchParams;
 
   return (
@@ -36,7 +36,7 @@ export default async function LoginPage(props: {
               key={providerId}
               providerId={providerId}
               providerName={providerData.name}
-              callbackUrl={callbackUrl}
+              postLoginRedirectUrl={callbackUrl}
             />
           ))}
       </div>
@@ -44,14 +44,14 @@ export default async function LoginPage(props: {
       <p className="px-8 text-center text-sm text-muted-foreground">
         By continuing, you agree to our{" "}
         <Link
-          href="#terms-TODO"
+          href={siteConfig.links.terms}
           className="underline underline-offset-4 hover:text-primary"
         >
           Terms of Service
         </Link>{" "}
         and{" "}
         <Link
-          href="#privacy-TODO"
+          href={siteConfig.links.privacy}
           className="underline underline-offset-4 hover:text-primary"
         >
           Privacy Policy

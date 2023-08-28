@@ -1,4 +1,4 @@
-// TODO: internationaliation (i18n) support for languages
+// TODO: internationalization (i18n) support for languages
 // https://nextjs.org/docs/app/building-your-application/routing/internationalization
 
 export const languages = [

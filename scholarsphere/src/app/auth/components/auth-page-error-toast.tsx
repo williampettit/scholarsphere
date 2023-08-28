@@ -1,15 +1,13 @@
 "use client";
 
-import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface AuthPageErrorToastProps {
   errorDesc: string;
 }
 
-export function AuthPageErrorToast({
-  errorDesc,
-}: AuthPageErrorToastProps) {
+export function AuthPageErrorToast({ errorDesc }: AuthPageErrorToastProps) {
   const { toast } = useToast();
 
   useEffect(() => {
@@ -19,7 +17,7 @@ export function AuthPageErrorToast({
         description: errorDesc,
       });
     }, 0);
-  }, [errorDesc]);
+  }, [toast, errorDesc]);
 
   return null;
 

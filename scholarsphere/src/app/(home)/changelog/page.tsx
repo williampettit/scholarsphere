@@ -1,68 +1,51 @@
-import { Metadata } from "next";
-
 import dayjs from "dayjs";
 
-import {
-  PageHeader,
-  PageHeaderSubtitle,
-  PageHeaderTitle,
-} from "@/components/page-header";
-
-export const metadata: Metadata = {
-  title: "Changelog",
-};
-
 interface ChangelogEntryProps {
-  isoDate: string;
+  title: string;
   content: string;
+  isoString: string;
 }
 
-async function mockGetChangelogData() {
-  const changelogData: ChangelogEntryProps[] = [
-    {
-      isoDate: "1970-01-01T00:00:00",
-      content: "This is what was changed: ...",
-    },
-  ];
+async function getMockChangelogData(): Promise<ChangelogEntryProps[]> {
+  // TODO: remove fake delay once i have a real changelog
+  //       (this is just to show off the loading spinner)
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-  return changelogData;
+  return Array.from(
+    { length: 100 },
+    (_, i): ChangelogEntryProps => ({
+      title: "Lorem ipsum dolor sit amet",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam euismod, nisl quis tincidunt aliquam, nunc nisl aliquet nunc, quis aliquam nisl nunc quis nisl.",
+      isoString: dayjs()
+        .subtract(i * 3, "day")
+        .toISOString(),
+    })
+  );
 }
 
 export default async function ChangelogPage() {
-  const changelogData = await mockGetChangelogData();
+  const sortedChangelogData = await getMockChangelogData().then((data) =>
+    data.sort((a, b) => b.isoString.localeCompare(a.isoString))
+  );
 
   return (
     <>
-      <PageHeader>
-        <PageHeaderTitle>Changelog</PageHeaderTitle>
-
-        <PageHeaderSubtitle>
-          Check out the latest site improvements!
-        </PageHeaderSubtitle>
-      </PageHeader>
-
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="flex-1 lg:max-w-2xl">
-          <div className="space-y-6">
-            {changelogData
-              .sort(
-                (a, b) =>
-                  new Date(b.isoDate).getTime() - new Date(a.isoDate).getTime()
-              )
-              .map((entry) => (
-                <div
-                  key={entry.isoDate}
-                >
-                  <h3 className="text-lg font-medium">
-                    {dayjs(entry.isoDate).format("MMMM D, YYYY")}
-                  </h3>
-
-                  <p className="text-sm text-muted-foreground">
-                    {entry.content}
-                  </p>
-                </div>
-              ))}
-          </div>
+        <div className="flex-1 lg:max-w-2xl space-y-8">
+          {sortedChangelogData.map((entry) => (
+            <div key={entry.isoString}>
+              <div className="flex flex-row space-x-6 items-center">
+                <h2 className="text-lg font-semibold">{entry.title}</h2>
+                <h2 className="text-lg font-medium">
+                  {dayjs(entry.isoString).format("MMMM D, YYYY")}
+                </h2>
+              </div>
+              <p className="text-sm text-muted-foreground text-justify">
+                {entry.content}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </>

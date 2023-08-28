@@ -1,7 +1,6 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 import { siteConfig } from "@/config/site";
@@ -9,27 +8,24 @@ import { siteConfig } from "@/config/site";
 interface AuthProviderButtonProps {
   providerId: string;
   providerName: string;
-  callbackUrl?: string;
+  postLoginRedirectUrl?: string;
 }
 
-function AuthProviderIcon({
-  providerId,
-}: Pick<AuthProviderButtonProps, "providerId">) {
-  switch (providerId) {
-    case "github":
-      return <Icons.gitHub className="mr-2 h-4 w-4" />;
-    case "google":
-      return <Icons.google className="mr-2 h-4 w-4" />;
-    case "apple":
-      return <Icons.apple className="mr-2 h-4 w-4" />;
-  }
-}
+const authProviderIcons = {
+  github: () => <Icons.gitHub className="mr-2 h-4 w-4" />,
+  google: () => <Icons.google className="mr-2 h-4 w-4" />,
+  apple: () => <Icons.apple className="mr-2 h-4 w-4" />,
+};
 
 export function AuthProviderButton({
   providerId,
   providerName,
-  callbackUrl,
+  postLoginRedirectUrl,
 }: AuthProviderButtonProps) {
+  const AuthProviderIcon = Object.entries(authProviderIcons).find(
+    ([key]) => key === providerId
+  )![1];
+
   return (
     <>
       <Button
@@ -37,11 +33,11 @@ export function AuthProviderButton({
         variant="outline"
         onClick={() =>
           signIn(providerId, {
-            callbackUrl: callbackUrl ?? siteConfig.links.dashboard.href,
+            callbackUrl: postLoginRedirectUrl ?? siteConfig.links.dashboard,
           })
         }
       >
-        <AuthProviderIcon providerId={providerId} />
+        <AuthProviderIcon />
         {providerName}
       </Button>
     </>

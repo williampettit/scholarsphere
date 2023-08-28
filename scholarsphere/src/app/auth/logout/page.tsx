@@ -5,7 +5,6 @@ export default async function LogoutPage() {
   return (
     <>
       <AuthPageHeader>You have been logged out.</AuthPageHeader>
-      
       <LoginButton />
     </>
   );

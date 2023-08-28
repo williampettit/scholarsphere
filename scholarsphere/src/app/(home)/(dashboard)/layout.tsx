@@ -1,14 +1,14 @@
-import { redirect } from "next/navigation";
-import { RootLayoutProps } from "@/types/root-layout";
-import { siteConfig } from "@/config/site";
-import { getServerSessionWrapper } from "@/server/auth";
+import { type RootLayoutProps } from "@/types/root-layout";
+import { S_getUser } from "@/server/auth";
+import { DashboardHeader } from "@/app/(home)/components/dashboard-header";
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const session = await getServerSessionWrapper();
+  const user = await S_getUser();
 
-  if (!session) {
-    redirect(siteConfig.auth.login);
-  }
-
-  return <>{children}</>;
+  return (
+    <>
+      <DashboardHeader name={user.name} />
+      {children}
+    </>
+  );
 }

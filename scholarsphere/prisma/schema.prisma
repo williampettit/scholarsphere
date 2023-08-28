@@ -39,7 +39,7 @@ model User {
   sessions      Session[]
 
   // basic info
-  role       UserRole @default(USER)
+  role UserRole @default(USER)
 
   // semesters that are connected to this user
   semesters Semester[]
@@ -74,7 +74,7 @@ model Course {
 
   // basic info
   name         String  @db.VarChar(128)
-  shortId      String? @unique @db.VarChar(32)
+  shortId      String? @db.VarChar(32)
   description  String? @db.VarChar(1024)
   creditHours  Int     @default(0)
   currentGrade Float   @default(100)

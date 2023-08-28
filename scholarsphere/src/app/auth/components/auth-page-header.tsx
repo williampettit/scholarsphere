@@ -1,26 +1,11 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-
-export function AuthPageHeader({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <h1 className="text-center text-2xl font-semibold tracking-tight">
-        {children}
-      </h1>
-    </>
-  );
+interface AuthPageHeaderProps {
+  children: React.ReactNode;
 }
 
-export function AuthPageError({ children }: { children: React.ReactNode }) {
+export function AuthPageHeader({ children }: AuthPageHeaderProps) {
   return (
-    <>
-      <Alert>
-        <AlertTitle>
-          Error
-        </AlertTitle>
-        <AlertDescription>
-          {children}
-        </AlertDescription>
-      </Alert>
-    </>
+    <h1 className="text-center text-2xl font-semibold tracking-tight">
+      {children}
+    </h1>
   );
 }

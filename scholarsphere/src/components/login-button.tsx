@@ -12,7 +12,7 @@ export function LoginButton() {
         type="button"
         variant="outline"
         onClick={() =>
-          signIn(undefined, { callbackUrl: siteConfig.links.dashboard.href })
+          signIn(undefined, { callbackUrl: siteConfig.links.dashboard })
         }
       >
         Login
