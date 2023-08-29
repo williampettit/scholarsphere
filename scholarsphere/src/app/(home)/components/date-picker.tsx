@@ -12,15 +12,12 @@ import { Button } from "@/components/ui/button";
 import { FormControl } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 
-interface SemesterDatePickerProps {
+interface DatePickerProps {
   value: Date;
   onChange: (date: Date | undefined) => void;
 }
 
-export function SemesterDatePicker({
-  value,
-  onChange,
-}: SemesterDatePickerProps) {
+export function DatePicker({ value, onChange }: DatePickerProps) {
   return (
     <>
       <Popover>

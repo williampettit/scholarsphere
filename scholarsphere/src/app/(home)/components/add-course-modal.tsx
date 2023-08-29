@@ -1,11 +1,11 @@
 "use client";
 
+import { S_addCourse } from "@/server/actions/add-course";
 import {
-  S_addCourse,
   SemesterTypeEnum,
   addCourseFormSchema,
   type AddCourseFormSchema,
-} from "@/server/actions/add-course";
+} from "@/server/actions/schemas";
 import { S_getUserSemesters } from "@/server/actions/get-user-semesters";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -38,7 +38,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SemesterDatePicker } from "@/app/(home)/components/semester-date-picker";
+import { DatePicker } from "@/app/(home)/components/date-picker";
 
 interface AddCourseModalProps {
   children: React.ReactNode;
@@ -190,7 +190,7 @@ export function AddCourseModal({ children }: AddCourseModalProps) {
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Start Date</FormLabel>
-                      <SemesterDatePicker
+                      <DatePicker
                         value={field.value}
                         onChange={field.onChange}
                       />
@@ -205,7 +205,7 @@ export function AddCourseModal({ children }: AddCourseModalProps) {
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>End Date</FormLabel>
-                      <SemesterDatePicker
+                      <DatePicker
                         value={field.value}
                         onChange={field.onChange}
                       />
@@ -281,7 +281,7 @@ export function AddCourseModal({ children }: AddCourseModalProps) {
                   form.formState.isValidating
                 }
               >
-                Add Course
+                Add
               </Button>
             </DialogFooter>
           </form>

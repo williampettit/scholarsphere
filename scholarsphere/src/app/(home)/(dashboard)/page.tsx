@@ -6,6 +6,7 @@ import { Icons } from "@/components/icons";
 import { AssignmentList } from "@/app/(home)/components/assignment-list";
 import { CourseList } from "@/app/(home)/components/course-list";
 import { AddCourseModal } from "@/app/(home)/components/add-course-modal";
+import { AddAssignmentModal } from "@/app/(home)/components/add-assignment-modal";
 import {
   type DashboardDataProps,
   S_getDashboardData,
@@ -17,6 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { CourseStatusEnum } from "@/types/shared";
 
 interface DashboardStatsCardProps {
   title: React.ReactNode;
@@ -153,7 +155,9 @@ async function OverviewTab() {
                 in the next 30 days
               </CardDescription>
             </CardHeader>
-            <Button disabled>Add</Button>
+            <AddAssignmentModal activeCourses={dashboardData.activeCourses}>
+              <Button>Add</Button>
+            </AddAssignmentModal>
           </div>
 
           <Separator className="mb-6" />

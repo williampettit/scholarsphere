@@ -3,26 +3,29 @@
 import prisma from "@/server/prisma";
 import { S_getSession } from "@/server/auth";
 import {
-  type DeleteCourseFormSchema,
-  deleteCourseFormSchema,
+  type AddAssignmentFormSchema,
+  addAssignmentFormSchema,
 } from "@/server/actions/schemas";
 
-export async function S_deleteCourse(data: DeleteCourseFormSchema) {
-  // return { success: false, error: "Deleting courses is temporarily disabled." };
+export async function S_addAssignment(data: AddAssignmentFormSchema) {
   const session = await S_getSession();
   const userId = session?.user.id;
   if (!userId) {
     return { success: false, error: "Not logged in." };
   }
-  const parsedData = deleteCourseFormSchema.safeParse(data);
+  const parsedData = addAssignmentFormSchema.safeParse(data);
   if (!parsedData.success) {
     return { success: false, error: parsedData.error.format() };
   }
-  await prisma.course.delete({
-    where: {
+  await prisma.assignment.create({
+    data: {
       userId: userId,
-      id: parsedData.data.id,
+      courseId: parsedData.data.courseId,
+      title: parsedData.data.name,
+      dueDate: parsedData.data.dueDate,
     },
   });
-  return { success: true };
+  return {
+    success: true,
+  };
 }

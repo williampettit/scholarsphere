@@ -1,29 +1,12 @@
 "use server";
 
 import prisma from "@/server/prisma";
-import { z } from "zod";
-import { baseUuidSchema, baseCourseSchema } from "@/types/shared";
 import { S_getSession } from "@/server/auth";
-
-export enum SemesterTypeEnum {
-  new,
-  existing,
-}
-
-// "Add Course" Form
-export const addCourseFormSchema = baseCourseSchema.extend({
-  semesterType: z.nativeEnum(SemesterTypeEnum),
-  existingSemesterId: baseUuidSchema.optional(),
-  newSemesterData: z
-    .object({
-      name: z.string().min(1).max(255),
-      startDate: z.date(),
-      endDate: z.date(),
-    })
-    .optional(),
-});
-
-export type AddCourseFormSchema = z.infer<typeof addCourseFormSchema>;
+import {
+  addCourseFormSchema,
+  SemesterTypeEnum,
+  type AddCourseFormSchema,
+} from "@/server/actions/schemas";
 
 export async function S_addCourse(data: AddCourseFormSchema) {
   const session = await S_getSession();

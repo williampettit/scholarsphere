@@ -40,14 +40,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuSeparator />
 
         <DeleteCourseModal>
-          <DropdownMenuItem
-            className="text-red-500"
-            onClick={() => {
-              console.log("Delete course", course.id);
-            }}
-          >
-            Delete
-          </DropdownMenuItem>
+          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
         </DeleteCourseModal>
       </DropdownMenuContent>
     </DropdownMenu>

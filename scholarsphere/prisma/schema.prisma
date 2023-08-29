@@ -103,7 +103,7 @@ model Assignment {
   // basic info
   title      String?  @db.VarChar(128)
   dueDate    DateTime
-  isComplete Boolean
+  isComplete Boolean  @default(false)
 
   // mandatory relationship to owner
   user   User   @relation(fields: [userId], references: [id])

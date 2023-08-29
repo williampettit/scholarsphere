@@ -8,13 +8,14 @@ import { type Course, type Semester } from "@/types/database-types";
 import { CourseStatusEnum } from "@/types/shared";
 
 export interface DashboardDataProps {
-  upcomingAssignments: AssignmentListItem[];
+  // allCourses: Course[];
   activeCourses: Course[];
+  upcomingAssignments: AssignmentListItem[];
+  plannedSemesterIds: Semester["id"][];
   numCompletedCourses: number;
   numCompletedCredits: number;
   numSemesterCredits: number;
   numPlannedCourses: number;
-  plannedSemesterIds: Semester["id"][];
   completedGpa: GPA;
   tenativeGpa: GPA;
 }
@@ -26,9 +27,15 @@ export async function S_getDashboardData(): Promise<DashboardDataProps> {
   }
   return userData.courses.reduce<DashboardDataProps>(
     (acc, courseEntry) => {
-      const courseStatus = userData.semesters.find(
-        (semester) => semester.id === courseEntry.semesterId
-      )?.status;
+      const courseStatus =
+        userData.semesters.find(
+          (semester) => semester.id === courseEntry.semesterId
+        )?.status ?? CourseStatusEnum.NOT_PLANNED;
+
+      // acc.allCourses.push({
+      //   ...courseEntry,
+      //   status: courseStatus,
+      // });
 
       switch (courseStatus) {
         // count completed courses and credits
@@ -61,7 +68,12 @@ export async function S_getDashboardData(): Promise<DashboardDataProps> {
             if (
               assignment.dueDate &&
               !assignment.isComplete &&
-              !dayjs().isBefore(assignment.dueDate, "month")
+              within30Days(assignment.dueDate)
+              // !dayjs().isBefore(
+              //   assignment.dueDate,
+              //   // "month",
+              //   "year",
+              // )
             ) {
               acc.upcomingAssignments.push({
                 ...assignment,
@@ -88,9 +100,10 @@ export async function S_getDashboardData(): Promise<DashboardDataProps> {
       return acc;
     },
     {
+      // allCourses: [],
+      activeCourses: [],
       upcomingAssignments: [],
       plannedSemesterIds: [],
-      activeCourses: [],
 
       numCompletedCourses: 0,
       numCompletedCredits: 0,
@@ -101,4 +114,13 @@ export async function S_getDashboardData(): Promise<DashboardDataProps> {
       tenativeGpa: new GPA(),
     }
   );
+}
+function within30Days(dueDate: Date) {
+  return dayjs(dueDate).diff(dayjs(), "day") <= 30;
+  // !dayjs().isBefore(
+  //   assignment.dueDate,
+  //   // "month",
+  //   "year",
+  // )
+  // throw new Error("Function not implemented.");
 }
