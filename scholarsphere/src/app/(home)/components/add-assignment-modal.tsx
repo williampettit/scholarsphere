@@ -1,15 +1,19 @@
 "use client";
 
+import { useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import { type Course } from "@/types/database-types";
+
 import { S_addAssignment } from "@/server/actions/add-assignment";
 import {
   addAssignmentFormSchema,
   type AddAssignmentFormSchema,
 } from "@/server/actions/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +31,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -35,8 +40,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
+
 import { DatePicker } from "@/app/(home)/components/date-picker";
-import { type Course } from "@/types/database-types";
 
 interface AddAssignmentModalProps {
   children: React.ReactNode;

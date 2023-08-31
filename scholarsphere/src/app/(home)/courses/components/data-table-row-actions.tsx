@@ -2,6 +2,9 @@
 
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
+
+import { courseTableEntrySchema } from "@/types/shared";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,8 +13,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DeleteCourseModal } from "@/app/(home)/components/delete-course-modal";
-import { courseTableEntrySchema } from "@/types/shared";
+
+import { DeleteCourseDialog } from "@/app/(home)/components/delete-course-dialog";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -38,10 +41,7 @@ export function DataTableRowActions<TData>({
         <DropdownMenuItem>Make a copy</DropdownMenuItem>
         <DropdownMenuItem>Favorite</DropdownMenuItem>
         <DropdownMenuSeparator />
-
-        <DeleteCourseModal>
-          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
-        </DeleteCourseModal>
+        <DeleteCourseDialog course={course} />
       </DropdownMenuContent>
     </DropdownMenu>
   );

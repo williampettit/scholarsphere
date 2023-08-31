@@ -1,14 +1,14 @@
 "use client";
 
-import { toast } from "@/components/ui/use-toast";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
-import { cn } from "@/lib/utils";
+import { z } from "zod";
+
 import { languages } from "@/lib/languages";
+import { cn } from "@/lib/utils";
+
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Command,
   CommandEmpty,
@@ -25,11 +25,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { toast } from "@/components/ui/use-toast";
 
 const settingsAccountFormSchema = z.object({
   language: z.string({
@@ -98,12 +100,12 @@ export function SettingsAccountForm({
                       role="combobox"
                       className={cn(
                         "w-[200px] justify-between",
-                        !field.value && "text-muted-foreground"
+                        !field.value && "text-muted-foreground",
                       )}
                     >
                       {field.value
                         ? languages.find(
-                            (language) => language.value === field.value
+                            (language) => language.value === field.value,
                           )?.label
                         : "Select language"}
                       <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -128,7 +130,7 @@ export function SettingsAccountForm({
                               "mr-2 h-4 w-4",
                               language.value === field.value
                                 ? "opacity-100"
-                                : "opacity-0"
+                                : "opacity-0",
                             )}
                           />
                           {language.label}
@@ -145,10 +147,8 @@ export function SettingsAccountForm({
             </FormItem>
           )}
         />
-        
-        <Button type="submit">
-          Update account
-        </Button>
+
+        <Button type="submit">Update account</Button>
       </form>
     </Form>
   );

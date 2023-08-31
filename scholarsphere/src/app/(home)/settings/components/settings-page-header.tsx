@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+
 import { Separator } from "@/components/ui/separator";
 
 interface SettingsSubpageHeaderProps {
@@ -23,7 +24,7 @@ export async function SettingsSubpageHeader({
 
       <Suspense
         fallback={
-          <div className="text-center text-muted-foreground text-sm">
+          <div className="text-center text-sm text-muted-foreground">
             Loading suspense...
           </div>
         }

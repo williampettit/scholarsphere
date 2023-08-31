@@ -2,15 +2,17 @@
 
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
+
+import { cn } from "@/lib/utils";
+
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { FormControl } from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { FormControl } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
 
 interface DatePickerProps {
   value: Date;
@@ -27,7 +29,7 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
               variant="outline"
               className={cn(
                 "pl-3 text-left font-normal",
-                !value && "text-muted-foreground"
+                !value && "text-muted-foreground",
               )}
             >
               {value ? format(value, "PPP") : <span>Pick a date</span>}

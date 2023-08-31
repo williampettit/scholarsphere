@@ -1,13 +1,16 @@
 import { type RootLayoutProps } from "@/types/root-layout";
-import { S_getUser } from "@/server/auth";
+
+import { S_requireUser } from "@/server/auth";
+
 import { DashboardHeader } from "@/app/(home)/components/dashboard-header";
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const user = await S_getUser();
+  const { name } = await S_requireUser();
 
   return (
     <>
-      <DashboardHeader name={user.name} />
+      <DashboardHeader name={name} />
+
       {children}
     </>
   );

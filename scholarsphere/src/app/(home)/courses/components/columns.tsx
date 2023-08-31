@@ -1,14 +1,17 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+
+import { COURSE_STATUSES } from "@/lib/course-statuses";
+import { cn, getCourseGradeColor } from "@/lib/utils";
+import { CourseStatusEnum, type CourseTableEntryType } from "@/types/shared";
+
+import { CourseHoverCard } from "@/components/course-hover-card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CourseHoverCard } from "@/components/course-hover-card";
-import { type CourseTableEntryType } from "@/types/shared";
+
 import { DataTableColumnHeader } from "@/app/(home)/courses/components/data-table-column-header";
 import { DataTableRowActions } from "@/app/(home)/courses/components/data-table-row-actions";
-import { cn, getGradeColor } from "@/lib/utils";
-import { COURSE_STATUSES } from "@/lib/course-statuses";
 
 export const columns: ColumnDef<CourseTableEntryType>[] = [
   {
@@ -85,7 +88,7 @@ export const columns: ColumnDef<CourseTableEntryType>[] = [
         <span
           className={cn(
             "max-w-[80px] truncate font-medium",
-            getGradeColor(row.getValue("currentGrade"))
+            getCourseGradeColor(row.getValue("currentGrade")),
           )}
         >
           {Number(row.getValue("currentGrade")).toFixed(1)}%
@@ -99,12 +102,10 @@ export const columns: ColumnDef<CourseTableEntryType>[] = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
-      const statusData = Object.entries(COURSE_STATUSES).find(
-        ([key, _]) => key === row.getValue("status")
-      )?.[1];
-      if (!statusData) {
-        return null;
-      }
+      const status = row.getValue<CourseStatusEnum>("status");
+
+      const statusData = COURSE_STATUSES[status];
+
       return (
         <div className="flex w-[120px] items-center">
           <statusData.icon className="mr-2 h-4 w-4 text-muted-foreground" />

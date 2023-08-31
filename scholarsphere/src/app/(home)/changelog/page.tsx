@@ -1,9 +1,10 @@
 import dayjs from "dayjs";
 
 interface ChangelogEntryProps {
+  id: string;
   title: string;
   content: string;
-  isoString: string;
+  date: Date;
 }
 
 async function getMockChangelogData(): Promise<ChangelogEntryProps[]> {
@@ -14,39 +15,42 @@ async function getMockChangelogData(): Promise<ChangelogEntryProps[]> {
   return Array.from(
     { length: 100 },
     (_, i): ChangelogEntryProps => ({
+      id: i.toString(),
       title: "Lorem ipsum dolor sit amet",
       content:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam euismod, nisl quis tincidunt aliquam, nunc nisl aliquet nunc, quis aliquam nisl nunc quis nisl.",
-      isoString: dayjs()
-        .subtract(i * 3, "day")
-        .toISOString(),
-    })
+      date: dayjs()
+        .subtract(i * 5, "day")
+        .toDate(),
+    }),
+  );
+}
+
+function ChangelogEntry({ title, content, date }: ChangelogEntryProps) {
+  return (
+    <div>
+      <div className="flex flex-row items-center space-x-6">
+        <h2 className="text-lg font-semibold">{title}</h2>
+        <h2 className="text-lg font-medium">
+          {dayjs(date).format("MMMM D, YYYY")}
+        </h2>
+      </div>
+      <p className="text-justify text-sm text-muted-foreground">{content}</p>
+    </div>
   );
 }
 
 export default async function ChangelogPage() {
-  const sortedChangelogData = await getMockChangelogData().then((data) =>
-    data.sort((a, b) => b.isoString.localeCompare(a.isoString))
-  );
+  const changelogData = await getMockChangelogData();
 
   return (
     <>
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="flex-1 lg:max-w-2xl space-y-8">
-          {sortedChangelogData.map((entry) => (
-            <div key={entry.isoString}>
-              <div className="flex flex-row space-x-6 items-center">
-                <h2 className="text-lg font-semibold">{entry.title}</h2>
-                <h2 className="text-lg font-medium">
-                  {dayjs(entry.isoString).format("MMMM D, YYYY")}
-                </h2>
-              </div>
-              <p className="text-sm text-muted-foreground text-justify">
-                {entry.content}
-              </p>
-            </div>
+      <div className="flex flex-1 flex-col space-y-8 lg:max-w-2xl">
+        {changelogData
+          .sort((a, b) => dayjs(b.date).diff(dayjs(a.date)))
+          .map((entry) => (
+            <ChangelogEntry key={entry.id} {...entry} />
           ))}
-        </div>
       </div>
     </>
   );

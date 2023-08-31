@@ -1,5 +1,5 @@
-import { Globe, Coins, Sigma, ListTodo, CandlestickChart } from "lucide-react";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { CandlestickChart, Coins, Globe, ListTodo, Sigma } from "lucide-react";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
@@ -14,7 +14,7 @@ export const Icons = {
 
   // Course hover card
   grade: CandlestickChart,
-  
+
   // Theme switcher
   sun: SunIcon,
   moon: MoonIcon,

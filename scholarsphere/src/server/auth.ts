@@ -1,20 +1,22 @@
 // this file defines the auth.js config
 // TODO: set up more providers (maybe: notion, google, apple, twitter, ...)
+import { redirect } from "next/navigation";
 
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import {
-  getServerSession,
   type DefaultSession,
   type DefaultUser,
+  getServerSession,
   type ISODateString,
   type NextAuthOptions,
 } from "next-auth";
-import { UserRole } from "@/types/database-types";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { env } from "@/lib/env";
-import { siteConfig } from "@/config/site";
 import GithubProvider from "next-auth/providers/github";
+
+import { siteMap } from "@/config/site";
+import { env } from "@/lib/env";
+import { type UserRole } from "@/types/database-types";
+
 import prisma from "@/server/prisma";
-import { redirect } from "next/navigation";
 
 // module augmentation to safely expand types
 declare module "next-auth" {
@@ -53,9 +55,9 @@ export const nextAuthOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: siteConfig.links.login,
-    signOut: siteConfig.links.logout,
-    error: siteConfig.links.login,
+    signIn: siteMap.login.url,
+    signOut: siteMap.logout.url,
+    error: siteMap.login.url,
   },
 };
 
@@ -63,10 +65,14 @@ export async function S_getSession() {
   return getServerSession(nextAuthOptions);
 }
 
-export async function S_getUser() {
+export async function S_requireUser() {
   const session = await S_getSession();
   if (!session) {
-    redirect(siteConfig.links.login);
+    redirect(siteMap.login.url);
   }
   return session.user;
+}
+
+export async function S_requireUserId() {
+  return S_requireUser().then((user) => user.id);
 }

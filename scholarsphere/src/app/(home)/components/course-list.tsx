@@ -1,6 +1,7 @@
-import { cn, getGradeColor } from "@/lib/utils";
-import { CourseHoverCard } from "@/components/course-hover-card";
+import { cn, getCourseGradeColor } from "@/lib/utils";
 import { Course } from "@/types/database-types";
+
+import { CourseHoverCard } from "@/components/course-hover-card";
 
 interface CourseListProps {
   courses: Course[];
@@ -9,7 +10,7 @@ interface CourseListProps {
 export function CourseList({ courses }: CourseListProps) {
   if (courses.length === 0) {
     return (
-      <div className="text-center text-muted-foreground text-sm">
+      <div className="text-center text-sm text-muted-foreground">
         No courses
       </div>
     );
@@ -23,11 +24,11 @@ export function CourseList({ courses }: CourseListProps) {
           .map((courseEntry) => (
             <div
               key={courseEntry.id}
-              className="flex space-x-2 justify-between"
+              className="flex justify-between space-x-2"
             >
               <div className="space-y-1">
                 <CourseHoverCard course={courseEntry}>
-                  <p className="text-sm font-medium leading-none overflow-ellipsis">
+                  <p className="overflow-ellipsis text-sm font-medium leading-none">
                     {courseEntry.name}
                   </p>
                 </CourseHoverCard>
@@ -40,7 +41,7 @@ export function CourseList({ courses }: CourseListProps) {
               <div
                 className={cn(
                   "ml-auto font-medium",
-                  getGradeColor(courseEntry.currentGrade)
+                  getCourseGradeColor(courseEntry.currentGrade),
                 )}
               >
                 {courseEntry.currentGrade.toFixed(1)}%

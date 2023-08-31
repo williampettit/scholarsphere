@@ -1,14 +1,14 @@
 import "@/app/globals.css";
+
 import { type Metadata } from "next";
 import {
-  // *** good
+  // ** GOOD **
   // Inter as PrimaryFont,
   // Poppins as PrimaryFont,
   // Montserrat as PrimaryFont,
   // Nunito_Sans as PrimaryFont,
   // Rubik as PrimaryFont,
-  Work_Sans as PrimaryFont,
-  // Inter_Tight as PrimaryFont,
+  Work_Sans as PrimaryFont, // Inter_Tight as PrimaryFont,
   // Epilogue as PrimaryFont,
   // Sora as PrimaryFont,
   // EB_Garamond as PrimaryFont,
@@ -16,13 +16,14 @@ import {
   // Plus_Jakarta_Sans as PrimaryFont,
   // Chivo as PrimaryFont,
   // Lexend as PrimaryFont,
-
-  // *** broken
+  // ** BROKEN **
   // Bai_Jamjuree as PrimaryFont,
   // Monda as PrimaryFont,
 } from "next/font/google";
-import { type RootLayoutProps } from "@/types/root-layout";
+
 import { siteConfig } from "@/config/site";
+import { type RootLayoutProps } from "@/types/root-layout";
+
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "@/providers/session-provider";
@@ -51,7 +52,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html className="scroll-smooth" lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
 
       <body className={primaryFont.className}>
         <SessionProvider>

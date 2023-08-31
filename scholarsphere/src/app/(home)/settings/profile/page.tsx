@@ -1,9 +1,11 @@
-import { ProfileForm } from "@/app/(home)/settings/profile/profile-form";
+import { S_requireUser } from "@/server/auth";
+
 import { SettingsSubpageHeader } from "@/app/(home)/settings/components/settings-page-header";
-import { S_getUser } from "@/server/auth";
+import { ProfileForm } from "@/app/(home)/settings/profile/profile-form";
 
 export default async function SettingsProfilePage() {
-  const { name } = await S_getUser();
+  const { name } = await S_requireUser();
+
   return (
     <SettingsSubpageHeader
       title="Profile"
@@ -11,7 +13,7 @@ export default async function SettingsProfilePage() {
     >
       <ProfileForm
         initialData={{
-          name,
+          name: name,
         }}
       />
     </SettingsSubpageHeader>

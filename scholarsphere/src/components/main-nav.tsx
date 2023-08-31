@@ -1,33 +1,35 @@
 "use client";
 
 import Link from "next/link";
-import { navLinks, siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+
+import { navLinks, siteMap } from "@/config/site";
+import { cn } from "@/lib/utils";
+
 import { SiteLogoText } from "@/components/site-logo-text";
 
 export function MainNav() {
   const pathname = usePathname();
 
   return (
-    <div className="hidden md:flex gap-8">
+    <div className="hidden gap-8 md:flex">
       <Link
-        href={siteConfig.links.dashboard}
+        href={siteMap.dashboard.url}
         className="flex items-center space-x-2"
       >
-        <SiteLogoText className="hidden sm:flex text-lg" />
+        <SiteLogoText className="hidden text-lg sm:flex" />
       </Link>
       <nav className="flex items-center space-x-4 text-sm font-medium">
-        {navLinks.map((link) => (
+        {Object.entries(navLinks).map(([key, item]) => (
           <Link
-            key={link.href}
-            href={link.href}
+            key={key}
+            href={item.url}
             className={cn(
               "transition-colors hover:text-foreground/80",
-              pathname === link.href ? "text-foreground" : "text-foreground/60"
+              pathname === item.url ? "text-foreground" : "text-foreground/60",
             )}
           >
-            {link.label}
+            {item.label}
           </Link>
         ))}
       </nav>

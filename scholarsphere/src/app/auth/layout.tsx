@@ -1,9 +1,12 @@
 import { type Metadata } from "next";
-import { type RootLayoutProps } from "@/types/root-layout";
+
 import { siteConfig } from "@/config/site";
-import { Globe } from "@/app/auth/components/globe";
+import { type RootLayoutProps } from "@/types/root-layout";
+
 import { SiteLogoText } from "@/components/site-logo-text";
 import { ThemeToggle } from "@/components/theme-toggle";
+
+import { Globe } from "@/app/auth/components/globe";
 
 export const metadata: Metadata = {
   title: "Authentication",
@@ -23,18 +26,18 @@ export default async function RootLayout({ children }: RootLayoutProps) {
               <SiteLogoText className="relative z-20 text-2xl" />
 
               <div
-                className="relative
-                  z-20
-                  w-full
-                  mt-auto 
-                  p-6
-                  bg-blur
-                  backdrop-blur
+                className="bg-blur
                   supports-backdrop-blur:bg-background/60
+                  relative
+                  z-20 
+                  mt-auto
+                  w-full
                   rounded-lg
                   border-transparent/50
                   bg-orange-600/10
+                  p-6
                   shadow-lg
+                  backdrop-blur
                 "
               >
                 <blockquote className="space-y-2">
@@ -47,7 +50,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
                   </p>
 
                   <footer className="text-sm">
-                    <cite className="not-italic font-bold">
+                    <cite className="font-bold not-italic">
                       &mdash; John Doe, Student at University of Lorem Ipsum
                     </cite>
                   </footer>
@@ -66,10 +69,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
       <div
         className="
+          z-5000
           fixed
           bottom-1
           right-1
-          z-5000
           flex
           items-center
           justify-center

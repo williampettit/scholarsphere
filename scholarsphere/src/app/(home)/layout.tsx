@@ -1,8 +1,9 @@
 import { type RootLayoutProps } from "@/types/root-layout";
+
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
       <div className="relative flex min-h-screen flex-col">

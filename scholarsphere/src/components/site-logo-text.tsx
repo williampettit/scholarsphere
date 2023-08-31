@@ -7,7 +7,7 @@ export function SiteLogoText(props: React.HTMLAttributes<HTMLDivElement>) {
     <div
       className={cn(
         "flex items-center text-xl font-semibold tracking-tight",
-        className
+        className,
       )}
       {...otherProps}
     >

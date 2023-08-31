@@ -1,10 +1,12 @@
 import { type Metadata } from "next";
+
+import { type RootLayoutProps } from "@/types/root-layout";
+
 import {
   PageHeader,
   PageHeaderSubtitle,
   PageHeaderTitle,
 } from "@/components/page-header";
-import { type RootLayoutProps } from "@/types/root-layout";
 
 export const metadata: Metadata = {
   title: "Courses",

@@ -1,10 +1,11 @@
-import { CourseStatusEnum } from "@/types/shared";
 import {
   CalendarIcon,
   CheckCircledIcon,
   QuestionMarkCircledIcon,
   StopwatchIcon,
 } from "@radix-ui/react-icons";
+
+import { CourseStatusEnum } from "@/types/shared";
 
 type CourseStatusProps = {
   label: string;

@@ -1,11 +1,12 @@
 import { Course } from "@/types/database-types";
+
+import { CourseStatusBadge } from "@/components/course-status-badge";
 import { Icons } from "@/components/icons";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { CourseStatusBadge } from "@/components/course-status-badge";
 
 export function CourseHoverCard({
   course,
@@ -22,10 +23,10 @@ export function CourseHoverCard({
         <div className="flex justify-between space-x-4">
           <div className="space-y-1">
             <div className="flex flex-col">
-              <h4 className="text-sm font-semibold overflow-ellipsis line-clamp-1">
+              <h4 className="line-clamp-1 overflow-ellipsis text-sm font-semibold">
                 {course.shortId}
               </h4>
-              <h4 className="text-sm overflow-ellipsis line-clamp-1">
+              <h4 className="line-clamp-1 overflow-ellipsis text-sm">
                 {course.name}
               </h4>
             </div>
@@ -50,9 +51,7 @@ export function CourseHoverCard({
               </div>
 
               <div className="flex items-center pt-2">
-                <CourseStatusBadge
-                  status={course.status} 
-                />
+                <CourseStatusBadge status={course.status} />
               </div>
             </div>
           </div>

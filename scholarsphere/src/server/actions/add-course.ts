@@ -1,32 +1,33 @@
 "use server";
 
-import prisma from "@/server/prisma";
-import { S_getSession } from "@/server/auth";
 import {
   addCourseFormSchema,
-  SemesterTypeEnum,
   type AddCourseFormSchema,
+  SemesterTypeEnum,
 } from "@/server/actions/schemas";
+import { S_requireUserId } from "@/server/auth";
+import prisma from "@/server/prisma";
 
 export async function S_addCourse(data: AddCourseFormSchema) {
-  const session = await S_getSession();
-  const userId = session?.user.id;
-  if (!userId) {
-    return { success: false, error: "Not logged in." };
-  }
+  const userId = await S_requireUserId();
 
   const parsedData = addCourseFormSchema.safeParse(data);
+
   if (!parsedData.success) {
     return { success: false, error: parsedData.error.format() };
   }
 
   let semesterId: string | undefined;
+
   switch (parsedData.data.semesterType) {
+    // new semester
     case SemesterTypeEnum.new: {
       const newSemesterData = parsedData.data.newSemesterData;
+
       if (!newSemesterData) {
         return { success: false, error: "Missing new semester data." };
       }
+
       const newSemester = await prisma.semester.create({
         data: {
           userId: userId,
@@ -35,22 +36,32 @@ export async function S_addCourse(data: AddCourseFormSchema) {
           endDate: newSemesterData.endDate,
         },
       });
+
       semesterId = newSemester.id;
+
       break;
     }
+
+    // existing semester
     case SemesterTypeEnum.existing: {
       const existingSemesterId = parsedData.data.existingSemesterId;
+
       if (!existingSemesterId) {
         return { success: false, error: "Missing existing semester ID." };
       }
+
       semesterId = existingSemesterId;
+
       break;
     }
+
+    // invalid semester type
     default: {
       return { success: false, error: "Invalid semester type." };
     }
   }
 
+  // create course
   const newCourse = await prisma.course.create({
     data: {
       userId: userId,
@@ -61,6 +72,7 @@ export async function S_addCourse(data: AddCourseFormSchema) {
     },
   });
 
+  // done
   return {
     success: true,
     data: {

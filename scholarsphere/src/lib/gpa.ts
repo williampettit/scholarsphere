@@ -46,7 +46,7 @@ export class GPA {
 
   getGpa(): number {
     return this._truncateGpa(
-      this._nEarnedGradePoints / this._nEttemptedGradePoints
+      this._nEarnedGradePoints / this._nEttemptedGradePoints,
     );
   }
 }

@@ -1,11 +1,16 @@
 import Link from "next/link";
-import { getProviders } from "next-auth/react";
-import { AuthProviderButton } from "@/components/auth-provider-button";
-import { AuthPageHeader } from "@/app/auth/components/auth-page-header";
-import { AuthPageErrorToast } from "@/app/auth/components/auth-page-error-toast";
 import { redirect } from "next/navigation";
+
+import { getProviders } from "next-auth/react";
+
+import { siteMap } from "@/config/site";
+
 import { S_getSession } from "@/server/auth";
-import { siteConfig } from "@/config/site";
+
+import { AuthProviderButton } from "@/components/auth-provider-button";
+
+import { AuthPageErrorToast } from "@/app/auth/components/auth-page-error-toast";
+import { AuthPageHeader } from "@/app/auth/components/auth-page-header";
 
 interface LoginPageProps {
   searchParams: {
@@ -16,11 +21,13 @@ interface LoginPageProps {
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const session = await S_getSession();
+
   if (session) {
-    redirect(siteConfig.links.dashboard);
+    redirect(siteMap.dashboard.url);
   }
 
   const providers = await getProviders();
+
   const { error, callbackUrl } = searchParams;
 
   return (
@@ -44,14 +51,14 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       <p className="px-8 text-center text-sm text-muted-foreground">
         By continuing, you agree to our{" "}
         <Link
-          href={siteConfig.links.terms}
+          href={siteMap.terms.url}
           className="underline underline-offset-4 hover:text-primary"
         >
           Terms of Service
         </Link>{" "}
         and{" "}
         <Link
-          href={siteConfig.links.privacy}
+          href={siteMap.privacy.url}
           className="underline underline-offset-4 hover:text-primary"
         >
           Privacy Policy

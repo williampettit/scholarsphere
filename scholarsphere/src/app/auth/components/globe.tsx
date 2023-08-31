@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import createGlobe, { type Marker, type COBEOptions } from "cobe";
+
+import createGlobe, { type COBEOptions, type Marker } from "cobe";
 
 // extend to include rotation speed params
 interface GlobeProps extends Omit<COBEOptions, "onRender"> {
@@ -18,7 +19,7 @@ const UNIVERSITY_COORDINATES: { [key: string]: [number, number] } = {
 };
 
 const UNIVERSITY_MARKERS = Object.values(UNIVERSITY_COORDINATES).map(
-  (location): Marker => ({ location, size: 0.035 })
+  (location): Marker => ({ location, size: 0.035 }),
 );
 
 const DEFAULT_GLOBE_PROPS: GlobeProps = {
@@ -81,12 +82,7 @@ export function Globe(customGlobeProps: Partial<GlobeProps> = {}) {
     return () => {
       globe.destroy();
     };
-  }, [
-    canvasRef,
-    phiStep,
-    thetaStep,
-    globeProps,
-  ]);
+  }, [canvasRef, phiStep, thetaStep, globeProps]);
 
   return (
     <canvas

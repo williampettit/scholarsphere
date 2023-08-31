@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
+
 import Link, { type LinkProps } from "next/link";
 import { useRouter } from "next/navigation";
+
 import { ViewVerticalIcon } from "@radix-ui/react-icons";
-import { navLinks, siteConfig } from "@/config/site";
+
+import { navLinks, siteConfig, siteMap } from "@/config/site";
 import { cn } from "@/lib/utils";
+
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -56,7 +60,7 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent side="left" className="pr-0">
         <MobileLink
-          href={siteConfig.links.dashboard}
+          href={siteMap.dashboard.url}
           className="flex items-center"
           onOpenChange={setOpen}
         >
@@ -65,18 +69,11 @@ export function MobileNav() {
         </MobileLink>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-3">
-            {navLinks.map(
-              (item) =>
-                item.href && (
-                  <MobileLink
-                    key={item.href}
-                    href={item.href}
-                    onOpenChange={setOpen}
-                  >
-                    {item.label}
-                  </MobileLink>
-                )
-            )}
+            {Object.entries(navLinks).map(([key, item]) => (
+              <MobileLink key={key} href={item.url} onOpenChange={setOpen}>
+                {item.label}
+              </MobileLink>
+            ))}
           </div>
         </ScrollArea>
       </SheetContent>

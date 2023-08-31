@@ -1,61 +1,75 @@
 export const siteConfig = {
   name: "Scholarsphere",
-  author: "William",
   description: "Painlessly track and plan academic progress, all in one place",
-
-  social: {
-    author: "https://github.com/williampettit",
-    github: "https://github.com/williampettit/scholarsphere",
-  },
-
-  links: {
-    // main
-    dashboard: "/",
-    courses: "/courses",
-    mockTranscript: "#TODO-mock-transcript",
-    settings: "/settings",
-
-    // auth
-    login: "/auth/login",
-    logout: "/auth/logout",
-
-    // misc
-    terms: "#TODO-terms",
-    privacy: "#TODO-privacy",
-    changelog: "/changelog",
+  github: "https://github.com/williampettit/scholarsphere",
+  author: {
+    name: "William",
+    github: "https://github.com/williampettit",
   },
 } as const;
 
-export const navLinks = [
-  {
+export const siteMap = {
+  // main
+  dashboard: {
     label: "Dashboard",
-    href: siteConfig.links.dashboard,
+    url: "/",
   },
-  {
+  courses: {
     label: "Courses",
-    href: siteConfig.links.courses,
+    url: "/courses",
   },
-  {
+  mockTranscript: {
     label: "Mock Transcript",
-    href: siteConfig.links.mockTranscript,
+    url: "#TODO-mock-transcript",
   },
-  {
-    label: "Changelog",
-    href: siteConfig.links.changelog,
+  settings: {
+    label: "Settings",
+    url: "/settings",
   },
-] as const;
 
-export const settingsSidebarNavItems = {
+  // auth
+  login: {
+    label: "Login",
+    url: "/auth/login",
+  },
+  logout: {
+    label: "Logout",
+    url: "/auth/logout",
+  },
+
+  // misc
+  terms: {
+    label: "Terms",
+    url: "#TODO-terms",
+  },
+  privacy: {
+    label: "Privacy",
+    url: "#TODO-privacy",
+  },
+  changelog: {
+    label: "Changelog",
+    url: "/changelog",
+  },
+} as const;
+
+export const navLinks = {
+  dashboard: siteMap.dashboard,
+  courses: siteMap.courses,
+  mockTranscript: siteMap.mockTranscript,
+  changelog: siteMap.changelog,
+} as const;
+
+export const settingsSidebarNavLinks = {
   profile: {
-    title: "Profile",
-    href: siteConfig.links.settings + "/profile",
+    label: "Profile",
+    url: siteMap.settings.url + "/profile",
   },
   account: {
-    title: "Account",
-    href: siteConfig.links.settings + "/account",
+    label: "Account",
+    url: siteMap.settings.url + "/account",
   },
   appearance: {
-    title: "Appearance",
-    href: siteConfig.links.settings + "/appearance",
+    label: "Appearance",
+    url: siteMap.settings.url + "/appearance",
   },
 } as const;

@@ -1,16 +1,12 @@
 import { cn } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Icons } from "@/components/icons";
-import { AssignmentList } from "@/app/(home)/components/assignment-list";
-import { CourseList } from "@/app/(home)/components/course-list";
-import { AddCourseModal } from "@/app/(home)/components/add-course-modal";
-import { AddAssignmentModal } from "@/app/(home)/components/add-assignment-modal";
+
 import {
   type DashboardDataProps,
   S_getDashboardData,
-} from "@/server/actions/get-dashboard-data";
+} from "@/server/actions/get-user-dashboard-data";
+
+import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -18,13 +14,24 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CourseStatusEnum } from "@/types/shared";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { AddAssignmentModal } from "@/app/(home)/components/add-assignment-modal";
+import { AddCourseModal } from "@/app/(home)/components/add-course-modal";
+import { AssignmentList } from "@/app/(home)/components/assignment-list";
+import { CourseList } from "@/app/(home)/components/course-list";
 
 interface DashboardStatsCardProps {
   title: React.ReactNode;
   value: React.ReactNode;
   description: React.ReactNode;
   icon: React.ReactNode;
+}
+
+interface DashboardStatsGpaCardProps
+  extends Pick<DashboardDataProps, "completedGpa" | "tenativeGpa"> {
+  // ...
 }
 
 function DashboardStatsCard({
@@ -48,9 +55,6 @@ function DashboardStatsCard({
     </>
   );
 }
-
-interface DashboardStatsGpaCardProps
-  extends Pick<DashboardDataProps, "completedGpa" | "tenativeGpa"> {}
 
 function DashboardStatsGpaCard({
   completedGpa,
@@ -105,7 +109,7 @@ async function OverviewTab() {
 
   return (
     <>
-      <div className="grid gap-6 grid-cols-3">
+      <div className="grid grid-cols-3 gap-6">
         <DashboardStatsGpaCard {...dashboardData} />
 
         <DashboardStatsCard
@@ -129,7 +133,7 @@ async function OverviewTab() {
         <DashboardStatsCard
           title="Planned Courses"
           value={dashboardData.numPlannedCourses}
-          description={`across the next ${dashboardData.plannedSemesterIds.length} semesters`}
+          description={`across the next ${dashboardData.numPlannedSemesters} semesters`}
           icon={
             <Icons.planned
               xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +149,7 @@ async function OverviewTab() {
         />
       </div>
 
-      <div className="grid gap-6 grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-6 lg:grid-cols-3">
         <Card className="col-span-2 lg:col-span-2">
           <div className="flex flex-row items-center justify-between px-6">
             <CardHeader className="px-0">
@@ -176,7 +180,7 @@ async function OverviewTab() {
               </CardDescription>
             </CardHeader>
 
-            <AddCourseModal>
+            <AddCourseModal semesters={dashboardData.allSemesters}>
               <Button>Add</Button>
             </AddCourseModal>
           </div>
@@ -195,12 +199,11 @@ async function OverviewTab() {
 export default async function DashboardPage() {
   return (
     <>
-      <div className="flex-col flex">
+      <div className="flex flex-col">
         <div className="flex-1 space-y-6">
           <Tabs defaultValue="overview" className="space-y-6">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
-
               <TabsTrigger value="next-semester">Next Semester</TabsTrigger>
             </TabsList>
 

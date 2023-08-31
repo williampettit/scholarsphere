@@ -1,9 +1,11 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { Button } from "@/components/ui/button";
+
+import { siteMap } from "@/config/site";
+
 import { Icons } from "@/components/icons";
-import { siteConfig } from "@/config/site";
+import { Button } from "@/components/ui/button";
 
 interface AuthProviderButtonProps {
   providerId: string;
@@ -23,7 +25,7 @@ export function AuthProviderButton({
   postLoginRedirectUrl,
 }: AuthProviderButtonProps) {
   const AuthProviderIcon = Object.entries(authProviderIcons).find(
-    ([key]) => key === providerId
+    ([key]) => key === providerId,
   )![1];
 
   return (
@@ -33,7 +35,7 @@ export function AuthProviderButton({
         variant="outline"
         onClick={() =>
           signIn(providerId, {
-            callbackUrl: postLoginRedirectUrl ?? siteConfig.links.dashboard,
+            callbackUrl: postLoginRedirectUrl ?? siteMap.dashboard.url,
           })
         }
       >

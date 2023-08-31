@@ -4,6 +4,7 @@ import {
   type Semester as SemesterOriginal,
   type UserRole as UserRoleOriginal,
 } from "@prisma/client";
+
 import { type CourseStatusEnum } from "@/types/shared";
 
 export type UserRole = UserRoleOriginal;

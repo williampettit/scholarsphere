@@ -1,17 +1,21 @@
 "use client";
 
+import { useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import dayjs from "dayjs";
+import { useForm } from "react-hook-form";
+
+import { type Semester } from "@/types/database-types";
+
 import { S_addCourse } from "@/server/actions/add-course";
 import {
-  SemesterTypeEnum,
   addCourseFormSchema,
   type AddCourseFormSchema,
+  SemesterTypeEnum,
 } from "@/server/actions/schemas";
-import { S_getUserSemesters } from "@/server/actions/get-user-semesters";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -29,6 +33,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -36,26 +41,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "@/components/ui/use-toast";
+
 import { DatePicker } from "@/app/(home)/components/date-picker";
 
 interface AddCourseModalProps {
   children: React.ReactNode;
+  semesters: Pick<Semester, "id" | "name" | "startDate">[];
 }
 
-export function AddCourseModal({ children }: AddCourseModalProps) {
-  const [existingSemesters, setExistingSemesters] =
-    useState<Awaited<ReturnType<typeof S_getUserSemesters>>>();
-
-  async function refreshExistingSemesters() {
-    S_getUserSemesters().then(setExistingSemesters);
-  }
-
-  useEffect(() => {
-    refreshExistingSemesters();
-  }, []);
-
+export function AddCourseModal({ children, semesters }: AddCourseModalProps) {
   const form = useForm<AddCourseFormSchema>({
     resolver: zodResolver(addCourseFormSchema),
     mode: "onSubmit",
@@ -67,9 +63,6 @@ export function AddCourseModal({ children }: AddCourseModalProps) {
 
   async function onOpenChange(value: boolean) {
     form.reset();
-    if (value) {
-      refreshExistingSemesters();
-    }
     setOpen(value);
   }
 
@@ -93,7 +86,7 @@ export function AddCourseModal({ children }: AddCourseModalProps) {
   }
 
   const [semesterType, setSemesterType] = useState<SemesterTypeEnum>(
-    SemesterTypeEnum.new
+    SemesterTypeEnum.new,
   );
 
   function onSemesterTypeChange(value: string) {
@@ -130,7 +123,7 @@ export function AddCourseModal({ children }: AddCourseModalProps) {
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger
                   value="existing"
-                  disabled={existingSemesters && existingSemesters.length === 0}
+                  disabled={semesters && semesters.length === 0}
                 >
                   Existing Semester
                 </TabsTrigger>
@@ -156,11 +149,15 @@ export function AddCourseModal({ children }: AddCourseModalProps) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {existingSemesters?.map((semester) => (
-                            <SelectItem key={semester.id} value={semester.id}>
-                              {semester.name}
-                            </SelectItem>
-                          ))}
+                          {semesters
+                            .sort((a, b) =>
+                              dayjs(a.startDate).diff(dayjs(b.startDate)),
+                            )
+                            .map((semester) => (
+                              <SelectItem key={semester.id} value={semester.id}>
+                                {semester.name}
+                              </SelectItem>
+                            ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />

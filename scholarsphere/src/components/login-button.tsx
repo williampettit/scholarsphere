@@ -2,17 +2,18 @@
 
 import { signIn } from "next-auth/react";
 
+import { siteMap } from "@/config/site";
+
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/config/site";
 
 export function LoginButton() {
   return (
     <>
       <Button
         type="button"
-        variant="outline"
+        variant="default"
         onClick={() =>
-          signIn(undefined, { callbackUrl: siteConfig.links.dashboard })
+          signIn(undefined, { callbackUrl: siteMap.dashboard.url })
         }
       >
         Login

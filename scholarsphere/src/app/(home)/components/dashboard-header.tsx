@@ -1,12 +1,15 @@
 import Link from "next/link";
-import { siteConfig } from "@/config/site";
+
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { Separator } from "@/components/ui/separator";
+
+import { siteMap } from "@/config/site";
+
 import {
   PageHeader,
   PageHeaderSubtitle,
   PageHeaderTitle,
 } from "@/components/page-header";
+import { Separator } from "@/components/ui/separator";
 
 interface DashboardHeaderProps {
   name: string;
@@ -16,8 +19,8 @@ function ChangelogLink() {
   return (
     <>
       <Link
-        href={siteConfig.links.changelog}
-        className="inline-flex items-center rounded-lg bg-muted px-3 py-1 mb-2 text-sm font-medium text-accent-foreground/80"
+        href={siteMap.changelog.url}
+        className="mb-2 inline-flex items-center rounded-lg bg-muted px-3 py-1 text-sm font-medium text-accent-foreground/80"
       >
         👋 <Separator className="mx-2 h-4" orientation="vertical" />{" "}
         <span className="inline">Check out the latest site improvements!</span>

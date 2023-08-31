@@ -1,22 +1,21 @@
 "use server";
 
-import prisma from "@/server/prisma";
-import { S_getSession } from "@/server/auth";
 import {
   type AddAssignmentFormSchema,
   addAssignmentFormSchema,
 } from "@/server/actions/schemas";
+import { S_requireUserId } from "@/server/auth";
+import prisma from "@/server/prisma";
 
 export async function S_addAssignment(data: AddAssignmentFormSchema) {
-  const session = await S_getSession();
-  const userId = session?.user.id;
-  if (!userId) {
-    return { success: false, error: "Not logged in." };
-  }
+  const userId = await S_requireUserId();
+
   const parsedData = addAssignmentFormSchema.safeParse(data);
+
   if (!parsedData.success) {
     return { success: false, error: parsedData.error.format() };
   }
+
   await prisma.assignment.create({
     data: {
       userId: userId,
@@ -25,6 +24,7 @@ export async function S_addAssignment(data: AddAssignmentFormSchema) {
       dueDate: parsedData.data.dueDate,
     },
   });
+
   return {
     success: true,
   };

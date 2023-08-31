@@ -1,41 +1,62 @@
 "use server";
 
-import dayjs from "dayjs";
 import { GPA } from "@/lib/gpa";
-import { S_getUserData } from "@/server/actions/get-user-data";
-import { type AssignmentListItem } from "@/app/(home)/components/assignment-list";
+import { withinNDays } from "@/lib/utils";
 import { type Course, type Semester } from "@/types/database-types";
 import { CourseStatusEnum } from "@/types/shared";
 
+import { _mapSemestersWithStatus } from "@/server/actions/utils";
+import { S_requireUserId } from "@/server/auth";
+import prisma from "@/server/prisma";
+
+import { type AssignmentListItem } from "@/app/(home)/components/assignment-list";
+
 export interface DashboardDataProps {
-  // allCourses: Course[];
+  tenativeGpa: GPA;
+  completedGpa: GPA;
+
+  allSemesters: Pick<Semester, "id" | "name" | "startDate">[];
   activeCourses: Course[];
   upcomingAssignments: AssignmentListItem[];
-  plannedSemesterIds: Semester["id"][];
-  numCompletedCourses: number;
-  numCompletedCredits: number;
-  numSemesterCredits: number;
+
   numPlannedCourses: number;
-  completedGpa: GPA;
-  tenativeGpa: GPA;
+  numSemesterCredits: number;
+  numCompletedCredits: number;
+  numCompletedCourses: number;
+  numPlannedSemesters: number;
+}
+
+interface DashboardDataReduceProps extends DashboardDataProps {
+  plannedSemesterIds: Semester["id"][];
 }
 
 export async function S_getDashboardData(): Promise<DashboardDataProps> {
-  const userData = await S_getUserData();
-  if (!userData) {
-    throw new Error("User data not found");
-  }
-  return userData.courses.reduce<DashboardDataProps>(
+  const userId = await S_requireUserId();
+
+  // get all courses and semesters for user
+  const { courses, semesters } = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+    select: {
+      semesters: true,
+      courses: {
+        include: {
+          assignments: true,
+        },
+      },
+    },
+  });
+
+  // map semesters to include status
+  const semestersWithStatus = _mapSemestersWithStatus(semesters);
+
+  const reducedData = courses.reduce<DashboardDataReduceProps>(
     (acc, courseEntry) => {
       const courseStatus =
-        userData.semesters.find(
-          (semester) => semester.id === courseEntry.semesterId
+        semestersWithStatus.find(
+          (semester) => semester.id === courseEntry.semesterId,
         )?.status ?? CourseStatusEnum.NOT_PLANNED;
-
-      // acc.allCourses.push({
-      //   ...courseEntry,
-      //   status: courseStatus,
-      // });
 
       switch (courseStatus) {
         // count completed courses and credits
@@ -68,12 +89,7 @@ export async function S_getDashboardData(): Promise<DashboardDataProps> {
             if (
               assignment.dueDate &&
               !assignment.isComplete &&
-              within30Days(assignment.dueDate)
-              // !dayjs().isBefore(
-              //   assignment.dueDate,
-              //   // "month",
-              //   "year",
-              // )
+              withinNDays(assignment.dueDate)
             ) {
               acc.upcomingAssignments.push({
                 ...assignment,
@@ -100,27 +116,28 @@ export async function S_getDashboardData(): Promise<DashboardDataProps> {
       return acc;
     },
     {
-      // allCourses: [],
-      activeCourses: [],
-      upcomingAssignments: [],
-      plannedSemesterIds: [],
-
+      tenativeGpa: new GPA(),
+      completedGpa: new GPA(),
+      numPlannedCourses: 0,
+      numSemesterCredits: 0,
       numCompletedCourses: 0,
       numCompletedCredits: 0,
-      numSemesterCredits: 0,
-      numPlannedCourses: 0,
-
-      completedGpa: new GPA(),
-      tenativeGpa: new GPA(),
-    }
+      numPlannedSemesters: 0,
+      activeCourses: [],
+      plannedSemesterIds: [],
+      upcomingAssignments: [],
+      allSemesters: semesters.map((semester) => ({
+        id: semester.id,
+        name: semester.name,
+        startDate: semester.startDate,
+      })),
+    },
   );
-}
-function within30Days(dueDate: Date) {
-  return dayjs(dueDate).diff(dayjs(), "day") <= 30;
-  // !dayjs().isBefore(
-  //   assignment.dueDate,
-  //   // "month",
-  //   "year",
-  // )
-  // throw new Error("Function not implemented.");
+
+  const { plannedSemesterIds, ...otherReducedData } = reducedData;
+
+  return {
+    ...otherReducedData,
+    numPlannedSemesters: plannedSemesterIds.length,
+  };
 }

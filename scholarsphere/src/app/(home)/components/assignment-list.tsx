@@ -1,47 +1,20 @@
-import dayjs, { type Dayjs } from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import { Assignment } from "@/types/database-types";
-import { cn } from "@/lib/utils";
+import dayjs from "dayjs";
 
-dayjs.extend(relativeTime);
+import { cn, getAssignmentDueDateColor } from "@/lib/utils";
+import { type Assignment } from "@/types/database-types";
 
 export interface AssignmentListItem extends Assignment {
   courseTitle: string;
 }
 
 interface AssignmentListProps {
-  assignments?: AssignmentListItem[];
-}
-
-function getDateColor(dueDate: Dayjs) {
-  // (assignment overdue)
-  if (dueDate.isBefore(dayjs())) {
-    return "text-red-500";
-  }
-
-  // (assignment due in less than 24 hours)
-  if (dueDate.isBefore(dayjs().add(24, "hour"))) {
-    return "text-orange-500";
-  }
-
-  // (assignment due in less than 3 days)
-  if (dueDate.isBefore(dayjs().add(3, "day"))) {
-    return "text-yellow-500";
-  }
+  assignments: AssignmentListItem[];
 }
 
 export function AssignmentList({ assignments }: AssignmentListProps) {
-  if (!assignments) {
-    return (
-      <div className="text-center text-muted-foreground text-sm">
-        Loading assignments...
-      </div>
-    );
-  }
-
   if (assignments.length === 0) {
     return (
-      <div className="text-center text-muted-foreground text-sm">
+      <div className="text-center text-sm text-muted-foreground">
         No assignments
       </div>
     );
@@ -53,7 +26,7 @@ export function AssignmentList({ assignments }: AssignmentListProps) {
         {assignments
           .sort(
             (a, b) =>
-              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime(),
           )
           .map((assignment) => (
             <div key={assignment.id} className="flex items-center">
@@ -68,7 +41,7 @@ export function AssignmentList({ assignments }: AssignmentListProps) {
               <div
                 className={cn(
                   "ml-auto font-medium",
-                  getDateColor(dayjs(assignment.dueDate))
+                  getAssignmentDueDateColor(assignment.dueDate),
                 )}
               >
                 {dayjs(assignment.dueDate).fromNow()}

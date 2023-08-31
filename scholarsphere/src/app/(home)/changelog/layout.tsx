@@ -1,5 +1,7 @@
 import { type Metadata } from "next";
+
 import { type RootLayoutProps } from "@/types/root-layout";
+
 import {
   PageHeader,
   PageHeaderSubtitle,

@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { baseCourseSchema, baseUuidSchema } from "@/types/shared";
 
 //

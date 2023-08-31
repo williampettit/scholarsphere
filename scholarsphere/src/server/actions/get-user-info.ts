@@ -3,19 +3,18 @@
 import { S_requireUserId } from "@/server/auth";
 import prisma from "@/server/prisma";
 
-export async function S_getUserSemesters() {
+export async function S_getUserInfo() {
   const userId = await S_requireUserId();
 
-  return prisma.semester.findMany({
+  return prisma.user.findMany({
     where: {
-      userId: userId,
+      id: userId,
     },
     select: {
       id: true,
       name: true,
-    },
-    orderBy: {
-      startDate: "desc",
+      email: true,
+      image: true,
     },
   });
 }
