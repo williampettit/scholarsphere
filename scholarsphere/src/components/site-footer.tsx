@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { siteConfig } from "@/config/site";
+import { siteConfig } from "@/lib/site-config";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { ViewVerticalIcon } from "@radix-ui/react-icons";
 
-import { navLinks, siteConfig, siteMap } from "@/config/site";
+import { navLinks, siteConfig, siteMap } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 import { Icons } from "@/components/icons";

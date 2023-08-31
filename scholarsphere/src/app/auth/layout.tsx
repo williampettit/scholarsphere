@@ -1,6 +1,6 @@
 import { type Metadata } from "next";
 
-import { siteConfig } from "@/config/site";
+import { siteConfig } from "@/lib/site-config";
 import { type RootLayoutProps } from "@/types/root-layout";
 
 import { SiteLogoText } from "@/components/site-logo-text";

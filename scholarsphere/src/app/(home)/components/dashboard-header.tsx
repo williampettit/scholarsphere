@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 
-import { siteMap } from "@/config/site";
+import { siteMap } from "@/lib/site-config";
 
 import {
   PageHeader,

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { navLinks, siteMap } from "@/config/site";
+import { navLinks, siteMap } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 import { SiteLogoText } from "@/components/site-logo-text";

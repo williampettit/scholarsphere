@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { signOut } from "next-auth/react";
 
-import { settingsSidebarNavLinks, siteMap } from "@/config/site";
+import { settingsSidebarNavLinks, siteMap } from "@/lib/site-config";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";

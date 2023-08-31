@@ -1,4 +1,4 @@
-import { siteConfig } from "@/config/site";
+import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 export function SiteLogoText(props: React.HTMLAttributes<HTMLDivElement>) {

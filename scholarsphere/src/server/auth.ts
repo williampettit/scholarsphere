@@ -12,7 +12,7 @@ import {
 } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 
-import { siteMap } from "@/config/site";
+import { siteMap } from "@/lib/site-config";
 import { env } from "@/lib/env";
 import { type UserRole } from "@/types/database-types";
 

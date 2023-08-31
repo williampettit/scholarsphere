@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { getProviders } from "next-auth/react";
 
-import { siteMap } from "@/config/site";
+import { siteMap } from "@/lib/site-config";
 
 import { S_getSession } from "@/server/auth";
 

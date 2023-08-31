@@ -21,7 +21,7 @@ import {
   // Monda as PrimaryFont,
 } from "next/font/google";
 
-import { siteConfig } from "@/config/site";
+import { siteConfig } from "@/lib/site-config";
 import { type RootLayoutProps } from "@/types/root-layout";
 
 import { TailwindIndicator } from "@/components/tailwind-indicator";
