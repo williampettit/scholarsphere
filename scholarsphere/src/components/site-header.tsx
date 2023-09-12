@@ -1,4 +1,4 @@
-import { S_getSession } from "@/server/auth";
+import { getSession } from "@/server/auth";
 
 import { LoginButton } from "@/components/login-button";
 import { MainNav } from "@/components/main-nav";
@@ -6,7 +6,7 @@ import { MobileNav } from "@/components/mobile-nav";
 import { UserNav } from "@/components/user-nav";
 
 export async function SiteHeader() {
-  const session = await S_getSession();
+  const session = await getSession();
 
   return (
     <header
@@ -25,10 +25,12 @@ export async function SiteHeader() {
     >
       <div className="container flex h-16 items-center">
         <MainNav />
+
         <MobileNav />
+
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="flex items-center space-x-2">
-            {session && session.user ? (
+            {session?.user ? (
               <UserNav
                 name={session.user.name}
                 email={session.user.email}

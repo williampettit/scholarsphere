@@ -1,31 +1,32 @@
 "use server";
 
 import {
-  addCourseFormSchema,
   type AddCourseFormSchema,
-  SemesterTypeEnum,
+  CreateSemesterTypeEnum,
+  addCourseFormSchema,
 } from "@/server/actions/schemas";
-import { S_requireUserId } from "@/server/auth";
+import { requireUser } from "@/server/auth";
 import prisma from "@/server/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function S_addCourse(data: AddCourseFormSchema) {
-  const userId = await S_requireUserId();
+  const { userId } = await requireUser();
 
   const parsedData = addCourseFormSchema.safeParse(data);
 
   if (!parsedData.success) {
-    return { success: false, error: parsedData.error.format() };
+    throw new Error("Failed to parse data");
   }
 
   let semesterId: string | undefined;
 
   switch (parsedData.data.semesterType) {
-    // new semester
-    case SemesterTypeEnum.new: {
+    // (new semester)
+    case CreateSemesterTypeEnum.new: {
       const newSemesterData = parsedData.data.newSemesterData;
 
       if (!newSemesterData) {
-        return { success: false, error: "Missing new semester data." };
+        throw new Error("Missing new semester data");
       }
 
       const newSemester = await prisma.semester.create({
@@ -42,12 +43,12 @@ export async function S_addCourse(data: AddCourseFormSchema) {
       break;
     }
 
-    // existing semester
-    case SemesterTypeEnum.existing: {
-      const existingSemesterId = parsedData.data.existingSemesterId;
+    // (existing semester)
+    case CreateSemesterTypeEnum.existing: {
+      const existingSemesterId = parsedData.data.semesterId;
 
       if (!existingSemesterId) {
-        return { success: false, error: "Missing existing semester ID." };
+        throw new Error("Missing existing semester ID");
       }
 
       semesterId = existingSemesterId;
@@ -57,27 +58,21 @@ export async function S_addCourse(data: AddCourseFormSchema) {
 
     // invalid semester type
     default: {
-      return { success: false, error: "Invalid semester type." };
+      throw new Error("Invalid semester type");
     }
   }
 
   // create course
-  const newCourse = await prisma.course.create({
-    data: {
-      userId: userId,
-      name: parsedData.data.name,
-      shortId: parsedData.data.shortId,
-      creditHours: parsedData.data.creditHours,
-      semesterId: semesterId,
-    },
-  });
+  await prisma.course
+    .create({
+      data: {
+        userId: userId,
+        name: parsedData.data.name,
+        shortId: parsedData.data.shortId,
+        creditHours: parsedData.data.creditHours,
+        semesterId: semesterId,
+      },
+    })
 
-  // done
-  return {
-    success: true,
-    data: {
-      id: newCourse.id,
-      name: newCourse.name,
-    },
-  };
+  revalidatePath("/");
 }

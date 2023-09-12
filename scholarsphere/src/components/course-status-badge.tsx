@@ -13,7 +13,10 @@ export function CourseStatusBadge({ status }: CourseStatusBadgeProps) {
 
   return (
     <>
-      <Badge className={cn("text-xs capitalize text-white", color)}>
+      <Badge
+        variant="outline"
+        className={cn("text-xs capitalize text-white", color)}
+      >
         {label}
       </Badge>
     </>

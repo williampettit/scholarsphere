@@ -1,25 +1,27 @@
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { CandlestickChart, Coins, Globe, ListTodo, Sigma } from "lucide-react";
+import { MoonIcon, QuestionMarkIcon, SunIcon } from "@radix-ui/react-icons";
+import { CandlestickChart, Coins, FileWarningIcon, Globe, ListTodo, Sigma } from "lucide-react";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
-  // General
+  // general
   logo: Globe,
+  warning: FileWarningIcon,
+  question: QuestionMarkIcon,
 
-  // Dashboard page
+  // dashboard
   credits: Coins,
   gpa: Sigma,
   planned: ListTodo,
 
-  // Course hover card
+  // course hover card
   grade: CandlestickChart,
 
-  // Theme switcher
+  // theme switcher
   sun: SunIcon,
   moon: MoonIcon,
 
-  // Social icons
+  // social icons
   gitHub: (props: IconProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>
       <path

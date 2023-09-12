@@ -21,16 +21,16 @@ export class GPA {
     //
     this._nCourses += 1;
 
-    // i.e. 4.0
+    // e.g. 4.0
     const gradePoints = this.gradeToPoints(course.grade);
 
-    // i.e. 4.0 * 3 = 12
+    // e.g. 4.0 * 3 = 12
     this._nEarnedGradePoints += gradePoints * course.creditHours;
 
-    // i.e. 3
+    // e.g. 3
     this._nEttemptedGradePoints += course.creditHours;
 
-    // i.e. 4.0 > 0, so add 3 to credits
+    // e.g. 4.0 > 0, so add 3 to credits
     if (gradePoints > 0) {
       this._nEarnedCredits += course.creditHours;
     }

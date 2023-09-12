@@ -8,7 +8,17 @@ export const siteConfig = {
   },
 } as const;
 
-export const siteMap = {
+type SiteMapEntry = {
+  label: string;
+  url: string;
+  new?: boolean;
+};
+
+type SiteMap = {
+  [key: string]: SiteMapEntry;
+};
+
+export const siteMap: SiteMap = {
   // main
   dashboard: {
     label: "Dashboard",
@@ -17,6 +27,11 @@ export const siteMap = {
   courses: {
     label: "Courses",
     url: "/courses",
+  },
+  ai: {
+    label: "AI",
+    url: "/ai-chat",
+    new: true,
   },
   mockTranscript: {
     label: "Mock Transcript",
@@ -40,11 +55,11 @@ export const siteMap = {
   // misc
   terms: {
     label: "Terms",
-    url: "#TODO-terms",
+    url: "/terms",
   },
   privacy: {
     label: "Privacy",
-    url: "#TODO-privacy",
+    url: "/privacy",
   },
   changelog: {
     label: "Changelog",
@@ -52,14 +67,16 @@ export const siteMap = {
   },
 } as const;
 
-export const navLinks = {
+export const navLinks: SiteMap = {
   dashboard: siteMap.dashboard,
+  ai: siteMap.ai,
   courses: siteMap.courses,
   mockTranscript: siteMap.mockTranscript,
   changelog: siteMap.changelog,
+  settings: siteMap.settings,
 } as const;
 
-export const settingsSidebarNavLinks = {
+export const settingsSidebarNavLinks: SiteMap = {
   profile: {
     label: "Profile",
     url: siteMap.settings.url + "/profile",
@@ -71,5 +88,18 @@ export const settingsSidebarNavLinks = {
   appearance: {
     label: "Appearance",
     url: siteMap.settings.url + "/appearance",
+  },
+  ai: {
+    label: "AI",
+    url: siteMap.settings.url + "/ai",
+    new: true,
+  },
+  sessions: {
+    label: "Sessions",
+    url: siteMap.settings.url + "/sessions",
+  },
+  connections: {
+    label: "Connections",
+    url: siteMap.settings.url + "/connections",
   },
 } as const;

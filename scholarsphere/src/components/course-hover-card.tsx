@@ -1,4 +1,4 @@
-import { Course } from "@/types/database-types";
+import { CourseStatusEnum } from "@/types/shared";
 
 import { CourseStatusBadge } from "@/components/course-status-badge";
 import { Icons } from "@/components/icons";
@@ -12,9 +12,21 @@ export function CourseHoverCard({
   course,
   children,
 }: {
-  course: Omit<Course, "userId" | "semesterId">;
+  course: {
+    id: string;
+    name: string;
+    shortId: string | null;
+    description: string | null;
+    creditHours: number;
+    currentGrade: number;
+    color: string | null;
+    status: CourseStatusEnum;
+  };
   children: React.ReactNode;
 }) {
+  const primaryTitle = course.shortId ?? course.name;
+  const secondaryTitle = course.shortId ? course.name : null;
+
   return (
     <HoverCard>
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
@@ -24,11 +36,14 @@ export function CourseHoverCard({
           <div className="space-y-1">
             <div className="flex flex-col">
               <h4 className="line-clamp-1 overflow-ellipsis text-sm font-semibold">
-                {course.shortId}
+                {primaryTitle}
               </h4>
-              <h4 className="line-clamp-1 overflow-ellipsis text-sm">
-                {course.name}
-              </h4>
+
+              {secondaryTitle && (
+                <h4 className="line-clamp-1 overflow-ellipsis text-sm">
+                  {secondaryTitle}
+                </h4>
+              )}
             </div>
 
             <p className="text-sm text-muted-foreground">

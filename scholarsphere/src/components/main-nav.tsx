@@ -19,6 +19,7 @@ export function MainNav() {
       >
         <SiteLogoText className="hidden text-lg sm:flex" />
       </Link>
+
       <nav className="flex items-center space-x-4 text-sm font-medium">
         {Object.entries(navLinks).map(([key, item]) => (
           <Link

@@ -9,8 +9,25 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function withinNDays(dueDate: Date, nDays: number = 30): boolean {
-  return dayjs(dueDate).diff(dayjs(), "day") <= nDays;
+export function formatDateFromNow(date: Dayjs | Date): string {
+  // convert to dayjs if necessary
+  if (date instanceof Date) {
+    date = dayjs(date);
+  }
+
+  return date.fromNow();
+}
+
+export function withinNDays(
+  dueDate: Dayjs | Date,
+  nDays: number = 30,
+): boolean {
+  // convert to dayjs if necessary
+  if (dueDate instanceof Date) {
+    dueDate = dayjs(dueDate);
+  }
+
+  return dueDate.diff(dayjs(), "day") <= nDays;
 }
 
 export function getCourseGradeColor(grade: number): string {
@@ -49,4 +66,27 @@ export function getAssignmentDueDateColor(dueDate: Dayjs | Date) {
   if (dueDate.isBefore(dayjs().add(3, "day"))) {
     return "text-yellow-500";
   }
+}
+
+export function formatAssignmentDueDate(dueDate: Dayjs | Date): string {
+  // convert to dayjs if necessary
+  if (dueDate instanceof Date) {
+    dueDate = dayjs(dueDate);
+  }
+
+  return `${dueDate.fromNow()} (${dueDate.format("MMM D")})`;
+}
+
+export function genPlaceholderApiKey() {
+  const API_KEY_ALPHABET =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+  return (
+    "sk-" +
+    Array.from(
+      { length: 45 },
+      () =>
+        API_KEY_ALPHABET[Math.floor(Math.random() * API_KEY_ALPHABET.length)],
+    ).join("")
+  );
 }

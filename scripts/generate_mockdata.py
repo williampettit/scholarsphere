@@ -229,7 +229,7 @@ if __name__ == "__main__":
     end_year=2025,
     possible_courses=possible_courses,
   )
-
+  
   print("Total Semesters:", len(mock_user.semesters))
   print("Total Courses:", len(mock_user.courses))
   print("Total Credits:", sum(course.credit_hours for course in mock_user.courses))

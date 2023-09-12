@@ -1,9 +1,8 @@
 import dayjs from "dayjs";
 
-import { type Semester } from "@/types/database-types";
-import { CourseStatusEnum } from "@/types/shared";
+import { CourseStatusEnum, type Semester } from "@/types/shared";
 
-export function _mapSemestersWithStatus(semesters: Semester[]) {
+export function _mapSemestersWithStatus(semesters: Omit<Semester, "userId">[]) {
   return semesters.map((semester) => ({
     ...semester,
     status: ((): CourseStatusEnum => {

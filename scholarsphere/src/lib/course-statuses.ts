@@ -7,14 +7,12 @@ import {
 
 import { CourseStatusEnum } from "@/types/shared";
 
-type CourseStatusProps = {
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  color: string;
-};
-
 type CourseStatusesProps = {
-  [key in CourseStatusEnum]: CourseStatusProps;
+  [key in CourseStatusEnum]: {
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    color: string;
+  };
 };
 
 export const COURSE_STATUSES: CourseStatusesProps = {

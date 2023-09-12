@@ -6,15 +6,15 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import {
   type DefaultSession,
   type DefaultUser,
-  getServerSession,
   type ISODateString,
   type NextAuthOptions,
 } from "next-auth";
+import { getServerSession as getNextAuthServerSession } from "next-auth/next";
 import GithubProvider from "next-auth/providers/github";
 
-import { siteMap } from "@/lib/site-config";
 import { env } from "@/lib/env";
-import { type UserRole } from "@/types/database-types";
+import { siteConfig, siteMap } from "@/lib/site-config";
+import { type UserRole } from "@/types/shared";
 
 import prisma from "@/server/prisma";
 
@@ -25,7 +25,6 @@ declare module "next-auth" {
     name: string;
     email: string;
     image: string;
-    language?: string;
   }
 
   export interface Session extends DefaultSession {
@@ -42,37 +41,63 @@ export const nextAuthOptions: NextAuthOptions = {
       clientSecret: env.GITHUB_CLIENT_SECRET,
     }),
   ],
-  callbacks: {
-    async session({ session, user }) {
-      return {
-        ...session,
-        user: {
-          ...user,
-          // TODO: add language to database instead of hardcoding
-          language: "en",
-        },
-      };
-    },
-  },
   pages: {
     signIn: siteMap.login.url,
     signOut: siteMap.logout.url,
     error: siteMap.login.url,
   },
+  callbacks: {
+    async session({ session, user }) {
+      return {
+        expires: session.expires,
+        user: {
+          id: user.id,
+          role: user.role,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        },
+      };
+    },
+  },
 };
 
-export async function S_getSession() {
-  return getServerSession(nextAuthOptions);
+export async function getSession() {
+  return getNextAuthServerSession(nextAuthOptions);
 }
 
-export async function S_requireUser() {
-  const session = await S_getSession();
+export async function requireUser(
+  redirectUrl: string = siteMap.login.url,
+): Promise<{ userId: string; userDisplayName: string }> {
+  const session = await getSession();
   if (!session) {
-    redirect(siteMap.login.url);
+    redirect(redirectUrl);
   }
-  return session.user;
+  const { id, name } = session.user;
+  return { userId: id, userDisplayName: name };
 }
 
-export async function S_requireUserId() {
-  return S_requireUser().then((user) => user.id);
+export async function requireUserOpenAiApiKey(): Promise<{
+  userId: string;
+  userOpenAiApiKey: string;
+}> {
+  const { userId } = await requireUser();
+  const { openaiApiKey: userOpenAiApiKey } =
+    await prisma.user.findUniqueOrThrow({
+      where: {
+        id: userId,
+      },
+      select: {
+        openaiApiKey: true,
+      },
+    });
+  if (!userOpenAiApiKey) {
+    throw new Error(
+      `An OpenAI API key has not been set for your ${siteConfig.name} account yet. You can set one in your account settings.`,
+    );
+  }
+  return {
+    userId: userId,
+    userOpenAiApiKey: userOpenAiApiKey,
+  };
 }

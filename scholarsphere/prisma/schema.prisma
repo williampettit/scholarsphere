@@ -9,7 +9,7 @@ generator client {
 }
 
 //
-// ENUMS
+// Enums
 //
 
 enum UserRole {
@@ -24,22 +24,25 @@ enum CourseRequirementKind {
 }
 
 //
-// MODELS
+// Models
 //
 
 model User {
-  id String @id @default(uuid())
+  id String @id @default(cuid())
 
   // nextauth info
-  name          String?
+  name          String?   @db.VarChar(255)
   image         String?
-  email         String?   @unique
+  email         String?   @unique @db.VarChar(255)
   emailVerified DateTime?
   accounts      Account[]
   sessions      Session[]
 
   // basic info
   role UserRole @default(USER)
+
+  // optional openai info
+  openaiApiKey String?
 
   // semesters that are connected to this user
   semesters Semester[]
@@ -52,10 +55,10 @@ model User {
 }
 
 model Semester {
-  id String @id @default(uuid())
+  id String @id @default(cuid())
 
   // basic info
-  name      String   @db.VarChar(128)
+  name      String   @db.VarChar(255)
   startDate DateTime
   endDate   DateTime
 
@@ -70,14 +73,15 @@ model Semester {
 }
 
 model Course {
-  id String @id @default(uuid())
+  id String @id @default(cuid())
 
   // basic info
-  name         String  @db.VarChar(128)
-  shortId      String? @db.VarChar(32)
+  name         String  @db.VarChar(255)
+  shortId      String? @db.VarChar(255)
   description  String? @db.VarChar(1024)
   creditHours  Int     @default(0)
   currentGrade Float   @default(100)
+  color        String? @db.VarChar(6)
 
   // requirements that are connected to this course
   requirements CourseRequirement[]
@@ -98,10 +102,10 @@ model Course {
 }
 
 model Assignment {
-  id String @id @default(uuid())
+  id String @id @default(cuid())
 
   // basic info
-  title      String?  @db.VarChar(128)
+  title      String   @db.VarChar(128)
   dueDate    DateTime
   isComplete Boolean  @default(false)
 
@@ -118,7 +122,7 @@ model Assignment {
 }
 
 model CourseRequirement {
-  id String @id @default(uuid())
+  id String @id @default(cuid())
 
   // basic info
   kind CourseRequirementKind
@@ -148,6 +152,10 @@ model Account {
   session_state            String?
   refresh_token_expires_in Int?
 
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // relationship to user
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
@@ -158,10 +166,16 @@ model Account {
 
 model Session {
   id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionToken String   @unique
+
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // relationship to user
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   @@index([userId])
 }
