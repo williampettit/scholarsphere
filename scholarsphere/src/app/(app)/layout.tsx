@@ -4,7 +4,6 @@ import { type Metadata } from "next";
 import {
   /* best */
   Inter as PrimaryFont,
-  
   /* good */
   // Chivo as PrimaryFont,
   // Work_Sans as PrimaryFont,

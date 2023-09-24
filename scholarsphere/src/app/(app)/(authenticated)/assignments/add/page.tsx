@@ -1,9 +1,7 @@
 export default function AddAssignmentPage() {
   return (
     <>
-      <b>
-        TODO: AddAssignmentPage
-      </b>
+      <b>TODO: AddAssignmentPage</b>
     </>
-  )
+  );
 }

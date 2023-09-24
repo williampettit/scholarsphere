@@ -2,11 +2,12 @@
 
 import { signIn } from "next-auth/react";
 
+import { siteMap } from "@/config/site-config";
+
 import {
   AUTH_PROVIDER_DATA,
   FALLBACK_AUTH_PROVIDER_DATA,
 } from "@/lib/auth-provider-data";
-import { siteMap } from "@/config/site-config";
 
 import { Button } from "@/components/ui/button";
 

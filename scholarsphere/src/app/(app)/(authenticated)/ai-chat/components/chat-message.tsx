@@ -1,3 +1,4 @@
+import { siteConfig } from "@/config/site-config";
 import { Message } from "ai/react";
 import dayjs from "dayjs";
 import {
@@ -8,8 +9,6 @@ import {
   UserIcon,
 } from "lucide-react";
 import remarkGfm from "remark-gfm";
-
-import { siteConfig } from "@/config/site-config";
 
 import {
   type ReactMarkdownComponentMap as MarkdownComponentMap,

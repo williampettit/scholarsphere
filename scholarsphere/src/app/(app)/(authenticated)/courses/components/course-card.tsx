@@ -111,10 +111,7 @@ export function CourseCard({ course }: CourseCardProps) {
           </div>
 
           <CardDescription>
-            <Link
-              href={`/course/${course.id}`}
-              scroll={false}
-            >
+            <Link href={`/course/${course.id}`} scroll={false}>
               {course.shortId}
             </Link>
           </CardDescription>

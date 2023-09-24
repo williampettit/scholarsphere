@@ -1,9 +1,7 @@
 export default function AddCoursePage() {
   return (
     <>
-      <b>
-        TODO: AddCoursePage
-      </b>
+      <b>TODO: AddCoursePage</b>
     </>
-  )
+  );
 }

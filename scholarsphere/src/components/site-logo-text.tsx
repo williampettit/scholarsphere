@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { siteConfig } from "@/config/site-config";
+
 import { cn } from "@/lib/utils";
 
 type SiteLogoTextProps = {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { navLinks } from "@/config/site-config";
+
 import { cn } from "@/lib/utils";
 
 import { SiteLogoTextLink } from "@/components/site-logo-text";

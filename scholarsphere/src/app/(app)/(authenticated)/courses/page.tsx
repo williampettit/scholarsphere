@@ -1,5 +1,5 @@
 import { COURSE_STATUSES } from "@/lib/course-statuses";
-import { getSemesterStatus, entries, groupBy, pluralize } from "@/lib/utils";
+import { entries, getSemesterStatus, groupBy, pluralize } from "@/lib/utils";
 
 import { requireUser } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";

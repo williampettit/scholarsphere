@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { settingsSidebarNavLinks } from "@/config/site-config";
+
 import { cn } from "@/lib/utils";
 
 import { Badge } from "@/components/ui/badge";

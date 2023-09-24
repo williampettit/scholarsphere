@@ -12,8 +12,9 @@ import {
 import { getServerSession } from "next-auth/next";
 import GithubProvider from "next-auth/providers/github";
 
-import { env } from "@/lib/env";
 import { siteConfig, siteMap } from "@/config/site-config";
+
+import { env } from "@/lib/env";
 import { type UserRole } from "@/types/shared";
 
 import { prismaClient } from "@/server/prisma";

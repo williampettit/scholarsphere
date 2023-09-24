@@ -5,9 +5,8 @@ import { CommandMenu } from "@/components/command-menu";
 import { LoginButton } from "@/components/login-button";
 import { MainNav } from "@/components/main-nav";
 import { MobileNav } from "@/components/mobile-nav";
-import { UserNav } from "@/components/user-nav";
-
 import { ThemeToggle } from "@/components/theme-toggle";
+import { UserNav } from "@/components/user-nav";
 
 export async function SiteHeader() {
   const session = await getSession();
