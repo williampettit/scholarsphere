@@ -3,13 +3,7 @@ import { NextResponse } from "next/server";
 import { S_getActiveCourses } from "@/server/actions/get-courses";
 
 async function API_getActiveCourses() {
-  const getActiveCoursesResponse = await S_getActiveCourses();
-
-  if (!getActiveCoursesResponse.success) {
-    throw new Error(getActiveCoursesResponse.error);
-  }
-
-  const { data: activeCourses } = getActiveCoursesResponse;
+  const activeCourses = await S_getActiveCourses();
 
   return NextResponse.json(
     {

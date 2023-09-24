@@ -1,16 +1,16 @@
 import { Separator } from "@/components/ui/separator";
 
-interface PageHeaderSubtitleProps {
+type PageHeaderSubtitleProps = {
   children: React.ReactNode;
-}
+};
 
-interface PageHeaderTitleProps {
+type PageHeaderTitleProps = {
   children: React.ReactNode;
-}
+};
 
-interface PageHeaderProps {
+type PageHeaderProps = {
   children: React.ReactNode;
-}
+};
 
 export function PageHeaderTitle({ children }: PageHeaderSubtitleProps) {
   return <h2 className="text-2xl font-bold tracking-tight">{children}</h2>;

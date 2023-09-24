@@ -1,4 +1,4 @@
-import { prisma } from "./db";
+import { prismaClient } from "./db";
 import {
   fixCourseFinalGpa,
   fixDate,
@@ -23,7 +23,7 @@ async function main() {
     console.log("\n.... Creating semester", semester.name);
 
     // Create semester
-    const newSemester = await prisma.semester.create({
+    const newSemester = await prismaClient.semester.create({
       data: {
         name: semester.name,
         startDate: fixDate(semester.startDate),
@@ -46,7 +46,7 @@ async function main() {
       const course = mockCourseCatalogData[courseShortId];
 
       // Create course and link to user/semester
-      await prisma.course.create({
+      await prismaClient.course.create({
         data: {
           name: course.title,
           creditHours: course.credits,
@@ -75,4 +75,4 @@ async function main() {
 main()
   .then(() => console.log("Seed (min) complete"))
   .catch(console.error)
-  .finally(() => prisma.$disconnect());
+  .finally(() => prismaClient.$disconnect());

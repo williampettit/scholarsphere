@@ -1,4 +1,4 @@
-import { prisma } from "./db";
+import { prismaClient } from "./db";
 import { getUserByEmail, resetUserById } from "./utils";
 
 async function main() {
@@ -12,4 +12,4 @@ async function main() {
 main()
   .then(() => console.log("Reset complete"))
   .catch(console.error)
-  .finally(() => prisma.$disconnect());
+  .finally(() => prismaClient.$disconnect());

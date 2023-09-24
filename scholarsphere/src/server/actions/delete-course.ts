@@ -3,13 +3,13 @@
 import { revalidatePath } from "next/cache";
 
 import {
-  type DeleteCourseFormSchema,
+  type DeleteCourseFormValues,
   deleteCourseFormSchema,
 } from "@/server/actions/schemas";
 import { requireUser } from "@/server/auth";
-import prisma from "@/server/prisma";
+import { prismaClient } from "@/server/prisma";
 
-export async function S_deleteCourse(data: DeleteCourseFormSchema) {
+export async function S_deleteCourse(data: DeleteCourseFormValues) {
   // return { success: false, error: "Deleting courses is temporarily disabled" };
 
   const { userId } = await requireUser();
@@ -17,12 +17,12 @@ export async function S_deleteCourse(data: DeleteCourseFormSchema) {
   const parsedData = deleteCourseFormSchema.safeParse(data);
 
   if (!parsedData.success) {
-    throw new Error("Failed to parse data");
+    throw new Error(parsedData.error.message);
   }
 
-  await prisma.course.delete({
+  await prismaClient.course.delete({
     where: {
-      userId: userId,
+      userId,
       id: parsedData.data.id,
     },
   });

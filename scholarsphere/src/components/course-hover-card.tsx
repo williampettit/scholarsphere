@@ -1,4 +1,5 @@
-import { CourseStatusEnum } from "@/types/shared";
+import { pluralize } from "@/lib/utils";
+import { type CourseBasicInfo } from "@/types/shared";
 
 import { CourseStatusBadge } from "@/components/course-status-badge";
 import { Icons } from "@/components/icons";
@@ -8,22 +9,21 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
-export function CourseHoverCard({
-  course,
-  children,
-}: {
-  course: {
-    id: string;
-    name: string;
-    shortId: string | null;
-    description: string | null;
-    creditHours: number;
-    currentGrade: number;
-    color: string | null;
-    status: CourseStatusEnum;
-  };
+type CourseHoverCardProps = {
   children: React.ReactNode;
-}) {
+  course: Pick<
+    CourseBasicInfo,
+    | "id"
+    | "name"
+    | "shortId"
+    | "description"
+    | "creditHours"
+    | "currentGrade"
+    | "status"
+  >;
+};
+
+export function CourseHoverCard({ course, children }: CourseHoverCardProps) {
   const primaryTitle = course.shortId ?? course.name;
   const secondaryTitle = course.shortId ? course.name : null;
 
@@ -39,11 +39,11 @@ export function CourseHoverCard({
                 {primaryTitle}
               </h4>
 
-              {secondaryTitle && (
+              {secondaryTitle ? (
                 <h4 className="line-clamp-1 overflow-ellipsis text-sm">
                   {secondaryTitle}
                 </h4>
-              )}
+              ) : null}
             </div>
 
             <p className="text-sm text-muted-foreground">
@@ -52,14 +52,14 @@ export function CourseHoverCard({
 
             <div className="flex flex-row items-center gap-4">
               <div className="flex items-center pt-2">
-                <Icons.credits className="mr-2 h-4 w-4 opacity-70" />{" "}
+                <Icons.Credits className="mr-2 h-4 w-4 opacity-70" />{" "}
                 <span className="text-xs text-muted-foreground">
-                  {course.creditHours} credits
+                  {course.creditHours} {pluralize(course.creditHours, "credit")}
                 </span>
               </div>
 
               <div className="flex items-center pt-2">
-                <Icons.grade className="mr-2 h-4 w-4 opacity-70" />{" "}
+                <Icons.CourseGrade className="mr-2 h-4 w-4 opacity-70" />{" "}
                 <span className="text-xs text-muted-foreground">
                   {course.currentGrade.toFixed(1)}%
                 </span>

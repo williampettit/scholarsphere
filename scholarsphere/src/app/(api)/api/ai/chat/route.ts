@@ -1,21 +1,17 @@
+import { siteConfig } from "@/config/site-config";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import OpenAI from "openai";
 
-import { siteConfig } from "@/lib/site-config";
-
 import { S_getUpcomingAssignments } from "@/server/actions/get-assignments";
 import { S_getActiveCourses } from "@/server/actions/get-courses";
-import { S_getCredits } from "@/server/actions/get-gpa";
+import { S_getCredits } from "@/server/actions/get-credits";
 import { S_getGpa } from "@/server/actions/get-gpa";
-import { requireUser } from "@/server/auth";
-import prisma from "@/server/prisma";
+import { requireUserOpenAiApiKey } from "@/server/auth";
+import { prismaClient } from "@/server/prisma";
 
 dayjs.extend(relativeTime);
-
-// export const runtime = "edge";
-export const runtime = "nodejs";
 
 type AgentFunctionMap = {
   [name: string]: {
@@ -32,15 +28,7 @@ const agentFunctionMap: AgentFunctionMap = {
     desc: "Get a list of the user's active courses (e.g. 'what are my active courses?')",
     func: async () => {
       // get user's active courses
-      const activeCoursesResponse = await S_getActiveCourses();
-
-      //
-      if (!activeCoursesResponse.success) {
-        throw new Error(activeCoursesResponse.error);
-      }
-
-      //
-      const { data: activeCourses } = activeCoursesResponse;
+      const activeCourses = await S_getActiveCourses();
 
       // count num courses/credits
       const numCourses = activeCourses.length;
@@ -74,15 +62,9 @@ const agentFunctionMap: AgentFunctionMap = {
   get_current_gpa: {
     desc: "Get the user's current GPA (e.g. 'what is my GPA?')",
     func: async () => {
-      const userGpaResponse = await S_getGpa();
+      const { completedGpa } = await S_getGpa();
 
-      if (!userGpaResponse.success) {
-        throw new Error(userGpaResponse.error);
-      }
-
-      const { completedGpa } = userGpaResponse.data;
-
-      return `Your current GPA is ${completedGpa.toFixed(2)}`;
+      return `Your current GPA is **${completedGpa.toFixed(2)}**`;
     },
   },
 
@@ -90,15 +72,9 @@ const agentFunctionMap: AgentFunctionMap = {
   get_tenative_gpa: {
     desc: "Get the user's tenative GPA (e.g. 'what will my GPA be after this semester?')",
     func: async () => {
-      const userGpaResponse = await S_getGpa();
+      const { tenativeGpa } = await S_getGpa();
 
-      if (!userGpaResponse.success) {
-        throw new Error(userGpaResponse.error);
-      }
-
-      const { tenativeGpa } = userGpaResponse.data;
-
-      return `Your tenative GPA is ${tenativeGpa.toFixed(2)}`;
+      return `Your tenative GPA is **${tenativeGpa.toFixed(2)}**`;
     },
   },
 
@@ -106,19 +82,13 @@ const agentFunctionMap: AgentFunctionMap = {
   get_total_completed_credits: {
     desc: "Get the user's total number of completed credits (e.g. 'how many credits have I completed?')",
     func: async () => {
-      const userCreditsResponse = await S_getCredits();
-
-      if (!userCreditsResponse.success) {
-        throw new Error(userCreditsResponse.error);
-      }
-
       const {
         attemptedCredits,
         passedCredits,
         inProgressCredits,
         plannedCredits,
         notPlannedCredits,
-      } = userCreditsResponse.data;
+      } = await S_getCredits();
 
       //
       // format response
@@ -146,13 +116,7 @@ const agentFunctionMap: AgentFunctionMap = {
   get_upcoming_assignments: {
     desc: "Get a list of the user's upcoming assignments (e.g. 'what are my upcoming assignments?')",
     func: async () => {
-      const upcomingAssignmentsResponse = await S_getUpcomingAssignments();
-
-      if (!upcomingAssignmentsResponse.success) {
-        throw new Error(upcomingAssignmentsResponse.error);
-      }
-
-      const { data: upcomingAssignments } = upcomingAssignmentsResponse;
+      const upcomingAssignments = await S_getUpcomingAssignments();
 
       //
       // format response
@@ -192,21 +156,18 @@ const openaiAgentFunctionMap: OpenAI.Chat.CompletionCreateParams.Function[] = //
   }));
 
 export async function POST(req: Request) {
-  const { userId } = await requireUser();
+  const { userId, userOpenAiApiKey } = await requireUserOpenAiApiKey();
 
-  // get user's OpenAI API key from db
-  const { openaiApiKey: userOpenaiApiKey, name: userDisplayName } =
-    await prisma.user.findUniqueOrThrow({
-      where: {
-        id: userId,
-      },
-      select: {
-        openaiApiKey: true,
-        name: true,
-      },
-    });
+  const { name: userDisplayName } = await prismaClient.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+    select: {
+      name: true,
+    },
+  });
 
-  if (!userOpenaiApiKey) {
+  if (!userOpenAiApiKey) {
     return new Response("No OpenAI API key", {
       status: 400,
     });
@@ -217,7 +178,7 @@ export async function POST(req: Request) {
 
   // create openai client with user's api key
   const openai = new OpenAI({
-    apiKey: userOpenaiApiKey,
+    apiKey: userOpenAiApiKey,
   });
 
   // send chat completion to openai

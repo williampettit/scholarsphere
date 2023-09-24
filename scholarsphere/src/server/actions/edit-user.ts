@@ -3,22 +3,22 @@
 import { revalidatePath } from "next/cache";
 
 import {
-  type EditUserFormSchema,
+  type EditUserFormValues,
   editUserFormSchema,
 } from "@/server/actions/schemas";
 import { requireUser } from "@/server/auth";
-import prisma from "@/server/prisma";
+import { prismaClient } from "@/server/prisma";
 
-export async function S_editUser(data: EditUserFormSchema) {
+export async function S_editUser(data: EditUserFormValues) {
   const { userId } = await requireUser();
 
   const parsedData = editUserFormSchema.safeParse(data);
 
   if (!parsedData.success) {
-    return { success: false, error: "Failed to parse data" };
+    throw new Error(parsedData.error.message);
   }
 
-  await prisma.user.update({
+  await prismaClient.user.update({
     where: {
       id: userId,
     },

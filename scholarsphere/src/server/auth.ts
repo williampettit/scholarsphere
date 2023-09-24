@@ -9,14 +9,14 @@ import {
   type ISODateString,
   type NextAuthOptions,
 } from "next-auth";
-import { getServerSession as getNextAuthServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth/next";
 import GithubProvider from "next-auth/providers/github";
 
 import { env } from "@/lib/env";
-import { siteConfig, siteMap } from "@/lib/site-config";
+import { siteConfig, siteMap } from "@/config/site-config";
 import { type UserRole } from "@/types/shared";
 
-import prisma from "@/server/prisma";
+import { prismaClient } from "@/server/prisma";
 
 // module augmentation to safely expand types
 declare module "next-auth" {
@@ -34,7 +34,7 @@ declare module "next-auth" {
 }
 
 export const nextAuthOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prismaClient),
   providers: [
     GithubProvider({
       clientId: env.GITHUB_CLIENT_ID,
@@ -63,18 +63,22 @@ export const nextAuthOptions: NextAuthOptions = {
 };
 
 export async function getSession() {
-  return getNextAuthServerSession(nextAuthOptions);
+  return getServerSession(nextAuthOptions);
 }
 
 export async function requireUser(
   redirectUrl: string = siteMap.login.url,
 ): Promise<{ userId: string; userDisplayName: string }> {
   const session = await getSession();
+
   if (!session) {
     redirect(redirectUrl);
   }
-  const { id, name } = session.user;
-  return { userId: id, userDisplayName: name };
+
+  return {
+    userId: session.user.id,
+    userDisplayName: session.user.name,
+  };
 }
 
 export async function requireUserOpenAiApiKey(): Promise<{
@@ -82,22 +86,25 @@ export async function requireUserOpenAiApiKey(): Promise<{
   userOpenAiApiKey: string;
 }> {
   const { userId } = await requireUser();
-  const { openaiApiKey: userOpenAiApiKey } =
-    await prisma.user.findUniqueOrThrow({
+
+  const { openAiApiKey: userOpenAiApiKey } =
+    await prismaClient.user.findUniqueOrThrow({
       where: {
         id: userId,
       },
       select: {
-        openaiApiKey: true,
+        openAiApiKey: true,
       },
     });
+
   if (!userOpenAiApiKey) {
     throw new Error(
       `An OpenAI API key has not been set for your ${siteConfig.name} account yet. You can set one in your account settings.`,
     );
   }
+
   return {
-    userId: userId,
+    userId,
     userOpenAiApiKey: userOpenAiApiKey,
   };
 }

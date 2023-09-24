@@ -2,31 +2,74 @@
 
 import { revalidatePath } from "next/cache";
 
+import { extendZodWithOpenApi, generateSchema } from "@anatine/zod-openapi";
 import OpenAI from "openai";
+import { z } from "zod";
 
 import {
-  type AddAssignmentFormSchema,
+  type AddAssignmentFormValues,
+  AddAssignmentFromNaturalLanguageValues,
   addAssignmentFormSchema,
   addAssignmentFromNaturalLanguageSchema,
 } from "@/server/actions/schemas";
 import { requireUser, requireUserOpenAiApiKey } from "@/server/auth";
 import "@/server/auth";
-import prisma from "@/server/prisma";
+import { prismaClient } from "@/server/prisma";
 
-export async function S_addAssignment(data: AddAssignmentFormSchema) {
+extendZodWithOpenApi(z);
+
+const _assignmentsResponseSchema = z.object({
+  assignments: z
+    .array(
+      z
+        .object({
+          name: z.string().openapi({
+            description: "The name of the assignment, e.g. 'Test 1'",
+          }),
+          year: z
+            .number()
+            .optional()
+            .openapi({ description: "The year of the due date (e.g. 2023)" }),
+          month: z.number().openapi({
+            description: "The month of the due date (e.g. 2 for February)",
+          }),
+          day: z
+            .number()
+            .openapi({ description: "The day of the due date (e.g. 14)" }),
+          hour: z
+            .number()
+            .optional()
+            .openapi({ description: "The hour of the due date (e.g. 23)" }),
+          minute: z
+            .number()
+            .optional()
+            .openapi({ description: "The minute of the due date (e.g. 59)" }),
+        })
+        .openapi({ description: "An assignment to add to the course" }),
+    )
+    .openapi({
+      description: "An array of assignments to add to the course",
+    }),
+});
+
+const _assignmentsResponseOpenApiSchema = generateSchema(
+  _assignmentsResponseSchema,
+);
+
+export async function S_addAssignment(data: AddAssignmentFormValues) {
   const { userId } = await requireUser();
 
   const parsedData = addAssignmentFormSchema.safeParse(data);
 
   if (!parsedData.success) {
-    throw new Error("Failed to parse data");
+    throw new Error(parsedData.error.message);
   }
 
-  await prisma.assignment.create({
+  await prismaClient.assignment.create({
     data: {
-      userId: userId,
+      userId,
       courseId: parsedData.data.courseId,
-      title: parsedData.data.name,
+      title: parsedData.data.title,
       dueDate: parsedData.data.dueDate,
     },
   });
@@ -34,20 +77,20 @@ export async function S_addAssignment(data: AddAssignmentFormSchema) {
   revalidatePath("/");
 }
 
-export async function S_addAssignmentFromNaturalLanguage(formData: FormData) {
+export async function S_addAssignmentFromNaturalLanguage(
+  data: AddAssignmentFromNaturalLanguageValues,
+) {
   //
-  const parsedFormData = addAssignmentFromNaturalLanguageSchema.safeParse({
-    naturalLanguageQuery: formData.get("naturalLanguageQuery"),
-    courseId: formData.get("courseId"),
-  });
+  const parsedInputData =
+    addAssignmentFromNaturalLanguageSchema.safeParse(data);
 
   //
-  if (!parsedFormData.success) {
-    throw new Error("Failed to parse form data");
+  if (!parsedInputData.success) {
+    throw new Error(parsedInputData.error.message);
   }
 
   //
-  const { courseId, naturalLanguageQuery } = parsedFormData.data;
+  const { courseId, naturalLanguageQuery } = parsedInputData.data;
 
   // get userid and openai api key from session
   const { userId, userOpenAiApiKey } = await requireUserOpenAiApiKey();
@@ -58,7 +101,7 @@ export async function S_addAssignmentFromNaturalLanguage(formData: FormData) {
   });
 
   // (function to call)
-  const FUNCTION_CALL_NAME = "add_assignment";
+  const FUNCTION_CALL_NAME = "add_assignments";
 
   // create openai completion
   const response = await openai.chat.completions.create({
@@ -68,38 +111,52 @@ export async function S_addAssignmentFromNaturalLanguage(formData: FormData) {
       {
         name: FUNCTION_CALL_NAME,
         description:
-          "Add an assignment to the course (e.g. 'add Test 1 for September 20th')",
+          "Add one or more assignments to the course (e.g. 'add Test 1 for September 20th')",
+        parameters: {
+          ..._assignmentsResponseOpenApiSchema,
+        },
+        /*
         parameters: {
           type: "object",
           properties: {
-            name: {
-              type: "string",
-              description: "The name of the assignment, e.g. 'Test 1'",
-            },
-            year: {
-              type: "number",
-              description: "The year of the due date (e.g. 2023)",
-            },
-            month: {
-              type: "number",
-              description: "The month of the due date (e.g. 2 for February)",
-            },
-            day: {
-              type: "number",
-              description: "The day of the due date (e.g. 14)",
-            },
-            hour: {
-              type: "number",
-              description: "The hour of the due date (e.g. 23)",
-            },
-            minute: {
-              type: "number",
-              description: "The minute of the due date (e.g. 59)",
+            assignments: {
+              type: "array",
+              description: "An array of assignments to add to the course",
+              items: {
+                type: "object",
+                required: ["name", "month", "day"],
+                properties: {
+                  name: {
+                    type: "string",
+                    description: "The name of the assignment, e.g. 'Test 1'",
+                  },
+                  year: {
+                    type: "number",
+                    description: "The year of the due date (e.g. 2023)",
+                  },
+                  month: {
+                    type: "number",
+                    description:
+                      "The month of the due date (e.g. 2 for February)",
+                  },
+                  day: {
+                    type: "number",
+                    description: "The day of the due date (e.g. 14)",
+                  },
+                  hour: {
+                    type: "number",
+                    description: "The hour of the due date (e.g. 23)",
+                  },
+                  minute: {
+                    type: "number",
+                    description: "The minute of the due date (e.g. 59)",
+                  },
+                },
+              },
             },
           },
-
-          required: ["name", "month", "day"],
         },
+        */
       },
     ],
     function_call: {
@@ -132,49 +189,57 @@ export async function S_addAssignmentFromNaturalLanguage(formData: FormData) {
     throw new Error("No function call");
   }
 
-  // extract function call info
-  const { name: functionCallName, arguments: functionCallArguments } =
-    functionCall;
-
   // check function call name
-  if (functionCallName !== FUNCTION_CALL_NAME) {
-    throw new Error(`Invalid function call name (was: '${functionCallName}')`);
+  if (functionCall.name !== FUNCTION_CALL_NAME) {
+    throw new Error(
+      `Unexpected function call (got: '${functionCall.name}', expected: '${FUNCTION_CALL_NAME}')`,
+    );
   }
 
-  // get agent function call arguments
-  const assignmentArguments = JSON.parse(functionCallArguments) as {
-    name: string;
-    year?: number;
-    month: number;
-    day: number;
-    hour?: number;
-    minute?: number;
-  };
-
-  // TEMP
-  console.log(
-    "[SERVER] assignmentArguments:",
-    JSON.stringify(assignmentArguments, null, 2),
+  // parse agent function call arguments
+  const parsedAssignments = _assignmentsResponseSchema.safeParse(
+    JSON.parse(functionCall.arguments),
   );
 
-  // create due date object
-  const assignmentDueDate = new Date(
-    assignmentArguments.year ?? new Date().getFullYear(),
-    assignmentArguments.month - 1,
-    assignmentArguments.day,
-    assignmentArguments.hour ?? 23,
-    assignmentArguments.minute ?? 59,
-  );
+  // check if parsed assignments are valid
+  if (!parsedAssignments.success) {
+    console.error(
+      "[SERVER] parsedAssignments.error:",
+      parsedAssignments.error.toString(),
+    );
 
-  // add assignment to database
-  await prisma.assignment.create({
-    data: {
-      userId: userId,
-      courseId: courseId,
-      title: assignmentArguments.name,
-      dueDate: assignmentDueDate,
-    },
-  });
+    throw new Error("Invalid assignments response");
+  }
+
+  // get assignments
+  const { assignments: assignmentsToAdd } = parsedAssignments.data;
+
+  // check if any assignments were returned from agent
+  if (assignmentsToAdd.length === 0) {
+    throw new Error("No assignment arguments");
+  }
+
+  // add assignments to database
+  for (const assignmentArguments of assignmentsToAdd) {
+    // create due date object
+    const assignmentDueDate = new Date(
+      assignmentArguments.year ?? new Date().getFullYear(),
+      assignmentArguments.month - 1,
+      assignmentArguments.day,
+      assignmentArguments.hour ?? 23,
+      assignmentArguments.minute ?? 59,
+    );
+
+    // add assignment to database
+    await prismaClient.assignment.create({
+      data: {
+        userId,
+        courseId: courseId,
+        title: assignmentArguments.name,
+        dueDate: assignmentDueDate,
+      },
+    });
+  }
 
   //
   revalidatePath(`/course/${courseId}`);

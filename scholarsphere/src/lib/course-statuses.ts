@@ -1,39 +1,39 @@
-import {
-  CalendarIcon,
-  CheckCircledIcon,
-  QuestionMarkCircledIcon,
-  StopwatchIcon,
-} from "@radix-ui/react-icons";
-
 import { CourseStatusEnum } from "@/types/shared";
+
+import { Icons } from "@/components/icons";
 
 type CourseStatusesProps = {
   [key in CourseStatusEnum]: {
     label: string;
     icon: React.ComponentType<{ className?: string }>;
     color: string;
+    order: number;
   };
 };
 
 export const COURSE_STATUSES: CourseStatusesProps = {
-  [CourseStatusEnum.NOT_PLANNED]: {
-    label: "Not Planned",
-    icon: QuestionMarkCircledIcon,
-    color: "text-red-500",
+  [CourseStatusEnum.IN_PROGRESS]: {
+    label: "In Progress",
+    icon: Icons.CourseInProgress,
+    color: "text-yellow-600",
+    order: 0,
   },
   [CourseStatusEnum.PLANNED]: {
     label: "Planned",
-    icon: CalendarIcon,
-    color: "text-pink-500",
-  },
-  [CourseStatusEnum.IN_PROGRESS]: {
-    label: "In Progress",
-    icon: StopwatchIcon,
-    color: "text-yellow-500",
+    icon: Icons.CoursePlanned,
+    color: "text-pink-600",
+    order: 1,
   },
   [CourseStatusEnum.COMPLETED]: {
     label: "Completed",
-    icon: CheckCircledIcon,
-    color: "text-green-500",
+    icon: Icons.CourseCompleted,
+    color: "text-emerald-600",
+    order: 2,
+  },
+  [CourseStatusEnum.NOT_PLANNED]: {
+    label: "Not Planned",
+    icon: Icons.CourseNotPlanned,
+    color: "text-rose-600",
+    order: 3,
   },
 };

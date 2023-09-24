@@ -3,13 +3,7 @@ import { NextResponse } from "next/server";
 import { S_getUpcomingAssignments } from "@/server/actions/get-assignments";
 
 async function API_getUserAssignments() {
-  const getUserUpcomingAssignmentsResponse = await S_getUpcomingAssignments();
-
-  if (!getUserUpcomingAssignmentsResponse.success) {
-    throw new Error(getUserUpcomingAssignmentsResponse.error);
-  }
-
-  const { data: upcomingAssignments } = getUserUpcomingAssignmentsResponse;
+  const upcomingAssignments = await S_getUpcomingAssignments();
 
   return NextResponse.json(
     {

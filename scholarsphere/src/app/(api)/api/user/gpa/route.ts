@@ -3,13 +3,7 @@ import { NextResponse } from "next/server";
 import { S_getGpa } from "@/server/actions/get-gpa";
 
 async function API_getUserGpa() {
-  const getUserGpaResponse = await S_getGpa();
-
-  if (!getUserGpaResponse.success) {
-    throw new Error(getUserGpaResponse.error);
-  }
-
-  const { completedGpa, tenativeGpa } = getUserGpaResponse.data;
+  const { completedGpa, tenativeGpa } = await S_getGpa();
 
   return NextResponse.json(
     {

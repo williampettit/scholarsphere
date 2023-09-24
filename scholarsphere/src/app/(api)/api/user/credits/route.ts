@@ -1,21 +1,15 @@
 import { NextResponse } from "next/server";
 
-import { S_getCredits } from "@/server/actions/get-gpa";
+import { S_getCredits } from "@/server/actions/get-credits";
 
 async function API_getCredits() {
-  const getCreditsResponse = await S_getCredits();
-
-  if (!getCreditsResponse.success) {
-    throw new Error(getCreditsResponse.error);
-  }
-
   const {
     attemptedCredits,
     passedCredits,
     inProgressCredits,
     plannedCredits,
     notPlannedCredits,
-  } = getCreditsResponse.data;
+  } = await S_getCredits();
 
   return NextResponse.json(
     {

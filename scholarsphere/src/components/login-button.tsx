@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 
-import { siteMap } from "@/lib/site-config";
+import { siteMap } from "@/config/site-config";
 
 import { Button } from "@/components/ui/button";
 

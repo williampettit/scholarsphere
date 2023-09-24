@@ -3,31 +3,35 @@ import { z } from "zod";
 import {
   assignmentSchema,
   courseSchema,
+  nanoidSchema,
   semesterSchema,
   userSchema,
-  uuidSchema,
 } from "@/types/shared";
 
 //
-// "Add Assignment" Form (Natural Language)
+// "Add Assignment" Form (from natural language)
 //
 
 export const addAssignmentFromNaturalLanguageSchema = z.object({
-  naturalLanguageQuery: z.string(),
-  courseId: z.string(),
+  naturalLanguageQuery: z.string().nonempty(),
+  courseId: nanoidSchema,
 });
+
+export type AddAssignmentFromNaturalLanguageValues = z.infer<
+  typeof addAssignmentFromNaturalLanguageSchema
+>;
 
 //
 // "Add Assignment" Form
 //
 
 export const addAssignmentFormSchema = assignmentSchema.pick({
+  title: true,
   courseId: true,
-  name: true,
   dueDate: true,
 });
 
-export type AddAssignmentFormSchema = z.infer<typeof addAssignmentFormSchema>;
+export type AddAssignmentFormValues = z.infer<typeof addAssignmentFormSchema>;
 
 //
 // "Delete Course" Form
@@ -37,26 +41,25 @@ export const deleteCourseFormSchema = courseSchema.pick({
   id: true,
 });
 
-export type DeleteCourseFormSchema = z.infer<typeof deleteCourseFormSchema>;
+export type DeleteCourseFormValues = z.infer<typeof deleteCourseFormSchema>;
 
 //
 // "Delete Session" Form
 //
 
 export const deleteSessionFormSchema = z.object({
-  id: z.string().nonempty(),
+  id: nanoidSchema,
 });
 
-export type DeleteSessionFormSchema = z.infer<typeof deleteSessionFormSchema>;
+export type DeleteSessionFormValues = z.infer<typeof deleteSessionFormSchema>;
 
 //
 // "Add Course" Form
 //
 
-export enum CreateSemesterTypeEnum {
-  new,
-  existing,
-}
+export const addCourseFormSemesterTypeSchema = z
+  .literal("new")
+  .or(z.literal("existing"));
 
 export const addCourseFormSchema = courseSchema
   .pick({
@@ -66,7 +69,7 @@ export const addCourseFormSchema = courseSchema
     semesterId: true,
   })
   .extend({
-    semesterType: z.nativeEnum(CreateSemesterTypeEnum),
+    semesterType: addCourseFormSemesterTypeSchema,
     newSemesterData: semesterSchema
       .pick({
         name: true,
@@ -76,7 +79,11 @@ export const addCourseFormSchema = courseSchema
       .optional(),
   });
 
-export type AddCourseFormSchema = z.infer<typeof addCourseFormSchema>;
+export type AddCourseFormValues = z.infer<typeof addCourseFormSchema>;
+
+export type AddCourseFormSemesterType = z.infer<
+  typeof addCourseFormSemesterTypeSchema
+>;
 
 //
 // "Edit Course" Form
@@ -90,6 +97,7 @@ export const editCourseFormSchema = courseSchema
     description: true,
     currentGrade: true,
     creditHours: true,
+    color: true,
   })
   .partial({
     name: true,
@@ -97,9 +105,10 @@ export const editCourseFormSchema = courseSchema
     description: true,
     currentGrade: true,
     creditHours: true,
+    color: true,
   });
 
-export type EditCourseFormSchema = z.infer<typeof editCourseFormSchema>;
+export type EditCourseFormValues = z.infer<typeof editCourseFormSchema>;
 
 //
 // "Edit Assignment" Form
@@ -108,15 +117,29 @@ export type EditCourseFormSchema = z.infer<typeof editCourseFormSchema>;
 export const editAssignmentFormSchema = assignmentSchema
   .pick({
     id: true,
-    name: true,
+    title: true,
     dueDate: true,
+    isComplete: true,
   })
   .partial({
-    name: true,
+    title: true,
     dueDate: true,
+    isComplete: true,
   });
 
-export type EditAssignmentFormSchema = z.infer<typeof editAssignmentFormSchema>;
+export type EditAssignmentFormValues = z.infer<typeof editAssignmentFormSchema>;
+
+//
+// "Delete Assignment" Form
+//
+
+export const deleteAssignmentFormSchema = assignmentSchema.pick({
+  id: true,
+});
+
+export type DeleteAssignmentFormValues = z.infer<
+  typeof deleteAssignmentFormSchema
+>;
 
 //
 // "Edit User" Form
@@ -125,11 +148,23 @@ export type EditAssignmentFormSchema = z.infer<typeof editAssignmentFormSchema>;
 export const editUserFormSchema = userSchema
   .pick({
     name: true,
-    openaiApiKey: true,
+    openAiApiKey: true,
   })
   .partial({
     name: true,
-    openaiApiKey: true,
+    openAiApiKey: true,
   });
 
-export type EditUserFormSchema = z.infer<typeof editUserFormSchema>;
+export type EditUserFormValues = z.infer<typeof editUserFormSchema>;
+
+//
+// "AI Chat" Settings Form
+//
+
+export const editAiChatSettingsFormSchema = userSchema.pick({
+  openAiApiKey: true,
+});
+
+export type EditAiChatSettingsFormValues = z.infer<
+  typeof editAiChatSettingsFormSchema
+>;

@@ -1,37 +1,37 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import {
-  type AddCourseFormSchema,
-  CreateSemesterTypeEnum,
+  type AddCourseFormValues,
   addCourseFormSchema,
 } from "@/server/actions/schemas";
 import { requireUser } from "@/server/auth";
-import prisma from "@/server/prisma";
-import { revalidatePath } from "next/cache";
+import { prismaClient } from "@/server/prisma";
 
-export async function S_addCourse(data: AddCourseFormSchema) {
+export async function S_addCourse(data: AddCourseFormValues) {
   const { userId } = await requireUser();
 
   const parsedData = addCourseFormSchema.safeParse(data);
 
   if (!parsedData.success) {
-    throw new Error("Failed to parse data");
+    throw new Error(parsedData.error.message);
   }
 
   let semesterId: string | undefined;
 
   switch (parsedData.data.semesterType) {
     // (new semester)
-    case CreateSemesterTypeEnum.new: {
+    case "new": {
       const newSemesterData = parsedData.data.newSemesterData;
 
       if (!newSemesterData) {
         throw new Error("Missing new semester data");
       }
 
-      const newSemester = await prisma.semester.create({
+      const newSemester = await prismaClient.semester.create({
         data: {
-          userId: userId,
+          userId,
           name: newSemesterData.name,
           startDate: newSemesterData.startDate,
           endDate: newSemesterData.endDate,
@@ -44,7 +44,7 @@ export async function S_addCourse(data: AddCourseFormSchema) {
     }
 
     // (existing semester)
-    case CreateSemesterTypeEnum.existing: {
+    case "existing": {
       const existingSemesterId = parsedData.data.semesterId;
 
       if (!existingSemesterId) {
@@ -63,16 +63,15 @@ export async function S_addCourse(data: AddCourseFormSchema) {
   }
 
   // create course
-  await prisma.course
-    .create({
-      data: {
-        userId: userId,
-        name: parsedData.data.name,
-        shortId: parsedData.data.shortId,
-        creditHours: parsedData.data.creditHours,
-        semesterId: semesterId,
-      },
-    })
+  await prismaClient.course.create({
+    data: {
+      userId,
+      name: parsedData.data.name,
+      shortId: parsedData.data.shortId,
+      creditHours: parsedData.data.creditHours,
+      semesterId: semesterId,
+    },
+  });
 
   revalidatePath("/");
 }

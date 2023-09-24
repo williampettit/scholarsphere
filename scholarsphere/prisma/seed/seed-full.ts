@@ -1,4 +1,4 @@
-import { prisma } from "./db";
+import { prismaClient } from "./db";
 import { fixDate, getUserByEmail } from "./utils";
 import mockData from "../../../scripts/mock_user_data.json";
 
@@ -20,7 +20,7 @@ async function main() {
   const blah = semesterValues.map(async (semester) => {
     console.log("Creating a semester!");
 
-    const newSemester = await prisma.semester.create({
+    const newSemester = await prismaClient.semester.create({
       data: {
         name: "Semester Name",
         startDate: fixDate(semester.start_date),
@@ -54,7 +54,7 @@ async function main() {
   //
 
   Object.values(mockData.courses).forEach(async (course) => {
-    const newCourse = await prisma.course.create({
+    const newCourse = await prismaClient.course.create({
       data: {
         name: course.title,
         description: course.description,
@@ -79,7 +79,7 @@ async function main() {
     //
 
     Object.values(course.assignments).forEach(async (assignment) => {
-      await prisma.assignment.create({
+      await prismaClient.assignment.create({
         data: {
           title: assignment.title,
           dueDate: fixDate(assignment.due_date),
@@ -107,4 +107,4 @@ async function main() {
 main()
   .then(() => console.log("Seed (full) complete"))
   .catch(console.error)
-  .finally(() => prisma.$disconnect());
+  .finally(() => prismaClient.$disconnect());

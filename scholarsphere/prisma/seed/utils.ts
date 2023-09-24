@@ -1,4 +1,4 @@
-import { prisma } from "./db";
+import { prismaClient } from "./db";
 import {
   type CourseFinalGpaType,
   MOCK_COURSE_CATALOG_DATA,
@@ -34,14 +34,14 @@ export function getMockData() {
 }
 
 export async function getUserByEmail(email: string) {
-  return prisma.user.findUniqueOrThrow({
+  return prismaClient.user.findUniqueOrThrow({
     where: { email },
   });
 }
 
 export async function resetUserById(userId: string) {
   // Delete all existing assignments
-  await prisma.assignment.deleteMany({
+  await prismaClient.assignment.deleteMany({
     where: {
       user: {
         id: userId,
@@ -50,7 +50,7 @@ export async function resetUserById(userId: string) {
   });
 
   // Delete all existing courses
-  await prisma.course.deleteMany({
+  await prismaClient.course.deleteMany({
     where: {
       user: {
         id: userId,
@@ -59,7 +59,7 @@ export async function resetUserById(userId: string) {
   });
 
   // Delete all existing semesters
-  await prisma.semester.deleteMany({
+  await prismaClient.semester.deleteMany({
     where: {
       user: {
         id: userId,

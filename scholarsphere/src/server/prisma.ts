@@ -2,14 +2,14 @@ import { PrismaClient } from "@prisma/client";
 
 import { env } from "@/lib/env";
 
+export { Prisma as PrismaTypes } from "@prisma/client";
+
 declare global {
-  var prisma: PrismaClient | undefined;
+  var prismaClient: PrismaClient | undefined;
 }
 
-const prisma = global.prisma || new PrismaClient();
+export const prismaClient = global.prismaClient || new PrismaClient();
 
 if (env.NODE_ENV === "development") {
-  global.prisma = prisma;
+  global.prismaClient = prismaClient;
 }
-
-export default prisma;

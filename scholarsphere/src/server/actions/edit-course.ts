@@ -3,27 +3,27 @@
 import { revalidatePath } from "next/cache";
 
 import {
-  type EditCourseFormSchema,
+  type EditCourseFormValues,
   editCourseFormSchema,
 } from "@/server/actions/schemas";
 import { requireUser } from "@/server/auth";
-import prisma from "@/server/prisma";
+import { prismaClient } from "@/server/prisma";
 
-export async function S_editCourse(data: EditCourseFormSchema) {
+export async function S_editCourse(data: EditCourseFormValues) {
   const { userId } = await requireUser();
 
   const parsedData = editCourseFormSchema.safeParse(data);
 
   if (!parsedData.success) {
-    return { success: false, error: "Failde to parse" };
+    throw new Error(parsedData.error.message);
   }
 
   const { id: courseId, ...courseData } = parsedData.data;
 
-  await prisma.course.update({
+  await prismaClient.course.update({
     where: {
       id: courseId,
-      userId: userId,
+      userId,
     },
     data: {
       ...courseData,

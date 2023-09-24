@@ -1,13 +1,13 @@
 //
-// GPA class is used while iterating over list of courses
+// `GPA` class holds values while iterating over courses
 //
 
 export class GPA {
-  _nCourses = 0;
-  _nEarnedCredits = 0;
-  _nEarnedGradePoints = 0;
-  _nEttemptedGradePoints = 0;
-  _nPlaces = 2;
+  private _nCourses = 0;
+  private _nEarnedCredits = 0;
+  private _nEarnedGradePoints = 0;
+  private _nEttemptedGradePoints = 0;
+  private _nPlaces = 2;
 
   gradeToPoints(grade: number): number {
     if (grade >= 90) return 4.0;
@@ -45,8 +45,12 @@ export class GPA {
   }
 
   getGpa(): number {
-    return this._truncateGpa(
-      this._nEarnedGradePoints / this._nEttemptedGradePoints,
-    );
+    if (this._nEttemptedGradePoints === 0) {
+      return 0;
+    }
+
+    const gpa = this._nEarnedGradePoints / this._nEttemptedGradePoints;
+
+    return this._truncateGpa(gpa);
   }
 }

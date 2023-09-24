@@ -1,17 +1,30 @@
-import { siteConfig } from "@/lib/site-config";
+import Link from "next/link";
+
+import { siteConfig } from "@/config/site-config";
 import { cn } from "@/lib/utils";
 
-export function SiteLogoText(props: React.HTMLAttributes<HTMLDivElement>) {
-  const { className, ...otherProps } = props;
+type SiteLogoTextProps = {
+  className?: string;
+};
+
+export function SiteLogoTextLink({ ...props }: SiteLogoTextProps) {
   return (
-    <div
+    <Link href="/">
+      <SiteLogoText {...props} />
+    </Link>
+  );
+}
+
+export function SiteLogoText({ className, ...props }: SiteLogoTextProps) {
+  return (
+    <span
       className={cn(
-        "flex items-center text-xl font-semibold tracking-tight",
+        "flex items-center text-xl font-bold tracking-tight text-accent-foreground",
         className,
       )}
-      {...otherProps}
+      {...props}
     >
       {siteConfig.name}
-    </div>
+    </span>
   );
 }

@@ -8,13 +8,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-//
-// Enums
-//
-
 enum UserRole {
   USER
-  PRO
+  PREMIUM
   ADMIN
 }
 
@@ -23,12 +19,23 @@ enum CourseRequirementKind {
   CO_REQUISITE
 }
 
-//
-// Models
-//
+enum CourseColor {
+  GRAY
+  RED
+  ORANGE
+  YELLOW
+  LIME
+  EMERALD
+  SKY
+  BLUE
+  INDIGO
+  VIOLET
+  FUCHSIA
+  PINK
+}
 
 model User {
-  id String @id @default(cuid())
+  id String @id @default(nanoid())
 
   // nextauth info
   name          String?   @db.VarChar(255)
@@ -41,8 +48,12 @@ model User {
   // basic info
   role UserRole @default(USER)
 
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // optional openai info
-  openaiApiKey String?
+  openAiApiKey String?
 
   // semesters that are connected to this user
   semesters Semester[]
@@ -55,12 +66,16 @@ model User {
 }
 
 model Semester {
-  id String @id @default(cuid())
+  id String @id @default(nanoid())
 
   // basic info
   name      String   @db.VarChar(255)
   startDate DateTime
   endDate   DateTime
+
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // courses that are connected to this semester
   courses Course[]
@@ -73,15 +88,19 @@ model Semester {
 }
 
 model Course {
-  id String @id @default(cuid())
+  id String @id @default(nanoid())
 
   // basic info
-  name         String  @db.VarChar(255)
-  shortId      String? @db.VarChar(255)
-  description  String? @db.VarChar(1024)
-  creditHours  Int     @default(0)
-  currentGrade Float   @default(100)
-  color        String? @db.VarChar(6)
+  name         String      @db.VarChar(255)
+  shortId      String?     @db.VarChar(255)
+  description  String?     @db.VarChar(1024)
+  creditHours  Int         @default(0)
+  currentGrade Float       @default(100)
+  color        CourseColor @default(GRAY)
+
+  //
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // requirements that are connected to this course
   requirements CourseRequirement[]
@@ -102,7 +121,7 @@ model Course {
 }
 
 model Assignment {
-  id String @id @default(cuid())
+  id String @id @default(nanoid())
 
   // basic info
   title      String   @db.VarChar(128)
@@ -122,7 +141,7 @@ model Assignment {
 }
 
 model CourseRequirement {
-  id String @id @default(cuid())
+  id String @id @default(nanoid())
 
   // basic info
   kind CourseRequirementKind
@@ -134,12 +153,8 @@ model CourseRequirement {
   @@index([courseId])
 }
 
-//
-// NEXTAUTH MODELS
-//
-
 model Account {
-  id                       String  @id @default(cuid())
+  id                       String  @id @default(nanoid())
   type                     String
   provider                 String
   providerAccountId        String
@@ -165,7 +180,7 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(nanoid())
   expires      DateTime
   sessionToken String   @unique
 

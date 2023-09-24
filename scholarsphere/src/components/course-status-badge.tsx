@@ -4,18 +4,22 @@ import { type CourseStatusEnum } from "@/types/shared";
 
 import { Badge } from "@/components/ui/badge";
 
-interface CourseStatusBadgeProps {
+type CourseStatusBadgeProps = {
   status: CourseStatusEnum;
-}
+  className?: string;
+};
 
-export function CourseStatusBadge({ status }: CourseStatusBadgeProps) {
+export function CourseStatusBadge({
+  status,
+  className,
+}: CourseStatusBadgeProps) {
   const { color, label } = COURSE_STATUSES[status];
 
   return (
     <>
       <Badge
         variant="outline"
-        className={cn("text-xs capitalize text-white", color)}
+        className={cn("text-xs capitalize text-white", color, className)}
       >
         {label}
       </Badge>
