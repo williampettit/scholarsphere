@@ -1,4 +1,4 @@
-import { PersonIcon } from "@radix-ui/react-icons";
+import { type Metadata } from "next/types";
 
 import { requireUser } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";
@@ -9,6 +9,10 @@ import { Separator } from "@/components/ui/separator";
 
 import { DeleteSessionButton } from "@/app/(app)/(authenticated)/settings/(subpages)/sessions/delete-session-button";
 import { SettingsSubpage } from "@/app/(app)/(authenticated)/settings/components/settings-subpage";
+
+export const metadata: Metadata = {
+  title: "Sessions",
+};
 
 type SessionCardProps = {
   id: string;

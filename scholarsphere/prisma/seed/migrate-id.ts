@@ -1,9 +1,8 @@
-import { nanoid } from "ai";
+import { nanoid } from "nanoid";
 
 import { prismaClient } from "./db";
 
 async function main() {
-  //
   // const type = "assignment";
   // const type = "course";
   // const type = "user";

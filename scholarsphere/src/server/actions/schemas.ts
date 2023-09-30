@@ -13,8 +13,8 @@ import {
 //
 
 export const addAssignmentFromNaturalLanguageSchema = z.object({
-  naturalLanguageQuery: z.string().nonempty(),
   courseId: nanoidSchema,
+  naturalLanguageQuery: z.string().nonempty(),
 });
 
 export type AddAssignmentFromNaturalLanguageValues = z.infer<
@@ -26,8 +26,8 @@ export type AddAssignmentFromNaturalLanguageValues = z.infer<
 //
 
 export const addAssignmentFormSchema = assignmentSchema.pick({
-  title: true,
   courseId: true,
+  title: true,
   dueDate: true,
 });
 

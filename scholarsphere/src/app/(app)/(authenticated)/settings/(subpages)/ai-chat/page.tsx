@@ -1,10 +1,16 @@
+import { type Metadata } from "next/types";
+
 import { getPlaceholderApiKey } from "@/lib/utils";
 
 import { requireUser } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";
 
-import { AiChatSettingsForm } from "@/app/(app)/(authenticated)/settings/(subpages)/ai/ai-form";
+import { AiChatSettingsForm } from "@/app/(app)/(authenticated)/settings/(subpages)/ai-chat/ai-chat-settings-form";
 import { SettingsSubpage } from "@/app/(app)/(authenticated)/settings/components/settings-subpage";
+
+export const metadata: Metadata = {
+  title: "AI Chat Settings",
+};
 
 async function getInitialAiSettingsFormValues() {
   const { userId } = await requireUser();

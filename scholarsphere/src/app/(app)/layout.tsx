@@ -1,35 +1,19 @@
+import {
+  DEFAULT_FONT_KEY,
+  FONT_COOKIE_NAME,
+  FONT_MAP,
+  FontKey,
+} from "@/styles/fonts";
 import "@/styles/globals.css";
+import "@/styles/themes.css";
 
 import { type Metadata } from "next";
-import {
-  /* best */
-  Inter as PrimaryFont,
-  /* good */
-  // Chivo as PrimaryFont,
-  // Work_Sans as PrimaryFont,
-  // Plus_Jakarta_Sans as PrimaryFont,
-  // Nunito_Sans as PrimaryFont,
-  // Rubik as PrimaryFont,
-  // Inter_Tight as PrimaryFont,
-  // Sora as PrimaryFont,
-  // Montserrat as PrimaryFont,
-  // Mulish as PrimaryFont,
-
-  /* decent */
-  // Lexend as PrimaryFont,
-  // EB_Garamond as PrimaryFont,
-  // Epilogue as PrimaryFont,
-} from "next/font/google";
+import { cookies } from "next/headers";
 
 import { siteConfig } from "@/config/site-config";
-
 import { type RootLayoutProps } from "@/types/layout";
 
 import { Providers } from "@/components/providers";
-
-const primaryFont = PrimaryFont({
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: {
@@ -52,12 +36,50 @@ export const metadata: Metadata = {
   // },
 };
 
-export default async function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
+  // get cookie store
+  const cookieStore = cookies();
+
+  // get selected font cookie
+  const fontCookie = cookieStore.get(FONT_COOKIE_NAME);
+
+  // get font key
+  const fontKey = (fontCookie?.value ?? DEFAULT_FONT_KEY) as FontKey;
+
+  // get font data
+  const fontData = FONT_MAP[fontKey];
+
   return (
     <html className="scroll-smooth" lang="en" suppressHydrationWarning>
-      <body className={primaryFont.className}>
-        <Providers>
-          <div className="relative flex min-h-screen flex-col">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="stylesheet" href={fontData.url} />
+      </head>
+
+      <body
+        style={{
+          ...fontData.style,
+        }}
+      >
+        <Providers
+          cookieProviderProps={{
+            value: cookieStore.getAll(),
+          }}
+        >
+          <div
+            className="
+              relative 
+              flex 
+              min-h-screen 
+              flex-col 
+              bg-background 
+            "
+          >
             <div className="flex-1">{children}</div>
           </div>
         </Providers>

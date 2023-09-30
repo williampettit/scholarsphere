@@ -18,48 +18,46 @@ type DashboardHeaderProps = {
 
 function ChangelogLink() {
   return (
-    <>
-      <Link
-        href={siteMap.changelog.url}
-        className="
-          mb-2 
-          inline-flex 
-          items-center 
-          rounded-lg 
-          bg-muted 
-          px-3 
-          py-1 
-          text-sm 
-          font-medium 
-          text-accent-foreground/80
-        "
-      >
-        <span className="inline">👋</span>
-        <Separator className="mx-2 h-4" orientation="vertical" />
-        <span className="inline">Check out the latest site improvements!</span>
-        <Icons.ArrowRight className="ml-1 h-4 w-4" />
-      </Link>
-    </>
+    <Link
+      href={siteMap.changelog.url}
+      className="
+        inline-flex 
+        items-center 
+        rounded-lg 
+        bg-muted 
+        px-3 
+        py-1 
+        text-sm 
+        font-medium 
+        text-accent-foreground/80 
+      "
+    >
+      <span>👋</span>
+
+      <Separator className="mx-2 h-4" orientation="vertical" />
+
+      <span>Check out the latest site improvements!</span>
+
+      <Icons.ArrowRight className="ml-2 h-4 w-4" />
+    </Link>
   );
 }
 
 export function DashboardHeader({ userDisplayName }: DashboardHeaderProps) {
   return (
-    <>
-      <div className="space-y-2">
-        <ChangelogLink />
+    <div className="space-y-6">
+      <ChangelogLink />
 
-        <PageHeader>
-          <PageHeaderTitle>
-            <Greeting name={userDisplayName} />
-          </PageHeaderTitle>
+      <PageHeader>
+        <PageHeaderTitle>
+          <Greeting name={userDisplayName} />
+        </PageHeaderTitle>
 
-          <PageHeaderSubtitle>
-            Welcome to your dashboard. Here you can view your upcoming
-            assignments for your active courses.
-          </PageHeaderSubtitle>
-        </PageHeader>
-      </div>
-    </>
+        <PageHeaderSubtitle>
+          Welcome to your dashboard. Here you can view your upcoming assignments
+          for your active courses.
+        </PageHeaderSubtitle>
+      </PageHeader>
+    </div>
   );
 }

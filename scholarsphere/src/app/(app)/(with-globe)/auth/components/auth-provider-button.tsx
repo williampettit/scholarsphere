@@ -3,7 +3,6 @@
 import { signIn } from "next-auth/react";
 
 import { siteMap } from "@/config/site-config";
-
 import {
   AUTH_PROVIDER_DATA,
   FALLBACK_AUTH_PROVIDER_DATA,

@@ -1,8 +1,14 @@
+import { type Metadata } from "next/types";
+
 import { requireUser } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";
 
-import { AccountForm } from "@/app/(app)/(authenticated)/settings/(subpages)/account/account-form";
+import { AccountForm } from "@/app/(app)/(authenticated)/settings/(subpages)/account/account-settings-form";
 import { SettingsSubpage } from "@/app/(app)/(authenticated)/settings/components/settings-subpage";
+
+export const metadata: Metadata = {
+  title: "Account Settings",
+};
 
 async function getInitialAccountFormValues() {
   // wait 2000ms

@@ -1,3 +1,5 @@
+import { type Metadata } from "next/types";
+
 import {
   AUTH_PROVIDER_DATA,
   FALLBACK_AUTH_PROVIDER_DATA,
@@ -10,6 +12,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 import { SettingsSubpage } from "@/app/(app)/(authenticated)/settings/components/settings-subpage";
+
+export const metadata: Metadata = {
+  title: "Connections",
+};
 
 async function getUserLinkedAccounts() {
   const { userId } = await requireUser();

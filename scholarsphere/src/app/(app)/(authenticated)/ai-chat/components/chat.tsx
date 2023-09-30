@@ -1,8 +1,10 @@
 "use client";
 
-import { siteConfig } from "@/config/site-config";
-import { FunctionCallHandler, nanoid } from "ai";
+import { FunctionCallHandler } from "ai";
 import { useChat } from "ai/react";
+import { nanoid } from "nanoid";
+
+import { siteConfig } from "@/config/site-config";
 
 import { Icons } from "@/components/icons";
 import { LoadingIndicator } from "@/components/loading-indicator";

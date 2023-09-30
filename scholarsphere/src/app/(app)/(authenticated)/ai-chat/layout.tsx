@@ -2,7 +2,6 @@ import { type Metadata } from "next";
 import Link from "next/link";
 
 import { siteConfig } from "@/config/site-config";
-
 import { type LayoutProps } from "@/types/layout";
 
 import { requireUser } from "@/server/auth";

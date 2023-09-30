@@ -6,18 +6,22 @@ type GreetingProps = {
   name: string;
 };
 
-function getGreeting(date: Date) {
+function getGreeting(date: Date): string {
   const hour = date.getHours();
 
   if (hour > 23 || hour < 5) {
     return "Good night";
-  } else if (hour < 12) {
-    return "Good morning";
-  } else if (hour < 17) {
-    return "Good afternoon";
-  } else {
-    return "Good evening";
   }
+
+  if (hour < 12) {
+    return "Good morning";
+  }
+
+  if (hour < 17) {
+    return "Good afternoon";
+  }
+
+  return "Good evening";
 }
 
 export function Greeting({ name }: GreetingProps) {

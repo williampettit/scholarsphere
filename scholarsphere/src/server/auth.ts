@@ -13,7 +13,6 @@ import { getServerSession } from "next-auth/next";
 import GithubProvider from "next-auth/providers/github";
 
 import { siteConfig, siteMap } from "@/config/site-config";
-
 import { env } from "@/lib/env";
 import { type UserRole } from "@/types/shared";
 
@@ -106,6 +105,6 @@ export async function requireUserOpenAiApiKey(): Promise<{
 
   return {
     userId,
-    userOpenAiApiKey: userOpenAiApiKey,
+    userOpenAiApiKey,
   };
 }

@@ -1,4 +1,3 @@
-import { siteConfig } from "@/config/site-config";
 import { Message } from "ai/react";
 import dayjs from "dayjs";
 import {
@@ -9,6 +8,8 @@ import {
   UserIcon,
 } from "lucide-react";
 import remarkGfm from "remark-gfm";
+
+import { siteConfig } from "@/config/site-config";
 
 import {
   type ReactMarkdownComponentMap as MarkdownComponentMap,
@@ -68,6 +69,11 @@ const ROLE_MAP: RoleMap = {
 };
 
 const markdownComponentMap: MarkdownComponentMap = {
+  code({ children }) {
+    return (
+      <code className="rounded-sm bg-accent p-0.5 text-sm">{children}</code>
+    );
+  },
   p({ children }) {
     return <p className="mb-2 last:mb-0">{children}</p>;
   },
@@ -83,6 +89,9 @@ const markdownComponentMap: MarkdownComponentMap = {
   },
   ol({ children }) {
     return <ol className="ml-4 list-disc">{children}</ol>;
+  },
+  li({ children }) {
+    return <li className="mb-1">{children}</li>;
   },
   h1({ children }) {
     return <h1 className="mb-2 text-lg">{children}</h1>;
@@ -101,9 +110,6 @@ const markdownComponentMap: MarkdownComponentMap = {
   },
   h6({ children }) {
     return <h6 className="mb-2 text-sm">{children}</h6>;
-  },
-  li({ children }) {
-    return <li className="mb-1">{children}</li>;
   },
   table({ children }) {
     return <Table>{children}</Table>;
@@ -137,38 +143,36 @@ export function ChatMessage({
   const { label: roleLabel, style: roleStyle, icon: RoleIcon } = ROLE_MAP[role];
 
   return (
-    <>
-      <Card>
-        <CardHeader className="flex flex-row justify-between">
-          <div className="flex flex-row gap-2">
-            <RoleIcon className={roleStyle} />
+    <Card>
+      <CardHeader className="flex flex-row justify-between">
+        <div className="flex flex-row gap-2">
+          <RoleIcon className={roleStyle} />
 
-            <span className="text-md font-semibold">{roleLabel}</span>
-          </div>
+          <span className="text-md font-semibold">{roleLabel}</span>
+        </div>
 
-          <Badge className="flex flex-row gap-2 space-x-2">
-            {createdAt ? (
-              <>
-                {dayjs(createdAt).fromNow()}
+        <Badge className="flex flex-row gap-2 space-x-2 font-normal">
+          {createdAt ? (
+            <>
+              {dayjs(createdAt).fromNow()}
 
-                <Separator orientation="vertical" />
-              </>
-            ) : null}
+              <Separator orientation="vertical" />
+            </>
+          ) : null}
 
-            {`#${index}`}
-          </Badge>
-        </CardHeader>
+          {`#${index}`}
+        </Badge>
+      </CardHeader>
 
-        <CardContent>
-          <MemoizedReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            className="prose dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 break-words"
-            components={markdownComponentMap}
-          >
-            {content}
-          </MemoizedReactMarkdown>
-        </CardContent>
-      </Card>
-    </>
+      <CardContent>
+        <MemoizedReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          className="prose dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 break-words"
+          components={markdownComponentMap}
+        >
+          {content}
+        </MemoizedReactMarkdown>
+      </CardContent>
+    </Card>
   );
 }

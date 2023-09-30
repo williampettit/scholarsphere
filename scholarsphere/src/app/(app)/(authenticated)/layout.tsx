@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 
 import { siteMap } from "@/config/site-config";
-
 import { type LayoutProps } from "@/types/layout";
 
 import { getSession } from "@/server/auth";

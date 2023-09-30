@@ -6,7 +6,6 @@ import Link, { type LinkProps } from "next/link";
 import { useRouter } from "next/navigation";
 
 import { navLinks, siteMap } from "@/config/site-config";
-
 import { cn } from "@/lib/utils";
 
 import { Icons } from "@/components/icons";

@@ -17,27 +17,19 @@ export async function SiteHeader() {
     <>
       <header
         className="
-        supports-backdrop-blur:bg-background/60
-        sticky
-        top-0
-        z-50
-        w-full
-        border-b
-        bg-background/80
-        bg-none
-        shadow-sm
-        backdrop-blur
-      "
+          supports-backdrop-blur:bg-background/60
+          sticky
+          top-0
+          z-50
+          w-full
+          border-b
+          bg-background/80
+          bg-none
+          shadow-sm
+          backdrop-blur
+        "
       >
-        <div
-          className="
-            container 
-            flex 
-            h-16 
-            items-center 
-            gap-8 
-          "
-        >
+        <div className="container flex h-16 items-center gap-8">
           <MainNav />
 
           <MobileNav />

@@ -4,14 +4,15 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { navLinks, settingsSidebarNavLinks } from "@/config/site-config";
 import { DialogProps } from "@radix-ui/react-alert-dialog";
 import { useTheme } from "next-themes";
 
+import { navLinks, settingsSidebarNavLinks } from "@/config/site-config";
 import { cn } from "@/lib/utils";
 import { type CourseBasicInfo } from "@/types/shared";
 
 import { Icons } from "@/components/icons";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   CommandDialog,
@@ -23,8 +24,10 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 
+import { CourseColorDot } from "@/app/(app)/(authenticated)/components/course-color-dot";
+
 type CommandMenuProps = DialogProps & {
-  activeCourses: Pick<CourseBasicInfo, "id" | "name">[];
+  activeCourses: Pick<CourseBasicInfo, "id" | "name" | "color">[];
 };
 
 export function CommandMenu({ activeCourses, ...props }: CommandMenuProps) {
@@ -71,7 +74,7 @@ export function CommandMenu({ activeCourses, ...props }: CommandMenuProps) {
         <CommandInput placeholder="Type a command or search..." />
 
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandEmpty>No results found</CommandEmpty>
 
           <CommandGroup heading="Pages">
             {Object.entries(navLinks).map(([key, navItem]) => (
@@ -83,7 +86,10 @@ export function CommandMenu({ activeCourses, ...props }: CommandMenuProps) {
                 }}
               >
                 <Icons.Page className="mr-2 h-4 w-4" />
-                {navItem.label}
+                <div className="flex flex-row gap-2">
+                  {navItem.label}
+                  {navItem.new && <Badge>New</Badge>}
+                </div>
               </CommandItem>
             ))}
           </CommandGroup>
@@ -104,7 +110,10 @@ export function CommandMenu({ activeCourses, ...props }: CommandMenuProps) {
                 }}
               >
                 <Icons.Backpack className="mr-2 h-4 w-4" />
-                {course.name}
+                <div className="flex flex-row items-center space-x-2">
+                  <CourseColorDot color={course.color} />
+                  <span>{course.name}</span>
+                </div>
               </CommandItem>
             ))}
           </CommandGroup>

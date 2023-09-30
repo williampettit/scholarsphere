@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { S_addAssignmentFromNaturalLanguage } from "@/server/actions/add-assignment";
+import { S_addAssignmentFromNaturalLanguage } from "@/server/actions/add-assignment-from-natural-language";
 import {
   type AddAssignmentFromNaturalLanguageValues,
   addAssignmentFromNaturalLanguageSchema,
@@ -21,27 +21,40 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 
-export function AddAssignmentInputForm({ courseId }: { courseId: string }) {
+type AddAssignmentInputFormProps = {
+  courseId: string;
+};
+
+export function AddAssignmentInputForm({
+  courseId,
+}: AddAssignmentInputFormProps) {
   const form = useForm<z.infer<typeof addAssignmentFromNaturalLanguageSchema>>({
     resolver: zodResolver(addAssignmentFromNaturalLanguageSchema),
     defaultValues: {
-      courseId: courseId,
+      courseId,
+      naturalLanguageQuery: "",
     },
   });
 
-  async function onSubmit(data: AddAssignmentFromNaturalLanguageValues) {
+  function onSubmit(data: AddAssignmentFromNaturalLanguageValues) {
+    console.log(
+      "AddAssignmentInputForm.onSubmit: data =",
+      JSON.stringify(data, null, 2),
+    );
+
     S_addAssignmentFromNaturalLanguage(data)
       .then(() => {
         toast({
-          title: "Assignment(s) added",
+          variant: "success",
+          title: "Success",
+          description: "Assignment(s) added",
         });
-
-        form.reset();
       })
-      .catch(() => {
+      .catch((error) => {
         toast({
-          title: "Failed to add assignment(s)",
           variant: "destructive",
+          title: "Failed to add assignment(s)",
+          description: error.message,
         });
       });
   }

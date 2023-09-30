@@ -17,6 +17,7 @@ export async function S_getActiveCourses() {
     select: {
       id: true,
       name: true,
+      color: true,
       shortId: true,
       semesterId: true,
       creditHours: true,

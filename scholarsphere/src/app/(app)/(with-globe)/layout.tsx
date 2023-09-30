@@ -1,5 +1,4 @@
 import { siteConfig } from "@/config/site-config";
-
 import { type LayoutProps } from "@/types/layout";
 
 import { SiteLogoTextLink } from "@/components/site-logo-text";

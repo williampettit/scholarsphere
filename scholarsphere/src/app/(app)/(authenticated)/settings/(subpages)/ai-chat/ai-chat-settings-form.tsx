@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 
-import { siteConfig } from "@/config/site-config";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+
+import { siteConfig } from "@/config/site-config";
 
 import { S_editUser } from "@/server/actions/edit-user";
 import {

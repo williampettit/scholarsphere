@@ -1,4 +1,14 @@
-export const siteConfig = {
+type SiteConfig = {
+  name: string;
+  description: string;
+  github: string;
+  author: {
+    name: string;
+    github: string;
+  };
+};
+
+export const siteConfig: SiteConfig = {
   name: "Scholarsphere",
   description: "Painlessly track and plan academic progress, all in one place",
   github: "https://github.com/williampettit/scholarsphere",
@@ -32,7 +42,7 @@ export const siteMap: SiteMap = {
     label: "Assignments",
     url: "/assignments",
   },
-  ai: {
+  aiChat: {
     label: "AI Chat",
     url: "/ai-chat",
     new: true,
@@ -75,7 +85,7 @@ export const navLinks: SiteMap = {
   dashboard: siteMap.dashboard,
   courses: siteMap.courses,
   assignments: siteMap.assignments,
-  ai: siteMap.ai,
+  aiChat: siteMap.aiChat,
   // mockTranscript: siteMap.mockTranscript,
   // changelog: siteMap.changelog,
   // settings: siteMap.settings,
@@ -90,9 +100,9 @@ export const settingsSidebarNavLinks: SiteMap = {
     label: "Appearance",
     url: siteMap.settings.url + "/appearance",
   },
-  ai: {
+  aiChat: {
     label: "AI Chat",
-    url: siteMap.settings.url + "/ai",
+    url: siteMap.settings.url + "/ai-chat",
     new: true,
   },
   sessions: {
