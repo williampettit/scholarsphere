@@ -98,6 +98,10 @@ model Course {
   currentGrade Float       @default(100)
   color        CourseColor @default(GRAY)
 
+  // extra info
+  courseUrl   String? @db.VarChar(1024)
+  syllabusUrl String? @db.VarChar(1024)
+
   //
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

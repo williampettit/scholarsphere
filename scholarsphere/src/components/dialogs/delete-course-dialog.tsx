@@ -26,47 +26,45 @@ export function DeleteCourseDialog({
   children,
 }: DeleteCourseDialogProps) {
   return (
-    <>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
 
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
 
-            <AlertDialogDescription>
-              Are you sure you want to delete this course? This action cannot be
-              undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+          <AlertDialogDescription>
+            Are you sure you want to delete this course? This action cannot be
+            undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
 
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-            <AlertDialogAction
-              className={buttonVariants({
-                variant: "destructive",
-              })}
-              onClick={() => {
-                S_deleteCourse({ id: courseId })
-                  .then(() => {
-                    toast({
-                      title: "Course deleted",
-                    });
-                  })
-                  .catch(() => {
-                    toast({
-                      title: "Failed to delete course",
-                      variant: "destructive",
-                    });
+          <AlertDialogAction
+            className={buttonVariants({
+              variant: "destructive",
+            })}
+            onClick={() => {
+              S_deleteCourse({ id: courseId })
+                .then(() => {
+                  toast({
+                    title: "Course deleted",
                   });
-              }}
-            >
-              Delete Course
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+                })
+                .catch(() => {
+                  toast({
+                    title: "Failed to delete course",
+                    variant: "destructive",
+                  });
+                });
+            }}
+          >
+            Delete Course
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

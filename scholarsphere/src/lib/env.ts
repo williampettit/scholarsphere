@@ -4,9 +4,14 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
+const nodeEnvSchema = z.enum(["development", "test", "production"]);
+
 export const env = createEnv({
+  client: {
+    NEXT_PUBLIC_NODE_ENV: nodeEnvSchema,
+  },
   server: {
-    NODE_ENV: z.enum(["development", "test", "production"]),
+    NODE_ENV: nodeEnvSchema,
     DATABASE_URL: z.string().url(),
     NEXTAUTH_URL: z.preprocess(
       (str) => process.env.VERCEL_URL ?? str,
@@ -17,6 +22,7 @@ export const env = createEnv({
     GITHUB_CLIENT_SECRET: z.string().nonempty(),
   },
   runtimeEnv: {
+    NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,

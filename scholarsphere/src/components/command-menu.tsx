@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { type CourseBasicInfo } from "@/types/shared";
 
 import { Icons } from "@/components/icons";
-import { Badge } from "@/components/ui/badge";
+import { NewBadge } from "@/components/new-badge";
 import { Button } from "@/components/ui/button";
 import {
   CommandDialog,
@@ -86,9 +86,10 @@ export function CommandMenu({ activeCourses, ...props }: CommandMenuProps) {
                 }}
               >
                 <Icons.Page className="mr-2 h-4 w-4" />
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row gap-1">
                   {navItem.label}
-                  {navItem.new && <Badge>New</Badge>}
+                  
+                  {navItem.new && <NewBadge />}
                 </div>
               </CommandItem>
             ))}

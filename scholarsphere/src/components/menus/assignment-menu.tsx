@@ -25,41 +25,39 @@ export function AssignmentMenu({
   assignmentName,
 }: AssignmentMenuProps) {
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Icons.HorizontalDots className="cursor-pointer" />
-        </DropdownMenuTrigger>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Icons.HorizontalDots className="cursor-pointer" />
+      </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="w-[200px]">
-          <DropdownMenuLabel className="flex flex-col space-y-1">
-            <p className="line-clamp-1 overflow-ellipsis">Assignment</p>
-            <p className="line-clamp-1 overflow-ellipsis font-medium text-muted-foreground">
-              {assignmentName}
-            </p>
-          </DropdownMenuLabel>
+      <DropdownMenuContent align="end" className="w-[200px]">
+        <DropdownMenuLabel className="flex flex-col space-y-1">
+          <p className="line-clamp-1 overflow-ellipsis">Assignment</p>
+          <p className="line-clamp-1 overflow-ellipsis font-medium text-muted-foreground">
+            {assignmentName}
+          </p>
+        </DropdownMenuLabel>
 
-          <DropdownMenuSeparator />
+        <DropdownMenuSeparator />
 
-          <DropdownMenuGroup>
-            <Link
-              href={`/course/${courseId}/assignment/${assignmentId}`}
-              scroll={false}
-            >
-              <DropdownMenuItem>Edit...</DropdownMenuItem>
-            </Link>
+        <DropdownMenuGroup>
+          <Link
+            href={`/course/${courseId}/assignment/${assignmentId}`}
+            scroll={false}
+          >
+            <DropdownMenuItem>Edit...</DropdownMenuItem>
+          </Link>
 
-            <Link
-              href={`/course/${courseId}/assignment/${assignmentId}`}
-              scroll={false}
-            >
-              <DropdownMenuItem className="text-rose-600">
-                Delete...
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+          <Link
+            href={`/course/${courseId}/assignment/${assignmentId}`}
+            scroll={false}
+          >
+            <DropdownMenuItem className="text-rose-600">
+              Delete...
+            </DropdownMenuItem>
+          </Link>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

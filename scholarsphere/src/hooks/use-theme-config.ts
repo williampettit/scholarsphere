@@ -1,7 +1,12 @@
 import { atom, useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-import { Theme } from "@/lib/themes";
+import { siteConfig } from "@/config/site-config";
+import { type Theme } from "@/lib/themes";
+
+//
+export const THEME_CONFIG_STORAGE_KEY: string =
+  `${siteConfig.name}-theme-config`.toLowerCase();
 
 // true by default, because we start in loading state
 export const loadingThemeConfigAtom = atom<boolean>(true);
@@ -20,12 +25,12 @@ export type ThemeConfig = {
 //
 const initialThemeConfig: ThemeConfig = {
   theme: "stone",
-  radius: 0.4,
+  radius: 0.6,
 };
 
 //
 export const themeConfigAtom = atomWithStorage<ThemeConfig>(
-  "theme-config",
+  THEME_CONFIG_STORAGE_KEY,
   initialThemeConfig,
 );
 

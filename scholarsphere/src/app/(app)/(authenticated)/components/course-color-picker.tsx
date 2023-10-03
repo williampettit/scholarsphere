@@ -1,6 +1,6 @@
 "use client";
 
-import { COURSE_COLOR_MAP } from "@/data/course-colors";
+import { COURSE_COLOR_MAP } from "@/lib/course-color-map";
 import { cn, entries } from "@/lib/utils";
 import { type CourseColor } from "@/types/shared";
 

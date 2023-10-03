@@ -1,5 +1,6 @@
 import { type Metadata } from "next/types";
 
+import { siteConfig } from "@/config/site-config";
 import { getPlaceholderApiKey } from "@/lib/utils";
 
 import { requireUser } from "@/server/auth";
@@ -36,7 +37,10 @@ export default async function AiSettingsPage() {
 
   return (
     <>
-      <SettingsSubpage title="AI Chat" subtitle="Update your AI Chat settings.">
+      <SettingsSubpage
+        title="AI Chat"
+        subtitle={`Manage your ${siteConfig.name} AI Chat settings here.`}
+      >
         <AiChatSettingsForm
           placeholderApiKey={placeholderApiKey}
           defaultValues={initialValues}

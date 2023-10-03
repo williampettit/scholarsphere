@@ -1,9 +1,10 @@
 import { type Metadata } from "next/types";
 
+import { siteConfig } from "@/config/site-config";
 import {
-  AUTH_PROVIDER_DATA,
-  FALLBACK_AUTH_PROVIDER_DATA,
-} from "@/lib/auth-provider-data";
+  AUTH_PROVIDER_METADATA_MAP,
+  FALLBACK_AUTH_PROVIDER_METADATA,
+} from "@/lib/auth-provider-metadata-map";
 
 import { requireUser } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";
@@ -51,44 +52,42 @@ function ConnectionCard({
   ...data
 }: ConnectionCardProps) {
   const { name: providerName, icon: AuthProviderIcon } =
-    AUTH_PROVIDER_DATA.get(provider) ?? FALLBACK_AUTH_PROVIDER_DATA;
+    AUTH_PROVIDER_METADATA_MAP.get(provider) ?? FALLBACK_AUTH_PROVIDER_METADATA;
 
   return (
-    <>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex flex-row justify-between">
-            <div className="flex flex-row items-center space-x-2">
-              <AuthProviderIcon />
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex flex-row justify-between">
+          <div className="flex flex-row items-center space-x-2">
+            <AuthProviderIcon />
 
-              <span>{providerName}</span>
+            <span>{providerName}</span>
+          </div>
+
+          <span className="font-sm font-medium text-muted-foreground">
+            {connectionId}
+          </span>
+        </CardTitle>
+      </CardHeader>
+
+      <Separator />
+
+      <CardContent className="flex flex-col space-y-2 p-6 text-sm text-muted-foreground">
+        {Object.entries(data)
+          .map(([label, data]) => ({
+            label,
+            data: data ? data.toString() : "null",
+          }))
+          .map(({ label, data }) => (
+            <div key={label} className="flex flex-row space-x-4">
+              <span className="font-semibold uppercase text-muted-foreground">
+                {label}
+              </span>
+              <span className="text-accent-foreground">{data}</span>
             </div>
-
-            <span className="font-sm font-medium text-muted-foreground">
-              {connectionId}
-            </span>
-          </CardTitle>
-        </CardHeader>
-
-        <Separator />
-
-        <CardContent className="flex flex-col space-y-2 p-6 text-sm text-muted-foreground">
-          {Object.entries(data)
-            .map(([label, data]) => ({
-              label,
-              data: data ? data.toString() : "null",
-            }))
-            .map(({ label, data }) => (
-              <div key={label} className="flex flex-row space-x-4">
-                <span className="font-semibold uppercase text-muted-foreground">
-                  {label}
-                </span>
-                <span className="text-accent-foreground">{data}</span>
-              </div>
-            ))}
-        </CardContent>
-      </Card>
-    </>
+          ))}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -96,17 +95,15 @@ export default async function LinkedAccountsPage() {
   const accounts = await getUserLinkedAccounts();
 
   return (
-    <>
-      <SettingsSubpage
-        title="Connections"
-        subtitle="View and manage your active connections."
-      >
-        <div className="flex flex-col space-y-4">
-          {accounts.map((account) => (
-            <ConnectionCard key={account.id} {...account} />
-          ))}
-        </div>
-      </SettingsSubpage>
-    </>
+    <SettingsSubpage
+      title="Connections"
+      subtitle={`View and manage your active ${siteConfig.name} connections here.`}
+    >
+      <div className="flex flex-col space-y-4">
+        {accounts.map((account) => (
+          <ConnectionCard key={account.id} {...account} />
+        ))}
+      </div>
+    </SettingsSubpage>
   );
 }

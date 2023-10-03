@@ -26,49 +26,47 @@ export function DeleteAssignmentDialog({
   children,
 }: DeleteAssignmentDialogProps) {
   return (
-    <>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
 
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
 
-            <AlertDialogDescription>
-              Are you sure you want to delete this assignment? This action
-              cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+          <AlertDialogDescription>
+            Are you sure you want to delete this assignment? This action cannot
+            be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
 
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-            <AlertDialogAction
-              className={buttonVariants({
-                variant: "destructive",
-              })}
-              onClick={() => {
-                S_deleteAssignment({
-                  id: assignmentId,
-                })
-                  .then(() => {
-                    toast({
-                      title: "Assignment deleted",
-                    });
-                  })
-                  .catch(() => {
-                    toast({
-                      title: "Failed to delete assignment",
-                      variant: "destructive",
-                    });
+          <AlertDialogAction
+            className={buttonVariants({
+              variant: "destructive",
+            })}
+            onClick={() => {
+              S_deleteAssignment({
+                id: assignmentId,
+              })
+                .then(() => {
+                  toast({
+                    title: "Assignment deleted",
                   });
-              }}
-            >
-              Continue
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+                })
+                .catch(() => {
+                  toast({
+                    title: "Failed to delete assignment",
+                    variant: "destructive",
+                  });
+                });
+            }}
+          >
+            Continue
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

@@ -64,92 +64,87 @@ export function EditAssignmentModal({
   }
 
   return (
-    <>
-      <Modal>
-        <DialogContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <DialogHeader>
-                <DialogTitle>Edit Assignment</DialogTitle>
-              </DialogHeader>
+    <Modal>
+      <DialogContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <DialogHeader>
+              <DialogTitle>Edit Assignment</DialogTitle>
+            </DialogHeader>
 
-              <div className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input
-                          spellCheck={false}
-                          placeholder="Test 1"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="dueDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Due Date</FormLabel>
-                      <DatePicker
-                        value={field.value}
-                        onChange={field.onChange}
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input
+                        spellCheck={false}
+                        placeholder="Test 1"
+                        {...field}
                       />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="isComplete"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                      <div className="space-y-0.5">
-                        <FormLabel>Complete</FormLabel>
-                        <FormDescription>
-                          Mark this assignment as complete.
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="dueDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Due Date</FormLabel>
+                    <DatePicker value={field.value} onChange={field.onChange} />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="isComplete"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                    <div className="space-y-0.5">
+                      <FormLabel>Complete</FormLabel>
+                      <FormDescription>
+                        Mark this assignment as complete.
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <DialogFooter className="flex flex-row items-start justify-between">
+              <div className="flex flex-row space-x-2">
+                <DeleteAssignmentDialog assignmentId={assignmentId}>
+                  <Button type="button" variant="destructive" size="icon">
+                    <Icons.Trash className="h-4 w-4" />
+                  </Button>
+                </DeleteAssignmentDialog>
               </div>
 
-              <DialogFooter className="flex flex-row items-start justify-between">
-                <div className="flex flex-row space-x-2">
-                  <DeleteAssignmentDialog assignmentId={assignmentId}>
-                    <Button type="button" variant="destructive" size="icon">
-                      <Icons.Trash className="h-4 w-4" />
-                    </Button>
-                  </DeleteAssignmentDialog>
-                </div>
+              <div className="flex flex-row space-x-2">
+                <CloseModalButton type="reset" variant="outline">
+                  Cancel
+                </CloseModalButton>
 
-                <div className="flex flex-row space-x-2">
-                  <CloseModalButton type="reset" variant="outline">
-                    Cancel
-                  </CloseModalButton>
-
-                  <Button type="submit">Save</Button>
-                </div>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Modal>
-    </>
+                <Button type="submit">Save</Button>
+              </div>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Modal>
   );
 }

@@ -1,5 +1,7 @@
 import { type Metadata } from "next/types";
 
+import { siteConfig } from "@/config/site-config";
+
 import { requireUser } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";
 
@@ -37,7 +39,7 @@ export default async function SettingsAccountPage() {
     <>
       <SettingsSubpage
         title="Account"
-        subtitle="Change your account settings here."
+        subtitle={`View and manage your ${siteConfig.name} account settings here.`}
       >
         <AccountForm
           defaultValues={{

@@ -1,9 +1,3 @@
-import {
-  DEFAULT_FONT_KEY,
-  FONT_COOKIE_NAME,
-  FONT_MAP,
-  FontKey,
-} from "@/styles/fonts";
 import "@/styles/globals.css";
 import "@/styles/themes.css";
 
@@ -11,6 +5,12 @@ import { type Metadata } from "next";
 import { cookies } from "next/headers";
 
 import { siteConfig } from "@/config/site-config";
+import {
+  DEFAULT_FONT_KEY,
+  FONT_COOKIE_NAME,
+  FONT_MAP,
+  type FontKey,
+} from "@/styles/fonts";
 import { type RootLayoutProps } from "@/types/layout";
 
 import { Providers } from "@/components/providers";
@@ -22,31 +22,27 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
-
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
-
-  // twitter: {
-  //   card: "app",
-  //   title: siteConfig.name,
-  //   site: "TODO",
-  //   description: siteConfig.description,
-  // },
 };
 
+function extractFontKeyFromCookie(cookieValue: string | undefined): FontKey {
+  const fontKey = cookieValue;
+
+  if (fontKey && Object.keys(FONT_MAP).includes(fontKey)) {
+    return fontKey as FontKey;
+  }
+
+  return DEFAULT_FONT_KEY;
+}
+
 export default function RootLayout({ children }: RootLayoutProps) {
-  // get cookie store
+  // get font key from cookie
   const cookieStore = cookies();
-
-  // get selected font cookie
   const fontCookie = cookieStore.get(FONT_COOKIE_NAME);
-
-  // get font key
-  const fontKey = (fontCookie?.value ?? DEFAULT_FONT_KEY) as FontKey;
-
-  // get font data
+  const fontKey = extractFontKeyFromCookie(fontCookie?.value);
   const fontData = FONT_MAP[fontKey];
 
   return (
@@ -61,25 +57,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="stylesheet" href={fontData.url} />
       </head>
 
-      <body
-        style={{
-          ...fontData.style,
-        }}
-      >
-        <Providers
-          cookieProviderProps={{
-            value: cookieStore.getAll(),
-          }}
-        >
-          <div
-            className="
-              relative 
-              flex 
-              min-h-screen 
-              flex-col 
-              bg-background 
-            "
-          >
+      <body style={fontData.style}>
+        <Providers cookies={cookieStore.getAll()}>
+          <div className="relative flex min-h-screen flex-col bg-background">
             <div className="flex-1">{children}</div>
           </div>
         </Providers>

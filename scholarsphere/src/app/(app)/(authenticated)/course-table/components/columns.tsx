@@ -2,7 +2,7 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { COURSE_STATUSES } from "@/lib/course-statuses";
+import { COURSE_STATUS_MAP } from "@/lib/course-status-map";
 import { cn, getGradeColor } from "@/lib/utils";
 import {
   type CourseStatusEnum,
@@ -109,9 +109,9 @@ export const columns: ColumnDef<CourseTableEntryType>[] = [
 
       const {
         icon: StatusIcon,
-        color: statusColor,
+        classes: statusColor,
         label: statusLabel,
-      } = COURSE_STATUSES[status];
+      } = COURSE_STATUS_MAP[status];
 
       return (
         <div className="flex w-[120px] items-center">

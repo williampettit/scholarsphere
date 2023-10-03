@@ -2,28 +2,28 @@ import { UserRole } from "@/types/shared";
 
 import { Icons } from "@/components/icons";
 
-type UserRolesProps = {
+type UserRoleMap = {
   [key in UserRole]: {
     label: string;
     icon: React.ComponentType<{ className?: string }>;
-    color: string;
+    classes: string;
   };
 };
 
-export const USER_ROLES: UserRolesProps = {
+export const USER_ROLE_MAP: UserRoleMap = {
   [UserRole.USER]: {
     label: "User",
     icon: Icons.UserRole,
-    color: "text-emerald-600",
+    classes: "text-emerald-600",
   },
   [UserRole.PREMIUM]: {
     label: "Premium",
     icon: Icons.PremiumRole,
-    color: "text-cyan-600",
+    classes: "text-cyan-600",
   },
   [UserRole.ADMIN]: {
     label: "Admin",
     icon: Icons.AdminRole,
-    color: "text-rose-600",
+    classes: "text-rose-600",
   },
 };

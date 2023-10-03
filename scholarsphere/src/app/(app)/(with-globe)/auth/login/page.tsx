@@ -56,21 +56,20 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <>
-      {error ? <AuthPageAlert errorDesc={error} /> : null}
+      {error && <AuthPageAlert errorDesc={error} />}
 
       <AuthHeaderText>Continue with</AuthHeaderText>
 
       <div className="grid gap-4">
-        {providers
-          ? Object.entries(providers).map(([providerId, providerData]) => (
-              <AuthProviderButton
-                key={providerId}
-                providerId={providerId}
-                providerName={providerData.name}
-                postLoginRedirectUrl={callbackUrl}
-              />
-            ))
-          : null}
+        {providers &&
+          Object.entries(providers).map(([providerId, providerData]) => (
+            <AuthProviderButton
+              key={providerId}
+              providerId={providerId}
+              providerName={providerData.name}
+              postLoginRedirectUrl={callbackUrl}
+            />
+          ))}
       </div>
 
       <p className="px-8 text-center text-sm text-muted-foreground">

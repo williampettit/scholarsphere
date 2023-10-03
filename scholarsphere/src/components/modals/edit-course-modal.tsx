@@ -58,117 +58,133 @@ export function EditCourseModal({ defaultValues }: EditCourseModalProps) {
   }
 
   return (
-    <>
-      <Modal>
-        <DialogContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <DialogHeader>
-                <DialogTitle>Edit Course</DialogTitle>
-              </DialogHeader>
+    <Modal>
+      <DialogContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <DialogHeader>
+              <DialogTitle>Edit Course</DialogTitle>
+            </DialogHeader>
 
-              <div className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Course Title</FormLabel>
-                      <FormControl>
-                        <Input
-                          spellCheck={false}
-                          placeholder="Calculus I"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Course Title</FormLabel>
+                    <FormControl>
+                      <Input
+                        spellCheck={false}
+                        placeholder="Calculus I"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="shortId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Course Short ID</FormLabel>
-                      <FormControl>
-                        <Input
-                          spellCheck={false}
-                          placeholder="MATH 2211"
-                          {...field}
-                          value={field.value ?? undefined}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="shortId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Course Short ID</FormLabel>
+                    <FormControl>
+                      <Input
+                        spellCheck={false}
+                        placeholder="MATH 2211"
+                        {...field}
+                        value={field.value ?? undefined}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="creditHours"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Course Credit Hours</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="3"
-                          {...field}
-                          {...form.register("creditHours", {
-                            setValueAs: (value) => Number(value),
-                          })}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="creditHours"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Course Credit Hours</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="3"
+                        {...field}
+                        {...form.register("creditHours", {
+                          setValueAs: (value) => Number(value),
+                        })}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="currentGrade"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Course Current Grade</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="95"
-                          {...field}
-                          {...form.register("currentGrade", {
-                            setValueAs: (value) => Number(value),
-                          })}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <FormField
+                control={form.control}
+                name="currentGrade"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Course Current Grade</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="95"
+                        {...field}
+                        {...form.register("currentGrade", {
+                          setValueAs: (value) => Number(value),
+                        })}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="courseUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Course URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="url"
+                        {...field}
+                        value={field.value ?? undefined}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <DialogFooter className="flex flex-row items-start justify-between">
+              <div className="flex flex-row space-x-2">
+                <DeleteCourseDialog courseId={courseId}>
+                  <Button type="button" variant="destructive" size="icon">
+                    <Icons.Trash className="h-4 w-4" />
+                  </Button>
+                </DeleteCourseDialog>
               </div>
 
-              <DialogFooter className="flex flex-row items-start justify-between">
-                <div className="flex flex-row space-x-2">
-                  <DeleteCourseDialog courseId={courseId}>
-                    <Button type="button" variant="destructive" size="icon">
-                      <Icons.Trash className="h-4 w-4" />
-                    </Button>
-                  </DeleteCourseDialog>
-                </div>
+              <div className="flex flex-row space-x-2">
+                <CloseModalButton type="reset" variant="outline">
+                  Cancel
+                </CloseModalButton>
 
-                <div className="flex flex-row space-x-2">
-                  <CloseModalButton type="reset" variant="outline">
-                    Cancel
-                  </CloseModalButton>
-
-                  <Button type="submit">Save</Button>
-                </div>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Modal>
-    </>
+                <Button type="submit">Save</Button>
+              </div>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Modal>
   );
 }

@@ -1,4 +1,4 @@
-import { COURSE_STATUSES } from "@/lib/course-statuses";
+import { COURSE_STATUS_MAP } from "@/lib/course-status-map";
 import { cn } from "@/lib/utils";
 import { type CourseStatusEnum } from "@/types/shared";
 
@@ -13,16 +13,14 @@ export function CourseStatusBadge({
   status,
   className,
 }: CourseStatusBadgeProps) {
-  const { color, label } = COURSE_STATUSES[status];
+  const { classes: color, label } = COURSE_STATUS_MAP[status];
 
   return (
-    <>
-      <Badge
-        variant="outline"
-        className={cn("text-xs capitalize text-white", color, className)}
-      >
-        {label}
-      </Badge>
-    </>
+    <Badge
+      variant="outline"
+      className={cn("text-xs capitalize text-white", color, className)}
+    >
+      {label}
+    </Badge>
   );
 }

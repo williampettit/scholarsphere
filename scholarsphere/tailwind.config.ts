@@ -52,12 +52,6 @@ module.exports = {
         md: `calc(var(--radius) - 2px)`,
         sm: "calc(var(--radius) - 4px)",
       },
-      // borderRadius: {
-      //   xl: "calc(var(--radius))",
-      //   lg: "calc(var(--radius) - 2px)",
-      //   md: "calc(var(--radius) - 4px)",
-      //   sm: "calc(var(--radius) - 8px)",
-      // },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },

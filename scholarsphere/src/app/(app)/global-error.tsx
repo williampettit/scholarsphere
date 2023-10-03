@@ -13,6 +13,7 @@ export default function GlobalError({
 }) {
   return (
     <html>
+      <head />
       <body>
         <ErrorPage error={error} reset={reset} />
       </body>

@@ -3,27 +3,19 @@
 import { useThemeConfig } from "@/hooks/use-theme-config";
 import { cn } from "@/lib/utils";
 
-interface ThemeWrapperProps extends React.ComponentProps<"div"> {
-  defaultTheme?: string;
-}
+type ThemeWrapperProps = {
+  children: React.ReactNode;
+};
 
-export function ThemeWrapper({
-  defaultTheme,
-  children,
-  className,
-}: ThemeWrapperProps) {
-  const [config] = useThemeConfig();
+export function ThemeWrapper({ children }: ThemeWrapperProps) {
+  const [themeConfig] = useThemeConfig();
 
   return (
     <div
-      className={cn(
-        `theme-${defaultTheme || config.theme}`,
-        "w-full",
-        className,
-      )}
+      className={cn(`theme-${themeConfig.theme}`, "w-full")}
       style={
         {
-          "--radius": `${defaultTheme ? 0.5 : config.radius}rem`,
+          "--radius": `${themeConfig.radius}rem`,
         } as React.CSSProperties
       }
     >

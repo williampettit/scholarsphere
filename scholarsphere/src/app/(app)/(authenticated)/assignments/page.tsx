@@ -73,11 +73,11 @@ export default async function AssignmentsPage() {
                     </CardDescription>
                   </CardHeader>
 
-                  {showAddButton ? (
+                  {showAddButton && (
                     <Link href="/assignments/add" scroll={false}>
                       <Button>Add</Button>
                     </Link>
-                  ) : null}
+                  )}
                 </div>
 
                 <Separator className="mb-6" />

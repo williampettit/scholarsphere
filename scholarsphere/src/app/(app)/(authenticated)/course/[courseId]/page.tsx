@@ -232,7 +232,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                   </div>
                 </div>
 
-                {courseData.semester ? (
+                {courseData.semester && (
                   <>
                     <div className="flex flex-col space-y-2">
                       <p className="text-sm text-muted-foreground">
@@ -261,7 +261,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                       </p>
                     </div>
                   </>
-                ) : null}
+                )}
               </div>
             </div>
           </CardContent>

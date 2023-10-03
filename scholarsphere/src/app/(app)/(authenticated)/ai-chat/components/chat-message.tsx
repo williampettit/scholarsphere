@@ -152,13 +152,13 @@ export function ChatMessage({
         </div>
 
         <Badge className="flex flex-row gap-2 space-x-2 font-normal">
-          {createdAt ? (
+          {createdAt && (
             <>
               {dayjs(createdAt).fromNow()}
 
               <Separator orientation="vertical" />
             </>
-          ) : null}
+          )}
 
           {`#${index}`}
         </Badge>

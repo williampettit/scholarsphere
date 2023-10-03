@@ -146,11 +146,11 @@ function EndpointBlock({ data }: EndpointBlockProps) {
           </CardDescription>
         </CardHeader>
 
-        {response ? (
+        {response && (
           <CardContent>
             <ExampleResponseBlock response={response} />
           </CardContent>
-        ) : null}
+        )}
       </Card>
     </>
   );

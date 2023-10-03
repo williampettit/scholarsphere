@@ -11,27 +11,27 @@ import { CookiesProvider } from "next-client-cookies";
 import { ThemeProvider } from "next-themes";
 
 import { siteConfig } from "@/config/site-config";
-import { loadingThemeConfigAtom } from "@/hooks/use-theme-config";
+import {
+  THEME_CONFIG_STORAGE_KEY,
+  loadingThemeConfigAtom,
+} from "@/hooks/use-theme-config";
 
 import { TailwindIndicator } from "@/components/tailwind-indicator";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { ThemeWrapper } from "@/components/theme-wrapper";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-const THEME_PROVIDER_STORAGE_KEY: string = `${siteConfig.name}-theme` as const;
+const THEME_PROVIDER_STORAGE_KEY: string =
+  `${siteConfig.name}-theme`.toLowerCase();
 
 type ProvidersProps = {
   children: React.ReactNode;
-  cookieProviderProps: Pick<
-    React.ComponentProps<typeof CookiesProvider>,
-    "value"
-  >;
+  cookies: React.ComponentProps<typeof CookiesProvider>["value"];
 };
 
-export function Providers({ children, cookieProviderProps }: ProvidersProps) {
+export function Providers({ children, cookies }: ProvidersProps) {
   return (
-    <CookiesProvider {...cookieProviderProps}>
+    <CookiesProvider value={cookies}>
       <SessionProvider>
         <ThemeProviders>{children}</ThemeProviders>
         <VercelAnalytics />
@@ -52,18 +52,17 @@ function ThemeProviders({ children }: ThemeProvidersProps) {
   // this effect runs on client after component mounts
   useEffect(() => {
     // read theme config from local storage
-    const storedThemeConfig = localStorage.getItem("theme-config");
+    const storedThemeConfig = localStorage.getItem(THEME_CONFIG_STORAGE_KEY);
 
-    //
     if (storedThemeConfig) {
       console.log("got stored config:\n", JSON.parse(storedThemeConfig));
     }
 
-    // set loading to false once the local storage has been read
+    // set loading to false once local storage has been read
     setLoadingThemeConfig(false);
-  }, []);
+  });
 
-  // don't render anything until the theme config has been read from local storage
+  // don't render until theme config has been read from local storage
   if (isLoadingThemeConfig) {
     return null;
   }
@@ -77,10 +76,11 @@ function ThemeProviders({ children }: ThemeProvidersProps) {
         enableSystem
         enableColorScheme
       >
-        <TooltipProvider>{children}</TooltipProvider>
+        <TooltipProvider>
+          {children}
+        </TooltipProvider>
       </ThemeProvider>
 
-      <ThemeSwitcher />
       <Toaster />
       <TailwindIndicator />
     </ThemeWrapper>

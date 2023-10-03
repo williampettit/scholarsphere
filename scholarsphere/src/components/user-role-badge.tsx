@@ -1,4 +1,4 @@
-import { USER_ROLES } from "@/lib/user-roles";
+import { USER_ROLE_MAP } from "@/lib/user-role-map";
 import { cn } from "@/lib/utils";
 import { type UserRole } from "@/types/shared";
 
@@ -8,14 +8,13 @@ type UserRoleBadgeProps = {
 };
 
 export function UserRoleBadge({ role, className }: UserRoleBadgeProps) {
-  const { label, icon: UserRoleIcon } = USER_ROLES[role];
+  const { label, icon: UserRoleIcon } = USER_ROLE_MAP[role];
 
   return (
-    <>
-      <div className={cn("flex flex-row gap-1 text-xs capitalize", className)}>
-        <UserRoleIcon />
-        {label}
-      </div>
-    </>
+    <div className={cn("flex flex-row gap-1 text-xs capitalize", className)}>
+      <UserRoleIcon />
+
+      {label}
+    </div>
   );
 }

@@ -47,12 +47,11 @@ export function MobileNav() {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <>
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            className="
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button
+          variant="ghost"
+          className="
               px-0 
               text-base 
               hover:bg-transparent 
@@ -61,46 +60,45 @@ export function MobileNav() {
               focus-visible:ring-offset-0 
               md:hidden 
             "
-          >
-            <Icons.ViewVertical
-              className="
+        >
+          <Icons.ViewVertical
+            className="
                 h-5 
                 w-5 
               "
-            />
+          />
 
-            <span className="sr-only">Toggle Menu</span>
-          </Button>
-        </SheetTrigger>
+          <span className="sr-only">Toggle Menu</span>
+        </Button>
+      </SheetTrigger>
 
-        <SheetContent
-          side="left"
-          className="
+      <SheetContent
+        side="left"
+        className="
             flex
             flex-col
             space-y-4
             pr-0
           "
+      >
+        <MobileLink
+          href={siteMap.dashboard.url}
+          className="flex items-center"
+          onOpenChange={setOpen}
         >
-          <MobileLink
-            href={siteMap.dashboard.url}
-            className="flex items-center"
-            onOpenChange={setOpen}
-          >
-            <SiteLogoText />
-          </MobileLink>
+          <SiteLogoText />
+        </MobileLink>
 
-          <ScrollArea className="h-[calc(100vh-8rem)] pb-10">
-            <div className="flex flex-col space-y-4">
-              {Object.entries(navLinks).map(([key, item]) => (
-                <MobileLink key={key} href={item.url} onOpenChange={setOpen}>
-                  {item.label}
-                </MobileLink>
-              ))}
-            </div>
-          </ScrollArea>
-        </SheetContent>
-      </Sheet>
-    </>
+        <ScrollArea className="h-[calc(100vh-8rem)] pb-10">
+          <div className="flex flex-col space-y-4">
+            {Object.entries(navLinks).map(([key, item]) => (
+              <MobileLink key={key} href={item.url} onOpenChange={setOpen}>
+                {item.label}
+              </MobileLink>
+            ))}
+          </div>
+        </ScrollArea>
+      </SheetContent>
+    </Sheet>
   );
 }

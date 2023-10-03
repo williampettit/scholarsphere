@@ -61,128 +61,118 @@ function SemesterInfoPopoverContent({ course }: CourseCardProps) {
 
 export function CourseCard({ course }: CourseCardProps) {
   return (
-    <>
-      <Card>
-        <CardHeader>
-          <div className="flex flex-row items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <Popover>
-                <PopoverTrigger>
-                  <CourseColorDot className="h-3 w-3" color={course.color} />
-                </PopoverTrigger>
+    <Card>
+      <CardHeader>
+        <div className="flex flex-row items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <Popover>
+              <PopoverTrigger>
+                <CourseColorDot className="h-3 w-3" color={course.color} />
+              </PopoverTrigger>
 
-                <PopoverContent>
-                  <CourseColorPicker
-                    courseId={course.id}
-                    courseName={course.name}
-                    currentColor={course.color}
-                  />
-                </PopoverContent>
-              </Popover>
+              <PopoverContent>
+                <CourseColorPicker
+                  courseId={course.id}
+                  courseName={course.name}
+                  currentColor={course.color}
+                />
+              </PopoverContent>
+            </Popover>
 
-              <Link
-                href={`/course/${course.id}`}
-                scroll={false}
-                className="line-clamp-1 overflow-ellipsis"
-              >
-                {course.name}
-              </Link>
-            </CardTitle>
-
-            {course.semester ? (
-              <Popover>
-                <PopoverTrigger>
-                  <span
-                    className="
-                      line-clamp-1
-                      overflow-ellipsis
-                      text-muted-foreground
-                    "
-                  >
-                    {course.semester.name}
-                  </span>
-                </PopoverTrigger>
-
-                <PopoverContent>
-                  <SemesterInfoPopoverContent course={course} />
-                </PopoverContent>
-              </Popover>
-            ) : null}
-          </div>
-
-          <CardDescription>
-            <Link href={`/course/${course.id}`} scroll={false}>
-              {course.shortId}
-            </Link>
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent>
-          <p className="italic text-muted-foreground">
-            {course.description ?? "No description."}
-          </p>
-        </CardContent>
-
-        <CardFooter className="flex flex-row items-center gap-6">
-          <div className="flex items-center">
-            <Icons.Credits className="mr-2 h-4 w-4 opacity-70" />
-            <span className="text-sm text-muted-foreground">
-              {course.creditHours} {pluralize(course.creditHours, "credit")}
-            </span>
-          </div>
-
-          <div className="flex items-center">
-            <Icons.CourseGrade className="mr-2 h-4 w-4 opacity-70" />
-            <span
-              className={cn(
-                "text-sm",
-                "text-muted-foreground",
-                getGradeColor(course.currentGrade),
-              )}
+            <Link
+              href={`/course/${course.id}`}
+              scroll={false}
+              className="line-clamp-1 overflow-ellipsis"
             >
-              {course.currentGrade.toFixed(1)}%
-            </span>
-          </div>
+              {course.name}
+            </Link>
+          </CardTitle>
 
-          <Popover>
-            <PopoverTrigger>
-              <CourseStatusBadge className="text-sm" status={course.status} />
-            </PopoverTrigger>
+          {course.semester && (
+            <Popover>
+              <PopoverTrigger>
+                <span className="line-clamp-1 overflow-ellipsis text-muted-foreground">
+                  {course.semester.name}
+                </span>
+              </PopoverTrigger>
 
-            <PopoverContent>
-              <SemesterInfoPopoverContent course={course} />
-            </PopoverContent>
-          </Popover>
-        </CardFooter>
-      </Card>
-    </>
+              <PopoverContent>
+                <SemesterInfoPopoverContent course={course} />
+              </PopoverContent>
+            </Popover>
+          )}
+        </div>
+
+        <CardDescription>
+          <Link href={`/course/${course.id}`} scroll={false}>
+            {course.shortId}
+          </Link>
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent>
+        <p className="italic text-muted-foreground">
+          {course.description ?? "No description."}
+        </p>
+      </CardContent>
+
+      <CardFooter className="flex flex-row items-center gap-6">
+        <div className="flex items-center">
+          <Icons.Credits className="mr-2 h-4 w-4 opacity-70" />
+          <span className="text-sm text-muted-foreground">
+            {course.creditHours} {pluralize(course.creditHours, "credit")}
+          </span>
+        </div>
+
+        <div className="flex items-center">
+          <Icons.CourseGrade className="mr-2 h-4 w-4 opacity-70" />
+          <span
+            className={cn(
+              "text-sm",
+              "text-muted-foreground",
+              getGradeColor(course.currentGrade),
+            )}
+          >
+            {course.currentGrade.toFixed(1)}%
+          </span>
+        </div>
+
+        <Popover>
+          <PopoverTrigger>
+            <CourseStatusBadge className="text-sm" status={course.status} />
+          </PopoverTrigger>
+
+          <PopoverContent>
+            <SemesterInfoPopoverContent course={course} />
+          </PopoverContent>
+        </Popover>
+      </CardFooter>
+    </Card>
   );
 }
 
 export function CourseCardSkeleton() {
   return (
-    <>
-      <Card>
-        <CardHeader>
-          <div className="flex flex-row items-center justify-between">
-            <Skeleton className="h-6 w-40" />
-            <Skeleton className="h-6 w-20" />
-          </div>
+    <Card>
+      <CardHeader>
+        <div className="flex flex-row items-center justify-between">
+          <Skeleton className="h-6 w-40" />
+          <Skeleton className="h-6 w-20" />
+        </div>
 
+        <Skeleton className="h-4 w-20" />
+      </CardHeader>
+
+      <CardContent>
+        <Skeleton className="h-12 w-full" />
+      </CardContent>
+
+      <CardFooter className="flex flex-row items-center gap-4">
+        <div className="flex items-center space-x-1">
+          <Skeleton className="h-4 w-4" />
           <Skeleton className="h-4 w-20" />
-        </CardHeader>
-
-        <CardContent>
-          <Skeleton className="h-12 w-full" />
-        </CardContent>
-
-        <CardFooter className="flex flex-row items-center gap-4">
-          <div className="flex items-center space-x-1">
-            <Skeleton className="h-4 w-4" />
-            <Skeleton className="h-4 w-20" />
-          </div>
-        </CardFooter>
-      </Card>
-    </>
+        </div>
+      </CardFooter>
+    </Card>
   );
 }

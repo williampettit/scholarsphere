@@ -39,11 +39,11 @@ export function CourseHoverCard({ course, children }: CourseHoverCardProps) {
                 {primaryTitle}
               </h4>
 
-              {secondaryTitle ? (
+              {secondaryTitle && (
                 <h4 className="line-clamp-1 overflow-ellipsis text-sm">
                   {secondaryTitle}
                 </h4>
-              ) : null}
+              )}
             </div>
 
             <p className="text-sm text-muted-foreground">

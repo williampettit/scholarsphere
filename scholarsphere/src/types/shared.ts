@@ -125,6 +125,8 @@ export const courseSchema = z.object({
   status: z.nativeEnum(CourseStatusEnum),
   color: z.nativeEnum(CourseColor),
   semesterId: nanoidSchema.nullable(),
+  courseUrl: z.string().url().nullable(),
+  syllabusUrl: z.string().url().nullable(),
 });
 
 // Course Table Entry Schema

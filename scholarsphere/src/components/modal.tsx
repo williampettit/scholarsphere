@@ -25,11 +25,9 @@ export function Modal({ children }: ModalProps) {
   }
 
   return (
-    <>
-      <Dialog modal open={isOpen} onOpenChange={handleOnOpenChange}>
-        {children}
-      </Dialog>
-    </>
+    <Dialog modal open={isOpen} onOpenChange={handleOnOpenChange}>
+      {children}
+    </Dialog>
   );
 }
 
@@ -44,9 +42,5 @@ export function CloseModalButton({ ...props }: CloseModalButtonProps) {
     router.back();
   }
 
-  return (
-    <>
-      <Button type="button" onClick={handleOnClick} {...props} />
-    </>
-  );
+  return <Button type="button" onClick={handleOnClick} {...props} />;
 }

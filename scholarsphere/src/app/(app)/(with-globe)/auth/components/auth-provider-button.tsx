@@ -4,9 +4,9 @@ import { signIn } from "next-auth/react";
 
 import { siteMap } from "@/config/site-config";
 import {
-  AUTH_PROVIDER_DATA,
-  FALLBACK_AUTH_PROVIDER_DATA,
-} from "@/lib/auth-provider-data";
+  AUTH_PROVIDER_METADATA_MAP,
+  FALLBACK_AUTH_PROVIDER_METADATA,
+} from "@/lib/auth-provider-metadata-map";
 
 import { Button } from "@/components/ui/button";
 
@@ -22,24 +22,24 @@ export function AuthProviderButton({
   postLoginRedirectUrl,
 }: AuthProviderButtonProps) {
   const { icon: AuthProviderIcon } =
-    AUTH_PROVIDER_DATA.get(providerId) ?? FALLBACK_AUTH_PROVIDER_DATA;
+    AUTH_PROVIDER_METADATA_MAP.get(providerId) ?? FALLBACK_AUTH_PROVIDER_METADATA;
+
+  function handleOnClick() {
+    signIn(providerId, {
+      callbackUrl: postLoginRedirectUrl ?? siteMap.dashboard.url,
+    });
+  }
 
   return (
-    <>
-      <Button
-        className="gap-2"
-        type="button"
-        variant="outline"
-        onClick={() =>
-          signIn(providerId, {
-            callbackUrl: postLoginRedirectUrl ?? siteMap.dashboard.url,
-          })
-        }
-      >
-        <AuthProviderIcon />
+    <Button
+      className="gap-2"
+      type="button"
+      variant="outline"
+      onClick={handleOnClick}
+    >
+      <AuthProviderIcon />
 
-        {providerName}
-      </Button>
-    </>
+      {providerName}
+    </Button>
   );
 }

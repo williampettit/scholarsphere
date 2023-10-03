@@ -21,7 +21,7 @@ type ErrorPageProps = {
 };
 
 export function ErrorPage({ error, reset }: ErrorPageProps) {
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -40,87 +40,57 @@ export function ErrorPage({ error, reset }: ErrorPageProps) {
   );
 
   return (
-    <>
-      <div
-        className="
-          m-auto  
-          flex
-          w-3/5
-          flex-col
-          items-center
-          justify-center
-          space-y-16
-          p-16
-        "
-      >
-        <SiteLogoTextLink className="text-6xl" />
+    <div className="m-auto flex w-3/5 flex-col items-center justify-center space-y-16 p-16">
+      <SiteLogoTextLink className="text-6xl" />
 
-        <Separator />
+      <Separator />
 
-        <div
-          className="
-            flex
-            flex-col
-            items-center
-            justify-center
-            space-y-2
-            text-destructive
-          "
-        >
-          <h2 className="text-2xl font-bold">Something went wrong!</h2>
+      <div className="flex flex-col items-center justify-center space-y-2 text-destructive">
+        <h2 className="text-2xl font-bold">Something went wrong!</h2>
 
-          <ErrorIndicator className="text-md" showIcon={false}>
-            {errorName}: {errorMessage}
-          </ErrorIndicator>
-        </div>
-
-        <div className="flex flex-row items-center space-x-2">
-          <Button variant="outline" onClick={() => reset()}>
-            Try Again
-          </Button>
-
-          <Button variant="outline" onClick={() => router.push("/")}>
-            Go Home
-          </Button>
-        </div>
-
-        <Separator />
-
-        <Collapsible
-          open={showDetails}
-          onOpenChange={setShowDetails}
-          className="flex w-full flex-col items-center justify-center space-y-2"
-        >
-          <div className="flex items-center justify-between space-x-4 px-4">
-            <CollapsibleTrigger asChild>
-              <Button variant="outline">
-                {showDetails ? (
-                  <>Hide Error Details</>
-                ) : (
-                  <>Show Error Details</>
-                )}
-              </Button>
-            </CollapsibleTrigger>
-          </div>
-
-          <CollapsibleContent className="w-full space-y-2">
-            <div className="overflow-scroll rounded-md border p-4 shadow-sm">
-              <CopyButton
-                value={errorDetails}
-                className="
-                  float-right
-                  -mr-1
-                  -mt-1
-                "
-              />
-
-              <span className="whitespace-pre font-mono text-sm text-red-500">
-                {errorDetails}
-              </span>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
+        <ErrorIndicator className="text-md" showIcon={false}>
+          {errorName}: {errorMessage}
+        </ErrorIndicator>
       </div>
-    </>
+
+      <div className="flex flex-row items-center space-x-2">
+        <Button variant="outline" onClick={() => reset()}>
+          Try Again
+        </Button>
+
+        <Button variant="outline" onClick={() => router.push("/")}>
+          Go Home
+        </Button>
+      </div>
+
+      <Separator />
+
+      <Collapsible
+        open={showDetails}
+        onOpenChange={setShowDetails}
+        className="flex w-full flex-col items-center justify-center space-y-2"
+      >
+        <div className="flex items-center justify-between space-x-4 px-4">
+          <CollapsibleTrigger asChild>
+            <Button variant="outline">
+              {showDetails ? <>Hide Error Details</> : <>Show Error Details</>}
+            </Button>
+          </CollapsibleTrigger>
+        </div>
+
+        <CollapsibleContent className="w-full space-y-2">
+          <div className="overflow-scroll rounded-md border p-4 shadow-sm">
+            <CopyButton
+              value={errorDetails}
+              className="float-right -mr-1 -mt-1"
+            />
+
+            <span className="whitespace-pre font-mono text-sm text-destructive">
+              {errorDetails}
+            </span>
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+    </div>
   );
 }

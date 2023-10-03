@@ -47,6 +47,11 @@ export const siteMap: SiteMap = {
     url: "/ai-chat",
     new: true,
   },
+  apiDocs: {
+    label: "API",
+    url: "/docs",
+    new: true,
+  },
   // mockTranscript: {
   //   label: "Mock Transcript",
   //   url: "#TODO-mock-transcript",
@@ -86,6 +91,7 @@ export const navLinks: SiteMap = {
   courses: siteMap.courses,
   assignments: siteMap.assignments,
   aiChat: siteMap.aiChat,
+  apiDocs: siteMap.apiDocs,
   // mockTranscript: siteMap.mockTranscript,
   // changelog: siteMap.changelog,
   // settings: siteMap.settings,
@@ -99,6 +105,7 @@ export const settingsSidebarNavLinks: SiteMap = {
   appearance: {
     label: "Appearance",
     url: siteMap.settings.url + "/appearance",
+    new: true,
   },
   aiChat: {
     label: "AI Chat",

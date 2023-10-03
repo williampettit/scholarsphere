@@ -79,7 +79,7 @@ export function AIChat() {
         </Button>
       </form>
 
-      {error ? (
+      {error && (
         <Card>
           <CardHeader>
             <div className="text-md flex items-center justify-center text-muted-foreground">
@@ -88,24 +88,21 @@ export function AIChat() {
             </div>
           </CardHeader>
         </Card>
-      ) : null}
+      )}
 
-      {isLoading ? (
-        <LoadingIndicator>Getting response...</LoadingIndicator>
-      ) : null}
+      {isLoading && <LoadingIndicator>Getting response...</LoadingIndicator>}
 
       <div className="flex flex-col-reverse gap-6">
-        {messages.length > 0
-          ? messages.map((message, idx) => (
-              <ChatMessage
-                key={message.id}
-                index={idx + 1}
-                content={message.content}
-                role={message.role}
-                createdAt={message.createdAt}
-              />
-            ))
-          : null}
+        {messages.length > 0 &&
+          messages.map((message, idx) => (
+            <ChatMessage
+              key={message.id}
+              index={idx + 1}
+              content={message.content}
+              role={message.role}
+              createdAt={message.createdAt}
+            />
+          ))}
       </div>
     </div>
   );

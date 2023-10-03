@@ -5,8 +5,8 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { languages } from "@/lib/languages";
-import { cn } from "@/lib/utils";
+import { LANGUAGE_MAP } from "@/lib/languages";
+import { cn, entries } from "@/lib/utils";
 
 import { S_editUser } from "@/server/actions/edit-user";
 
@@ -46,10 +46,14 @@ const accountFormSchema = z.object({
       message: "Name must not be longer than 64 characters.",
     })
     .nullable(),
+
   image: z.string().url().nullable(),
+
   email: z.string().email().nullable().optional(),
-  language: z.string({
-    required_error: "Please select a language.",
+
+  language: z.enum(Object.keys(LANGUAGE_MAP) as [keyof typeof LANGUAGE_MAP], {
+    required_error: "Language is required.",
+    invalid_type_error: "Language is invalid.",
   }),
 });
 
@@ -185,9 +189,7 @@ export function AccountForm({
                       })}
                     >
                       {field.value
-                        ? languages.find(
-                            (language) => language.value === field.value,
-                          )?.label
+                        ? LANGUAGE_MAP[field.value].label
                         : "Select language"}
                       <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -198,25 +200,27 @@ export function AccountForm({
                     <CommandInput placeholder="Search language..." />
                     <CommandEmpty>No language found.</CommandEmpty>
                     <CommandGroup>
-                      {languages.map((language) => (
-                        <CommandItem
-                          key={language.value}
-                          value={language.label}
-                          onSelect={() => {
-                            form.setValue("language", language.value);
-                          }}
-                        >
-                          <CheckIcon
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              language.value === field.value
-                                ? "opacity-100"
-                                : "opacity-0",
-                            )}
-                          />
-                          {language.label}
-                        </CommandItem>
-                      ))}
+                      {entries(LANGUAGE_MAP).map(
+                        ([languageId, { label: languageLabel }]) => (
+                          <CommandItem
+                            key={languageId}
+                            value={languageId}
+                            onSelect={() =>
+                              form.setValue("language", languageId)
+                            }
+                          >
+                            <CheckIcon
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                languageId === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                            {languageLabel}
+                          </CommandItem>
+                        ),
+                      )}
                     </CommandGroup>
                   </Command>
                 </PopoverContent>

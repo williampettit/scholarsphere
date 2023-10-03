@@ -98,6 +98,8 @@ export const editCourseFormSchema = courseSchema
     currentGrade: true,
     creditHours: true,
     color: true,
+    courseUrl: true,
+    syllabusUrl: true,
   })
   .partial({
     name: true,
@@ -106,6 +108,8 @@ export const editCourseFormSchema = courseSchema
     currentGrade: true,
     creditHours: true,
     color: true,
+    courseUrl: true,
+    syllabusUrl: true,
   });
 
 export type EditCourseFormValues = z.infer<typeof editCourseFormSchema>;

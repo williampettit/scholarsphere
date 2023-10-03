@@ -14,7 +14,7 @@ export default function SettingsLayout({ children }: LayoutProps) {
       <PageHeader>
         <PageHeaderTitle>Settings</PageHeaderTitle>
         <PageHeaderSubtitle>
-          Manage your profile and account preferences.
+          View and manage your account settings and site preferences here.
         </PageHeaderSubtitle>
       </PageHeader>
 

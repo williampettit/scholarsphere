@@ -1,3 +1,5 @@
+import { type Metadata } from "next/types";
+
 import { type LayoutProps } from "@/types/layout";
 
 import {
@@ -5,6 +7,10 @@ import {
   PageHeaderSubtitle,
   PageHeaderTitle,
 } from "@/components/page-header";
+
+export const metadata: Metadata = {
+  title: "Courses",
+};
 
 export default function Layout({ children }: LayoutProps) {
   return (

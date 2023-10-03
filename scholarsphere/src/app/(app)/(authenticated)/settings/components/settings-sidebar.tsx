@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { settingsSidebarNavLinks } from "@/config/site-config";
 import { cn } from "@/lib/utils";
 
-import { Badge } from "@/components/ui/badge";
+import { NewBadge } from "@/components/new-badge";
 import { buttonVariants } from "@/components/ui/button";
 
 export function SettingsSidebarNav() {
@@ -24,11 +24,12 @@ export function SettingsSidebarNav() {
               pathname === item.url
                 ? "bg-muted/80 hover:bg-muted/100"
                 : "hover:bg-muted/50",
-              "flex flex-row gap-2 lg:justify-between",
+              "flex flex-row gap-1 lg:justify-between",
             )}
           >
             {item.label}
-            {item.new ? <Badge>New</Badge> : null}
+
+            {item.new && <NewBadge />}
           </Link>
         ))}
       </nav>

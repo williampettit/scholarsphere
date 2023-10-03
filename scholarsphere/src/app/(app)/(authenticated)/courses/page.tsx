@@ -1,4 +1,4 @@
-import { COURSE_STATUSES } from "@/lib/course-statuses";
+import { COURSE_STATUS_MAP } from "@/lib/course-status-map";
 import { entries, getSemesterStatus, groupBy, pluralize } from "@/lib/utils";
 
 import { requireUser } from "@/server/auth";
@@ -63,10 +63,10 @@ export default async function CoursesPage() {
       {entries(coursesGroupedByStatus)
         .sort(
           ([statusA], [statusB]) =>
-            COURSE_STATUSES[statusA].order - COURSE_STATUSES[statusB].order,
+            COURSE_STATUS_MAP[statusA].order - COURSE_STATUS_MAP[statusB].order,
         )
         .map(([status, courses]) => {
-          const { label: statusLabel } = COURSE_STATUSES[status];
+          const { label: statusLabel } = COURSE_STATUS_MAP[status];
 
           return (
             <Card key={status}>

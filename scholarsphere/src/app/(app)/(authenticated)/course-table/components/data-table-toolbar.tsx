@@ -3,7 +3,7 @@
 import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
-import { COURSE_STATUSES } from "@/lib/course-statuses";
+import { COURSE_STATUS_MAP } from "@/lib/course-status-map";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +35,7 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("status")}
             title="Status"
-            options={Object.entries(COURSE_STATUSES).map(([key, data]) => ({
+            options={Object.entries(COURSE_STATUS_MAP).map(([key, data]) => ({
               value: key,
               label: data.label,
               icon: data.icon,

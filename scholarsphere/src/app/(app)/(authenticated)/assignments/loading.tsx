@@ -43,7 +43,7 @@ export default function LoadingAssignmentsPage() {
                     </CardDescription>
                   </CardHeader>
 
-                  {showAddButton ? <Button disabled>Add</Button> : null}
+                  {showAddButton && <Button disabled>Add</Button>}
                 </div>
 
                 <Separator className="mb-6" />
