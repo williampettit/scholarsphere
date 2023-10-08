@@ -52,20 +52,20 @@ export function MobileNav() {
         <Button
           variant="ghost"
           className="
-              px-0 
-              text-base 
-              hover:bg-transparent 
-              focus-visible:bg-transparent 
-              focus-visible:ring-0 
-              focus-visible:ring-offset-0 
-              md:hidden 
-            "
+            px-0 
+            text-base 
+            hover:bg-transparent 
+            focus-visible:bg-transparent 
+            focus-visible:ring-0 
+            focus-visible:ring-offset-0 
+            md:hidden 
+          "
         >
           <Icons.ViewVertical
             className="
-                h-5 
-                w-5 
-              "
+              h-5 
+              w-5 
+            "
           />
 
           <span className="sr-only">Toggle Menu</span>
@@ -75,11 +75,11 @@ export function MobileNav() {
       <SheetContent
         side="left"
         className="
-            flex
-            flex-col
-            space-y-4
-            pr-0
-          "
+          flex
+          flex-col
+          space-y-4
+          pr-0
+        "
       >
         <MobileLink
           href={siteMap.dashboard.url}

@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/settings",
+        destination: "/settings/account",
+        permanent: false,
+      },
+    ];
+  },
+
   experimental: {
     serverActions: true,
     optimizeCss: true,

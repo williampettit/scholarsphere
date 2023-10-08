@@ -22,7 +22,7 @@ export function MainNav() {
             key={key}
             href={item.url}
             className={cn(
-              "flex flex-row items-center gap-2 transition-colors hover:text-foreground/80 text-foreground/60",
+              "flex flex-row items-center gap-2 text-foreground/60 transition-colors hover:text-foreground/80",
               {
                 "text-foreground": pathname === item.url,
               },
