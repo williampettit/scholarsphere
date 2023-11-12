@@ -3,6 +3,7 @@ import dayjs, { type Dayjs } from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { twMerge } from "tailwind-merge";
 
+import { type TextColor } from "@/lib/colors";
 import { CourseStatusEnum, type Semester } from "@/types/shared";
 
 dayjs.extend(relativeTime);
@@ -62,7 +63,7 @@ export function pluralize(
 //
 
 type GpaDiffProps = {
-  color: string;
+  color: TextColor;
   sign: string;
 };
 
@@ -72,7 +73,7 @@ export function getGpaDiffProps(gpaDiff: number): GpaDiffProps {
   return { color: "text-muted-foreground", sign: "" };
 }
 
-export function getGradeColor(grade: number): string {
+export function getGradeColor(grade: number): TextColor | null {
   if (grade >= 90) {
     return "text-emerald-600";
   }
@@ -122,7 +123,7 @@ export function withinNDays(
   return dueDate.diff(dayjs(), "day") <= nDays;
 }
 
-export function getRelativeDateColor(dueDate: Dayjs | Date): string {
+export function getRelativeDateColor(dueDate: Dayjs | Date): TextColor | null {
   // convert to dayjs if necessary
   if (dueDate instanceof Date) {
     dueDate = dayjs(dueDate);
@@ -144,7 +145,7 @@ export function getRelativeDateColor(dueDate: Dayjs | Date): string {
   }
 
   //
-  return "";
+  return null;
 }
 
 //

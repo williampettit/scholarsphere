@@ -1554,3 +1554,17 @@ export const colorMapping = {
     "ring": "{{base}}-300",
   },
 } as const;
+
+type ColorName = keyof typeof colors;
+
+type ScaleObject = { scale: number };
+
+type TextColorExtended = "text-muted-foreground" | "text-muted";
+
+type TextColorBase = {
+  [K in ColorName]: (typeof colors)[K] extends ScaleObject[]
+    ? `text-${K}-${ScaleObject["scale"]}`
+    : `text-${K}`;
+}[keyof typeof colors];
+
+export type TextColor = TextColorBase | TextColorExtended;
