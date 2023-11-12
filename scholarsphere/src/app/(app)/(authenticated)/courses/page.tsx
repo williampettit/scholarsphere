@@ -1,5 +1,6 @@
 import { COURSE_STATUS_MAP } from "@/lib/course-status-map";
 import { entries, getSemesterStatus, groupBy, pluralize } from "@/lib/utils";
+import { CourseStatusEnum } from "@/types/shared";
 
 import { requireUser } from "@/server/auth";
 import { prismaClient } from "@/server/prisma";
@@ -50,6 +51,12 @@ async function getCoursesGroupedByStatus() {
   const coursesGroupedByStatus = groupBy(
     coursesWithStatusAdded,
     (course) => course.status,
+    [
+      CourseStatusEnum.COMPLETED,
+      CourseStatusEnum.IN_PROGRESS,
+      CourseStatusEnum.NOT_PLANNED,
+      CourseStatusEnum.PLANNED,
+    ],
   );
 
   return coursesGroupedByStatus;

@@ -25,13 +25,23 @@ export function entries<K extends string | number, V>(
 export function groupBy<T, K extends string | number>(
   array: T[],
   func: (item: T) => K,
-) {
-  return array.reduce((previous, current) => {
-    const groupKey = func(current);
-    const group = previous[groupKey] || [];
-    group.push(current);
-    return { ...previous, [groupKey]: group };
-  }, {} as Record<K, T[]>);
+  allKeys?: K[],
+): Record<K, T[]> {
+  const initialGroups = allKeys
+    ? allKeys.reduce((acc, key) => {
+        acc[key] = [];
+        return acc;
+      }, {} as Record<K, T[]>)
+    : ({} as Record<K, T[]>);
+
+  return array.reduce((acc, item) => {
+    const key = func(item);
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(item);
+    return acc;
+  }, initialGroups);
 }
 
 export function getPlaceholderApiKey(): string {
