@@ -123,7 +123,7 @@ export function withinNDays(
   return dueDate.diff(dayjs(), "day") <= nDays;
 }
 
-export function getRelativeDateColor(dueDate: Dayjs | Date): TextColor | null {
+export function getRelativeDateColor(dueDate: Dayjs | Date): TextColor | "" {
   // convert to dayjs if necessary
   if (dueDate instanceof Date) {
     dueDate = dayjs(dueDate);
@@ -145,7 +145,7 @@ export function getRelativeDateColor(dueDate: Dayjs | Date): TextColor | null {
   }
 
   //
-  return null;
+  return "";
 }
 
 //
