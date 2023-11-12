@@ -36,4 +36,4 @@ export const COURSE_STATUS_MAP: CourseStatusMap = {
     classes: "text-rose-600",
     order: 3,
   },
-};
+} as const;
