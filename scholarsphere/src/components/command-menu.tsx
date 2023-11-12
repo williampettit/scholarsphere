@@ -88,7 +88,7 @@ export function CommandMenu({ activeCourses, ...props }: CommandMenuProps) {
                 <Icons.Page className="mr-2 h-4 w-4" />
                 <div className="flex flex-row gap-1">
                   {navItem.label}
-                  
+
                   {navItem.new && <NewBadge />}
                 </div>
               </CommandItem>
@@ -97,29 +97,33 @@ export function CommandMenu({ activeCourses, ...props }: CommandMenuProps) {
 
           <CommandSeparator />
 
-          <CommandGroup heading="Active Courses">
-            {activeCourses.map((course) => (
-              <CommandItem
-                key={course.id}
-                value={course.id}
-                onSelect={() => {
-                  runCommand(() =>
-                    router.push(`/course/${course.id}`, {
-                      scroll: false,
-                    }),
-                  );
-                }}
-              >
-                <Icons.Backpack className="mr-2 h-4 w-4" />
-                <div className="flex flex-row items-center space-x-2">
-                  <CourseColorDot color={course.color} />
-                  <span>{course.name}</span>
-                </div>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          {activeCourses.length > 0 && (
+            <>
+              <CommandGroup heading="Active Courses">
+                {activeCourses.map((course) => (
+                  <CommandItem
+                    key={course.id}
+                    value={course.id}
+                    onSelect={() => {
+                      runCommand(() =>
+                        router.push(`/course/${course.id}`, {
+                          scroll: false,
+                        }),
+                      );
+                    }}
+                  >
+                    <Icons.Backpack className="mr-2 h-4 w-4" />
+                    <div className="flex flex-row items-center space-x-2">
+                      <CourseColorDot color={course.color} />
+                      <span>{course.name}</span>
+                    </div>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
 
-          <CommandSeparator />
+              <CommandSeparator />
+            </>
+          )}
 
           <CommandGroup heading="Settings">
             {Object.entries(settingsSidebarNavLinks).map(([key, navItem]) => (
