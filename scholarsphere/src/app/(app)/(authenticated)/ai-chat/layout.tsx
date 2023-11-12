@@ -12,7 +12,6 @@ import {
   PageHeaderSubtitle,
   PageHeaderTitle,
 } from "@/components/page-header";
-import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "AI Chat",
@@ -35,14 +34,10 @@ export default async function AIChatLayout({ children }: LayoutProps) {
     return (
       <>
         <p>
-          To use the AI Chat feature, you must first set up your OpenAI API key.
+          To use the AI Chat feature, you must first set up your OpenAI API key.{" "}
           <Link
             href="/settings/ai"
-            className="
-              text-blue-500
-              transition-colors
-              hover:text-blue-600
-            "
+            className="text-blue-500 transition-colors hover:text-blue-600"
           >
             You can do that here.
           </Link>
