@@ -243,7 +243,14 @@ export function AddCourseModal({ semesters }: AddCourseModalProps) {
                 <FormItem>
                   <FormLabel>Course Credit Hours</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="3" {...field} />
+                    <Input
+                      type="number"
+                      placeholder="3"
+                      {...field}
+                      {...form.register("creditHours", {
+                        setValueAs: (value) => Number(value),
+                      })}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
