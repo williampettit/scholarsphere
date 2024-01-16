@@ -42,11 +42,9 @@ function FontCustomizer() {
     cookies.get(FONT_COOKIE_NAME) || DEFAULT_FONT_KEY;
 
   function onFontValueChange(value: string) {
-    console.log("FontCustomizer.onFontValueChange:", value);
-
     // validate font
     if (!Object.keys(FONT_MAP).includes(value)) {
-      throw new Error("Invalid font.");
+      throw new Error("Invalid font");
     }
 
     // set font cookie and refresh the page
@@ -73,12 +71,16 @@ function FontCustomizer() {
           groupBy(entries(FONT_MAP), ([_, { type }]) => FONT_TYPES[type].label),
         ).map(([key, values]) => (
           <SelectGroup key={key}>
-            <SelectLabel>{key}</SelectLabel>
-            {values.map(([key, { label }]) => (
-              <SelectItem key={key} value={key}>
-                {label}
-              </SelectItem>
-            ))}
+            <SelectLabel className="text-center font-bold">{key}</SelectLabel>
+            {values
+              .sort(([_, { label: labelA }], [__, { label: labelB }]) =>
+                labelA.localeCompare(labelB),
+              )
+              .map(([key, { label }]) => (
+                <SelectItem key={key} value={key}>
+                  {label}
+                </SelectItem>
+              ))}
           </SelectGroup>
         ))}
       </SelectContent>
